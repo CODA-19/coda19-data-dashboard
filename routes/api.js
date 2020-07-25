@@ -7,9 +7,6 @@ const router = express.Router()
 
 router.get('/data', function(req, res, next) {
   
-  const dummyData = fs.readFileSync('./test/data.json')
-  const dummyJson = JSON.parse(dummyData)
-  
   exec("RScript ./scripts/meta.R -la", (error, stdout, stderr) => {
     
     if (error) {
