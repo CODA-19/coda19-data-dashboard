@@ -1,3 +1,5 @@
+// Lifted from: https://github.com/legaultmarc/forestplot
+
 /**
  * Returns a list of low, mid, high for the effect size.
  **/
