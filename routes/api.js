@@ -27,7 +27,7 @@ router.get('/data', function(req, res, next) {
       }
       
       const plotConfig = {
-        "effectLabel": "Odds Ratio",
+        "effectLabel": "SMD",
         "vBar": 1,
         "nTicks": 6,
         "width": 500
@@ -36,7 +36,7 @@ router.get('/data', function(req, res, next) {
       const plotData = [
         {
           "description": "Site",
-          "overrideLabel": "OR (95% CI)"
+          "overrideLabel": "SMD (95% CI)"
         }
       ]
       
