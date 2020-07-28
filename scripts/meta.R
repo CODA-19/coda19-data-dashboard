@@ -19,5 +19,5 @@ uci <- ma_model[[7]]
 summary_estimate <- data.frame("Overall", est, lci, uci)
 names(summary_estimate) <- c("study", "yi", "ci.lb", "ci.ub")
 
-final_data <- rbind(summary_table, summary_estimate)
+final_data <- rbind(as.data.frame(summary_table), summary_estimate)
 cat(format_csv(final_data))
