@@ -8,7 +8,9 @@ const indexRouter = require('./routes/index')
 const apiRouter = require('./routes/api')
 const authRouter = require('./routes/auth')
 
+const cors = require('cors'); //temp, for local test purpose
 const app = express()
+app.use(cors());//temp, for local test purpose
 app.disable('view cache')
 
 // view engine setup

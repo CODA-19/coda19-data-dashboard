@@ -14,5 +14,8 @@
     "jade": "~1.11.0",
     "morgan": "~1.9.1",
     "r-script": "0.0.4"
+  },
+  "devDependencies": {
+    "cors": "^2.8.5"
   }
 }
