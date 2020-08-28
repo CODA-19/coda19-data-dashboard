@@ -1,6 +1,6 @@
 <template>
   <div class="hello">
-    <h1>{{ title }}</h1>
+<!--    <h1>{{ title }}</h1>-->
     <p>Welcome to the dashboard.</p>
     <div id="svg"></div>
   </div>

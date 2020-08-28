@@ -1,8 +1,9 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <Forest title="CODA-19"/>
-  </div>
+
+    <div class="home">
+      <Forest title="CODA-19"/>
+    </div>
+
 </template>
 
 <script>
