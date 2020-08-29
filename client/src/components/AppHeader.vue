@@ -5,8 +5,7 @@
       CODA - 19
     </b-navbar-brand>
     <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
-
-    <b-collapse id="navbar-collapse" is-nav>
+    <b-collapse id="nav-collapse" is-nav>
       <b-navbar-nav>
         <b-nav-item >
           <router-link to="/" class="nav-link">Home</router-link>
