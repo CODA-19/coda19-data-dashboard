@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '@/views/Home'
 import AppHeader from '@/components/AppHeader'
+import Footer from '@/components/Footer'
 import About from '@/views/About'
 
 Vue.use(VueRouter)
@@ -12,7 +13,8 @@ Vue.use(VueRouter)
     name: 'Home',
     components: {
       header:AppHeader,
-      default: Home
+      default: Home,
+      footer: Footer
     },
     // props: {
     //   default:{
