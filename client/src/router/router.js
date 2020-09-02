@@ -4,6 +4,7 @@ import Home from '@/views/Home'
 import AppHeader from '@/components/AppHeader'
 import Footer from '@/components/Footer'
 import About from '@/views/About'
+import Dashboard from "@/views/Dashboard"
 
 Vue.use(VueRouter)
 
@@ -16,11 +17,6 @@ Vue.use(VueRouter)
       default: Home,
       footer: Footer
     },
-    // props: {
-    //   default:{
-    //     select: 'home'
-    //   }
-    // },
     meta: {
       title: "CODA 19"
     }
@@ -32,15 +28,22 @@ Vue.use(VueRouter)
       header:AppHeader,
       default: About
     },
-    // props: {
-    //   default:{
-    //     select: 'about'
-    //   }
-    // },
     meta: {
       title: "CODA 19 - About"
     }
-  }
+  },
+    {
+      path: '/dashboard',
+      name: 'Dashboard',
+      components: {
+        header:AppHeader,
+        default: Dashboard,
+        footer: Footer
+      },
+      meta: {
+        title: "CODA 19 - Dashboard"
+      }
+    }
 ]
 
 
