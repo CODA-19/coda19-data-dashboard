@@ -2,8 +2,8 @@
 @import 'node_modules/bootstrap/scss/bootstrap';
 @import 'node_modules/bootstrap-vue/src/index.scss';
 
-body{
-  //background: $palegreen;
+html, body{
+  overflow-y: auto;
 }
 
 #app {
@@ -12,6 +12,13 @@ body{
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+}
+
+.mainContainer{
+  flex: 1;
 }
 
 #nav{

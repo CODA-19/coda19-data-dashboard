@@ -1,8 +1,8 @@
 <template>
 
-    <div class="home">
+    <v-container class="mainContainer">
       <Forest title="CODA-19"/>
-    </div>
+    </v-container>
 
 </template>
 
