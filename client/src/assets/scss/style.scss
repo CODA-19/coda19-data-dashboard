@@ -29,8 +29,12 @@ body{
     }
   }
 
-  #nav-collapse.show{
-    border-top:1px solid $nileblue;
+  #nav-collapse{
+    justify-content: space-between;
+
+    &.show{
+      border-top:1px solid $nileblue;
+    }
   }
 
 }
