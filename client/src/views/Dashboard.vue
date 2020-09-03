@@ -1,6 +1,9 @@
 <template>
   <v-container class="mainContainer">
-    <plot-chart></plot-chart>
+    <v-row>
+      <plot-chart style="height: 400px"></plot-chart>
+    </v-row>
+
   </v-container>
 
 </template>

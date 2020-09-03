@@ -5,11 +5,11 @@
 <script>
 import ECharts from 'vue-echarts';
 import 'echarts/lib/chart/scatter';
-import * as Echarts from "echarts";
+import "echarts";
 
 
 var ranges = [[105, 1050],[95,950],[10543,40502],['2020-08-23','2020-10-30'],[45,69],[7,25]];
-var categories = ['Number Tested', 'Number Positive', 'Number Admitted', 'Median COVID-19 Admission Date', 'Mean Age', 'Length of Stay'];
+var categories = ['Number Tested', 'Number Positive', 'Number Admitted', 'Median COVID-19\nAdmission Date', 'Mean Age', 'Length of Stay'];
 var data = [
     [0,200,0],[0,500,1], [0,800,2], [0,650,3],
     [1,200,0],[1,500,1], [1,890,2], [1,450,3],
@@ -18,6 +18,7 @@ var data = [
     [4,57,0], [4,54,1], [4,65,2],[4,64,3],
     [5,8,0], [5,12,1], [5,17,2],[5,15,3]
 ];
+var sites = ['CHUM', 'MUHC', 'CHUQ', 'JGH'];
 var colors = ['lightblue','blue','lightgreen', 'green'];
 var types = ['value', 'value', 'value', 'time', 'value', 'value'];
 
@@ -25,81 +26,111 @@ export default {
   components: {
     'v-chart': ECharts
   },
-  props:{
-    option:{
-      type: Object
-    }
-  },
   created(){
-    let that = this;
-    that.option = {
-      tooltip: {
-        position: 'top',
-        formatter: function (params) {
-          return params.value ;
-        }
-      },
-      title: [],
-      singleAxis: [],
-      name:'Summary',
-      nameLocation:'center',
-      series: [],
-      toolbox:{
-        show:true,
-        feature:{
-          restore:{
-            show:true,
-            title:"Restore"
-          },
-          saveAsImage:{
-            show:true,
-            title:"Save Image"
+    this.setOptions();
+  },
+  methods:{
+    setOptions(){
+      let that = this;
+      that.option = {
+        tooltip: {
+          position: 'top',
+          formatter: function (params) {
+            return sites[params.value[1]]+': '+params.value[0] ;
           }
-        }
-      },
-    };
-    categories.forEach((cat, idx)=>{
-      that.option.title.push({
-        textBase: 'middle',
-        top: (idx + 0.6) * 100 / 7 + '%',
-        text: cat,
-      });
-      that.option.singleAxis.push({
-        left: 150,
-        type: types[idx],
-        axisTick:{
-          show: false
         },
-        minInterval:ranges[idx][1],
-        boundaryGap: true,
-        min: ranges[idx][0],
-        max: ranges[idx][1],
-        top: (idx * 100 / 7 + 5) + '%',
-        height: (100 / 7 - 10) + '%',
-        axisLabel: {
-          interval: 2
-        }
+        title: [{
+          text: 'Summary',
+          top: 'top',
+          left: 'center'
+        }],
+        singleAxis: [],
+        name:'Summary',
+        nameLocation:'center',
+        series: [],
+        visualMap: {
+          type: 'piecewise',
+          categories: sites,
+          orient: 'horizontal',
+          top: 'bottom',
+          left: 'center',
+          dimension:2,
+          inRange: {
+            color: colors
+          },
+          outOfRange: {
+            color: '#ddd'
+          },
+          seriesIndex: [6]
+        },
+        toolbox:{
+          show:true,
+          feature:{
+            restore:{
+              show:true,
+              title:"Restore"
+            },
+            saveAsImage:{
+              show:true,
+              title:"Save Image"
+            }
+          }
+        },
+      };
+      categories.forEach((cat, idx)=>{
+        that.option.title.push({
+          textBase: 'middle',
+          top: (idx*80/6+12)+'%',//(idx + 0.6) * 100 / 6 + '%',
+          text: cat,
+          left: 150,
+          textStyle:{
+            fontSize: 14
+          },
+          textAlign: 'right'
+        });
+        that.option.singleAxis.push({
+          left: 180,
+          type: types[idx],
+          align: 'left',
+          axisTick:{
+            show: false
+          },
+          minInterval:ranges[idx][1],
+          boundaryGap: false,
+          min: ranges[idx][0],
+          max: ranges[idx][1],
+          top: (idx*80/6+12)+'%',//(idx * 100 / 6 + 5) + '%',
+          height: 20,
+          axisLabel: {
+            interval: 2
+          }
+        });
+        that.option.series.push({
+          singleAxisIndex: idx,
+          coordinateSystem: 'singleAxis',
+          type: 'scatter',
+          data: [],
+          symbolSize: 20
+        });
       });
-      that.option.series.push({
-        singleAxisIndex: idx,
-        coordinateSystem: 'singleAxis',
-        type: 'scatter',
-        data: [],
-        symbolSize: 20
+      data.forEach((dataItem)=> {
+        that.option.series[dataItem[0]].data.push({
+          value:[dataItem[1], dataItem[2]],
+          itemStyle:{color:colors[dataItem[2]]}
+        });
       });
-    });
-    data.forEach((dataItem)=> {
-      that.option.series[dataItem[0]].data.push({
-        value:[dataItem[1], dataItem[2]],
-        itemStyle:{color:colors[dataItem[2]]}
-      });
-    });
+      that.option.legend =  {
+       x:'center',
+            show: true,
+            orient: 'horizontal',
+            top:'50%',
+            data: data
+      }
+      console.log(that.option)
+    }
   },
   data () {
     return {options: this.option};
-  },
-  methods: {
-
   }
 }
 </script>
