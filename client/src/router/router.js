@@ -4,6 +4,7 @@ import Home from '@/views/Home'
 import AppHeader from '@/components/AppHeader'
 import Footer from '@/components/Footer'
 import About from '@/views/About'
+import SelectData from '@/views/SelectData'
 import Dashboard from "@/views/Dashboard"
 
 Vue.use(VueRouter)
@@ -31,6 +32,18 @@ Vue.use(VueRouter)
     },
     meta: {
       title: "CODA 19 - About"
+    }
+  },
+      {
+    path: '/selectData',
+    name: 'SelectData',
+      components: {
+        header:AppHeader,
+        default: SelectData,
+        footer: Footer
+      },
+    meta: {
+      title: "CODA 19 - Data selection"
     }
   },
     {
