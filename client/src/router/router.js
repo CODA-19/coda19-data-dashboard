@@ -26,7 +26,8 @@ Vue.use(VueRouter)
     name: 'About',
     components: {
       header:AppHeader,
-      default: About
+      default: About,
+      footer: Footer
     },
     meta: {
       title: "CODA 19 - About"

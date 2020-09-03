@@ -7,7 +7,7 @@ const router = express.Router()
 
 router.get('/data', function(req, res, next) {
   
-  exec("Rscript ./scripts/meta.R -la", (error, stdout, stderr) => {
+exec("\"C:\\Program Files\\R\\R-4.0.2\\bin\\Rscript\" ./scripts/meta.R -la", (error, stdout, stderr) => {
     
     if (error) {
       console.log(`error: ${error.message}`)
