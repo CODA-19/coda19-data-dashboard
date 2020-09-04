@@ -38,7 +38,8 @@ export default {
         },
         title: {
           text: 'Length of Stay',
-          left: 'center'
+          left: 'center',
+          bottom: '0'
         },
         tooltip:{
           formatter: function (params) {
