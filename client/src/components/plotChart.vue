@@ -85,14 +85,14 @@ export default {
           textBase: 'middle',
           top: (idx*80/6+12)+'%',//(idx + 0.6) * 100 / 6 + '%',
           text: cat,
-          left: 150,
+          left: 120,
           textStyle:{
             fontSize: 14
           },
           textAlign: 'right'
         });
         that.option.singleAxis.push({
-          left: 180,
+          left: 150,
           type: types[idx],
           align: 'left',
           axisTick:{
@@ -138,7 +138,7 @@ export default {
     }
   },
   data () {
-    return {options: this.option};
+    return {option: this.option};
   }
 }
 </script>
