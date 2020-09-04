@@ -39,7 +39,7 @@ export default {
         title: {
           text: 'Length of Stay',
           left: 'center',
-          bottom: '0'
+          bottom: '5'
         },
         tooltip:{
           formatter: function (params) {
@@ -49,10 +49,6 @@ export default {
         toolbox:{
           show:true,
           feature:{
-            restore:{
-              show:true,
-              title:"Restore"
-            },
             saveAsImage:{
               show:true,
               title:"Save Image"

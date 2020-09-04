@@ -1,23 +1,36 @@
 <template>
   <v-container class="mainContainer">
-    <div class="row">
-      <div class="col-lg-6 col-md-12 col-sm-12">
-        <plotChart style="width: 100%"></plotChart>
-      </div>
+    <v-row>
+    <div class="col-lg-6 col-md-12 col-sm-12">
+      <v-row>
+        <h3>Summary</h3>
+      </v-row>
+      <v-row class="chartPanel">
+        <plotChart style="height: 40vh"></plotChart>
+      </v-row>
+      <v-row>
+        <h3>Legend</h3>
+      </v-row>
+      <v-row>
 
-      <div class="col-lg-6 col-md-12 col-sm-12">
-        <scatterChart style="width: 100%"></scatterChart>
-      </div>
-
-      <div class="col-lg-6 col-md-12 col-sm-12">
-
-      </div>
-
-      <div class="col-lg-6 col-md-12 col-sm-12">
-        <BarChart style="width: 100%"></BarChart>
-      </div>
+      </v-row>
 
     </div>
+
+      <div class="col-lg-6 col-md-12 col-sm-12">
+        <v-row class="chartPanel">
+          <h3>Key Variables</h3>
+        </v-row>
+
+      <v-row class="chartPanel">
+        <scatterChart style="height: 40vh"></scatterChart>
+      </v-row>
+      <v-row class="chartPanel">
+        <BarChart style="height: 40vh"></BarChart>
+      </v-row>
+
+    </div>
+    </v-row>
 
   </v-container>
 

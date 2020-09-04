@@ -45,7 +45,8 @@ export default {
         title: [{
           text: 'Summary',
           top: 'top',
-          left: 'center'
+          left: 'center',
+          show: false
         }],
         legend:{},
         singleAxis: [],
@@ -69,10 +70,6 @@ export default {
         toolbox:{
           show:true,
           feature:{
-            restore:{
-              show:true,
-              title:"Restore"
-            },
             saveAsImage:{
               show:true,
               title:"Save Image"

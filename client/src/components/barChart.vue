@@ -37,10 +37,6 @@ export default {
         toolbox:{
           show:true,
           feature:{
-            restore:{
-              show:true,
-              title:"Restore"
-            },
             saveAsImage:{
               show:true,
               title:"Save Image"
