@@ -1,8 +1,15 @@
 <template>
   <v-container class="mainContainer">
-    <v-row>
-      <plot-chart style="height: 400px"></plot-chart>
-    </v-row>
+    <div class="row">
+      <div class="col-lg-6 col-md-12 col-sm-12">
+        <plotChart style="width: 100%"></plotChart>
+      </div>
+
+      <div class="col-lg-6 col-md-12 col-sm-12">
+        <scatterChart style="width: 100%"></scatterChart>
+      </div>
+
+    </div>
 
   </v-container>
 
@@ -10,10 +17,11 @@
 
 <script>
 import PlotChart from "@/components/plotChart";
+import ScatterChart from "@/components/scatterChart";
 
 export default {
   name: "Dashboard",
-  components: {PlotChart}
+  components: {PlotChart, ScatterChart}
 }
 </script>
 
