@@ -21,6 +21,7 @@ var data = [
 var sites = ['CHUM', 'MUHC', 'CHUQ', 'JGH'];
 var colors = ['lightblue','blue','lightgreen', 'green'];
 var types = ['value', 'value', 'value', 'time', 'value', 'value'];
+var means = [537.5, 510, 20710, '2020-09-15', 60, 13];
 
 export default {
   components: {
@@ -36,7 +37,9 @@ export default {
         tooltip: {
           position: 'top',
           formatter: function (params) {
-            return sites[params.value[1]]+': '+params.value[0] ;
+            if(params.value.length === 1)
+              return 'Mean: '+params.value[0] ;
+            else return sites[params.value[1]]+': '+params.value[0]
           }
         },
         title: [{
@@ -44,25 +47,25 @@ export default {
           top: 'top',
           left: 'center'
         }],
+        legend:{},
         singleAxis: [],
         name:'Summary',
         nameLocation:'center',
         series: [],
-        visualMap: {
-          type: 'piecewise',
-          categories: sites,
-          orient: 'horizontal',
-          top: 'bottom',
-          left: 'center',
-          dimension:2,
-          inRange: {
-            color: colors
-          },
-          outOfRange: {
-            color: '#ddd'
-          },
-          seriesIndex: [6]
-        },
+        // visualMap: {
+        //   type: 'piecewise',
+        //   categories: sites,
+        //   orient: 'horizontal',
+        //   top: 'bottom',
+        //   left: 'center',
+        //   inRange: {
+        //     color: colors
+        //   },
+        //   outOfRange: {
+        //     color: '#ddd'
+        //   },
+        //   seriesIndex: [6]
+        // },
         toolbox:{
           show:true,
           feature:{
@@ -113,20 +116,25 @@ export default {
           symbolSize: 20
         });
       });
-      data.forEach((dataItem)=> {
+      data.forEach((dataItem, i)=> {
         that.option.series[dataItem[0]].data.push({
+          name: sites[i],
           value:[dataItem[1], dataItem[2]],
           itemStyle:{color:colors[dataItem[2]]}
         });
       });
-      that.option.legend =  {
-       x:'center',
-            show: true,
-            orient: 'horizontal',
-            top:'50%',
-            data: data
-      }
-      console.log(that.option)
+      means.forEach((cat, i)=>{
+        that.option.series[i].data.push({
+          name: 'Mean',
+          value:[cat],
+          itemStyle:{
+            color: 'black',
+            opacity: 100
+          },
+          symbol: "image://data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAgAAAAIAAgMAAACJFjxpAAAAA3NCSVQICAjb4U/gAAAACXBIWXMAAeHaAAHh2gFb9nS3AAAAGXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAAAAxQTFRF////AwEEAwEEAwEE0UKdTQAAAAN0Uk5TAIiY9/jN6wAAASRJREFUeNrtzjERADAIBLDf8O+wTloBbD2OKVGQ5Evd5mSTgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDAXOABprmsLPmK90AAAAAASUVORK5CYII="
+
+        })
+      })
     }
   },
   data () {
