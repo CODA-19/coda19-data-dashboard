@@ -7,7 +7,6 @@ import ECharts from 'vue-echarts';
 import 'echarts/lib/chart/scatter';
 import "echarts";
 
-var colors = ['lightblue','blue','lightgreen', 'green', 'black'];
 var data = [
   ['age', 'CHUM', 'MUHC', 'MUHQ', 'JGH'],
   ['0 to 4yrs', 6, 4, 5, 7, ],
@@ -21,6 +20,11 @@ export default {
   name: "BarChart",
   components: {
     'v-chart': ECharts
+  },
+  props:{
+    colors:{
+      type:Array
+    }
   },
   created(){
     this.prepOption()
@@ -46,7 +50,7 @@ export default {
         dataset: {
           source: data
         },
-        color: colors,
+        color: this.colors,
         xAxis: {type: 'category'},
         yAxis: {},
         series: [

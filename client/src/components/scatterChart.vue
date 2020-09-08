@@ -7,7 +7,6 @@ import ECharts from 'vue-echarts';
 import 'echarts/lib/chart/scatter';
 import "echarts";
 
-var colors = ['lightblue','blue','lightgreen', 'green', 'black'];
 var data = [
     [[8, 'CHUM', 8]],
     [[12, "MUHC", 12]],
@@ -19,6 +18,11 @@ var data = [
 export default {
   components: {
     'v-chart': ECharts
+  },
+  props:{
+    colors:{
+      type: Array
+    }
   },
   created(){
     this.setOption()
@@ -62,7 +66,7 @@ export default {
         this.option.series.push({
           name: siteData[0][1],
           data: siteData,
-          itemStyle:{color:colors[i]},
+          itemStyle:{color:this.colors[i]},
           type: 'scatter',
           symbolSize: 20
         })

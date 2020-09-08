@@ -19,7 +19,6 @@ var data = [
     [5,8,0], [5,12,1], [5,17,2],[5,15,3]
 ];
 var sites = ['CHUM', 'MUHC', 'CHUQ', 'JGH'];
-var colors = ['lightblue','blue','lightgreen', 'green'];
 var types = ['value', 'value', 'value', 'time', 'value', 'value'];
 var means = [537.5, 510, 20710, '2020-09-15', 60, 13];
 
@@ -29,6 +28,11 @@ export default {
   },
   created(){
     this.setOptions();
+  },
+  props:{
+    colors:{
+      type:Array
+    }
   },
   methods:{
     setOptions(){
@@ -53,20 +57,6 @@ export default {
         name:'Summary',
         nameLocation:'center',
         series: [],
-        // visualMap: {
-        //   type: 'piecewise',
-        //   categories: sites,
-        //   orient: 'horizontal',
-        //   top: 'bottom',
-        //   left: 'center',
-        //   inRange: {
-        //     color: colors
-        //   },
-        //   outOfRange: {
-        //     color: '#ddd'
-        //   },
-        //   seriesIndex: [6]
-        // },
         toolbox:{
           show:true,
           feature:{
@@ -117,7 +107,7 @@ export default {
         that.option.series[dataItem[0]].data.push({
           name: sites[i],
           value:[dataItem[1], dataItem[2]],
-          itemStyle:{color:colors[dataItem[2]]}
+          itemStyle:{color:that.colors[dataItem[2]]}
         });
       });
       means.forEach((cat, i)=>{

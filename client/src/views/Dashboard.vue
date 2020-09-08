@@ -6,10 +6,11 @@
         <h3>Summary</h3>
       </v-row>
       <v-row class="chartPanel">
-        <plotChart style="height: 40vh"></plotChart>
+        <plotChart style="height: 40vh" :colors="colors"></plotChart>
       </v-row>
-      <v-row>
+      <v-row style="flex-direction: column">
         <h3>Legend</h3>
+        <Legend :colors="colors" :sites="sites"></Legend>
       </v-row>
       <v-row>
 
@@ -23,10 +24,10 @@
         </v-row>
 
       <v-row class="chartPanel">
-        <scatterChart style="height: 40vh"></scatterChart>
+        <scatterChart style="height: 40vh" v-bind:colors="colors"></scatterChart>
       </v-row>
       <v-row class="chartPanel">
-        <BarChart style="height: 40vh"></BarChart>
+        <BarChart style="height: 40vh" v-bind:colors="colors"></BarChart>
       </v-row>
 
     </div>
@@ -40,10 +41,17 @@
 import PlotChart from "@/components/plotChart";
 import ScatterChart from "@/components/scatterChart";
 import BarChart from "@/components/barChart";
+import Legend from "@/components/legend";
 
 export default {
   name: "Dashboard",
-  components: {PlotChart, ScatterChart, BarChart}
+  components: {PlotChart, ScatterChart, BarChart, Legend},
+  data(){
+    return {
+      colors:['lightblue','blue','lightgreen', 'green', 'black'],
+      sites: ['CHUM', 'MUHC', 'MUHQ', 'JGH', 'Mean']
+    }
+  }
 }
 </script>
 
