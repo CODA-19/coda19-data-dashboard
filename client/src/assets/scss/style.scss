@@ -18,8 +18,16 @@ html, body{
 }
 
 .selectData{
-  width:60%;
+  width:100%;
   margin: 0 auto;
+}
+.connectedPanel{
+  text-align: left;
+  background-color: aliceblue;
+  border-radius: 12px;
+  padding: 22px;
+
+  ul{ margin-left:10px; }
 }
 .mainContainer{
   flex: 1;

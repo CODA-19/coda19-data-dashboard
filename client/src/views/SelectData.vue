@@ -1,7 +1,9 @@
 <template>
 <v-container class="mainContainer">
+ <h1>Select data</h1>
+  <div class="row">
+    <div class="col-lg-7 col-md-7">
     <div class="selectData">
-    <h1>Select data</h1>
           <b-form class="mx-5 my-3" @submit="onSubmit" @reset="onReset" >
             <b-form-group id="input-group-selectData"  >
               <b-form-input
@@ -26,6 +28,25 @@
             <b-button type="submit" pill block variant="success">Select</b-button>
           </b-form>
         </div>
+
+      </div>
+           <div class="col-lg-5 col-md-5">
+            <div class="connectedPanel">
+           <h3>Connected repositories</h3>
+           <hr/>
+           <ul>
+                <li>Centre Hospitalier de l'Universit&eacute; de Montr&eacute;al </li>
+                <li>H&ocirc;pital Maisonneuve-Rosemont  </li>
+                <li>H&ocirc;pital G&eacute;n&eacute;ral Juif </li>
+                <li>Centre Universitaire Sant&eacute; McGill </li>
+                <li>H&ocirc;pital Sacr&eacute;-C&oelig;ur de Montr&eacute;al</li>
+                <li>Centre Hospitalier Universitaire Sainte-Justine </li>
+                <li>Centre Hospitalier Universitaire de Qu&eacute;bec  </li>
+                <li>CISSS de Chaudi&egrave;re-Appalaches </li>
+           </ul>
+            </div>
+      </div>
+    </div>
      </v-container>
 </template>
 
