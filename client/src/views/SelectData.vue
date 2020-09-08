@@ -5,7 +5,7 @@
           <b-form class="mx-5 my-3" @submit="onSubmit" @reset="onReset" >
             <b-form-group id="input-group-selectData"  >
               <b-form-input
-                  id="input-selectData"
+                  id="input-selectData1"
                   v-model="form.id"
                   required
                   placeholder="Query"
@@ -13,7 +13,7 @@
             </b-form-group>
             <b-form-group id="input-group-selectData2">
               <b-form-input
-                  id="input-selectData"
+                  id="input-selectData2"
                   v-model="form.passwd"
                   type="password"
                   required
@@ -36,7 +36,7 @@ export default {
     return {
     selected: null,
         options: [
-          { value: null, text: 'Please select an variable' },
+          { value: null, text: 'Please select a variable' },
           { value: 'a', text: 'Length of stay' },
           { value: 'b', text: 'ICU' },
           { value: { C: 'CIUSS' }, text: 'Group' },
@@ -50,7 +50,7 @@ export default {
   },
   methods:{
     onSubmit() {
-
+        alert("Not connected");
     },
     onReset() {
 
