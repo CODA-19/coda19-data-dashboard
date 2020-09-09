@@ -2,10 +2,9 @@
   <div class="legendContainer">
   <ul id="ToggleController">
     <li v-for="(site, x) in sites" v-if="isCategoryToShow(x)" v-bind:key="x">
-      <label class="checkbox-button">
-        <input v-bind:value="x"  v-bind:id="colors[x]" type="checkbox" checked="checked" class="checkbox-button__input"/>
-        <span class="checkbox-button__control"></span>
-        <span class="checkbox-button__label">{{site}}</span>
+      <label class="siteItem">
+        <span class="siteIcon" v-bind:style="{background:colors[x]}"></span>
+        <span class="siteLabel">{{site}}</span>
       </label>
     </li>
   </ul>
