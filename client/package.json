@@ -13,10 +13,12 @@
     "d3": "^5.16.0",
     "echarts": "^4.9.0",
     "jquery": "^3.5.1",
+    "keycloak-js": "^11.0.2",
     "vue": "^2.6.11",
     "vue-echarts": "^5.0.0-beta.0",
     "vue-router": "^3.2.0",
     "vue-underscore": "^0.1.4",
+    "vuejs-logger": "^1.5.4",
     "vuetify": "^2.2.11"
   },
   "devDependencies": {
