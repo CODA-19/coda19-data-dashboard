@@ -19,40 +19,8 @@
       </b-navbar-nav>
 
       <b-navbar-nav>
-<!--        <b-nav-item href="" class="btn btn-default btn-rounded" data-toggle="modal" data-target="#modalLoginForm">Access Data</b-nav-item>-->
-        <b-button variant="info" v-b-modal.modal-center>Access Data</b-button>
-
-        <b-modal id="modal-center" centered title="Sign in" hide-footer>
-          <b-form class="mx-5 my-3" @submit="onSubmit" @reset="onReset" >
-            <b-form-group id="input-group-1"  >
-              <b-form-input
-                  id="input-1"
-                  v-model="form.id"
-                  required
-                  placeholder="user ID"
-              ></b-form-input>
-            </b-form-group>
-
-            <b-form-group id="input-group-2">
-<!--                description="We'll never share your email with anyone else."-->
-
-              <b-form-input
-                  id="input-2"
-                  v-model="form.passwd"
-                  type="password"
-                  required
-                  placeholder="password"
-              ></b-form-input>
-            </b-form-group>
-
-
-            <b-button type="submit" pill block variant="success">Login</b-button>
-          </b-form>
-<!--          <b-card class="mt-3" header="Form Data Result">-->
-<!--            <pre class="m-0">{{ form }}</pre>-->
-<!--          </b-card>-->
-        </b-modal>
-
+      <!--        <b-nav-item href="" class="btn btn-default btn-rounded" data-toggle="modal" data-target="#modalLoginForm">Access Data</b-nav-item>-->
+      <b-button variant="info" @click="keycloak.logout()">Logout</b-button>
       </b-navbar-nav>
     </b-collapse>
   </b-navbar>
@@ -63,6 +31,7 @@ import $ from "jquery"
 
 export default {
   name: "AppHeader",
+  props: ['keycloak'],
   data(){
     return {
       form: {
@@ -72,12 +41,7 @@ export default {
     };
   },
   methods:{
-    onSubmit() {
 
-    },
-    onReset() {
-
-    }
   }
 }
 

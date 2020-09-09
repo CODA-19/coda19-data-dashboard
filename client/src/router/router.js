@@ -13,7 +13,7 @@ import Dashboard from "@/views/Dashboard"
     name: 'Home',
     components: {
       header:AppHeader,
-      default: Home,
+      default: Dashboard,
       footer: Footer
     },
     meta: {
@@ -45,15 +45,15 @@ import Dashboard from "@/views/Dashboard"
     }
   },
     {
-      path: '/dashboard',
-      name: 'Dashboard',
+      path: '/forest',
+      name: 'Forest',
       components: {
         header:AppHeader,
-        default: Dashboard,
+        default: Home,
         footer: Footer
       },
       meta: {
-        title: "CODA 19 - Dashboard"
+        title: "CODA 19 - Forest"
       }
     }
 ]
