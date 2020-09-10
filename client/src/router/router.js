@@ -13,7 +13,7 @@ import Dashboard from "@/views/Dashboard"
     name: 'Home',
     components: {
       header:AppHeader,
-      default: Dashboard,
+      default: Home,
       footer: Footer
     },
     meta: {

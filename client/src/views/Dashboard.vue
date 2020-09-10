@@ -1,4 +1,8 @@
 <template>
+  <div>
+    <v-row id="backBtn">
+      <b-button variant="outline-dark"><b-icon icon="arrow-left-circle" aria-hidden="true"></b-icon><a  @click="newSearch"> New Search</a></b-button>
+    </v-row>
   <v-container class="mainContainer">
     <v-row>
     <div class="col-lg-6 col-md-12 col-sm-12">
@@ -6,7 +10,7 @@
         <h3>Summary</h3>
       </v-row>
       <v-row class="chartPanel">
-        <plotChart style="height: 40vh" :colors="colors"></plotChart>
+        <plotChart style="height: 40vh" :colors="colors" :sites="sites"></plotChart>
       </v-row>
       <v-row style="flex-direction: column">
         <h3>Legend</h3>
@@ -34,6 +38,7 @@
     </v-row>
 
   </v-container>
+  </div>
 
 </template>
 
@@ -42,10 +47,16 @@ import PlotChart from "@/components/plotChart";
 import ScatterChart from "@/components/scatterChart";
 import BarChart from "@/components/barChart";
 import Legend from "@/components/legend";
+import { bus } from "@/main";
 
 export default {
   name: "Dashboard",
   components: {PlotChart, ScatterChart, BarChart, Legend},
+  methods:{
+    newSearch() {
+      bus.$emit('newSearch')
+    }
+  },
   data(){
     return {
       colors:['lightblue','blue','lightgreen', 'green', 'black'],

@@ -28,7 +28,7 @@
             <b-form-group id="input-group-selectData4">
               Days of selection from now <vue-slider v-model="value" :enable-cross="false"></vue-slider>
             </b-form-group>
-            <b-button type="submit" pill block variant="success">Select</b-button>
+            <b-button type="submit" pill block variant="success" @click="onSubmit">Select</b-button>
           </b-form>
         </div>
 
@@ -56,6 +56,7 @@
 <script>
 import VueSlider from 'vue-slider-component'
 import 'vue-slider-component/theme/default.css'
+import { bus } from "@/main"
 
 export default {
   name: "AppHeader",
@@ -81,7 +82,8 @@ export default {
   },
   methods:{
     onSubmit() {
-        alert("Not connected");
+      //TODO: Send request to server
+        bus.$emit('showDashboard')
     },
     onReset() {
 

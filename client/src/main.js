@@ -62,6 +62,8 @@ Vue.config.productionTip = false
 //   Vue.$log.error("Authenticated Failed");
 // });
 
+export const bus = new Vue();
+
 new Vue({
   router,
   vuetify,

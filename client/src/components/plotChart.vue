@@ -18,7 +18,6 @@ var data = [
     [4,57,0], [4,54,1], [4,65,2],[4,64,3],
     [5,8,0], [5,12,1], [5,17,2],[5,15,3]
 ];
-var sites = ['CHUM', 'MUHC', 'CHUQ', 'JGH'];
 var types = ['value', 'value', 'value', 'time', 'value', 'value'];
 var means = [537.5, 510, 20710, '2020-09-15', 60, 13];
 
@@ -32,6 +31,9 @@ export default {
   props:{
     colors:{
       type:Array
+    },
+    sites:{
+      type: Array
     }
   },
   methods:{
@@ -43,7 +45,7 @@ export default {
           formatter: function (params) {
             if(params.value.length === 1)
               return 'Mean: '+params.value[0] ;
-            else return sites[params.value[1]]+': '+params.value[0]
+            else return that.sites[params.value[1]]+': '+params.value[0]
           }
         },
         title: [{
@@ -105,7 +107,7 @@ export default {
       });
       data.forEach((dataItem, i)=> {
         that.option.series[dataItem[0]].data.push({
-          name: sites[i],
+          name: that.sites[i],
           value:[dataItem[1], dataItem[2]],
           itemStyle:{color:that.colors[dataItem[2]]}
         });
