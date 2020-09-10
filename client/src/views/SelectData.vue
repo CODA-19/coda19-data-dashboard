@@ -25,6 +25,9 @@
              <b-form-group id="input-group-selectData3">
                   <b-form-select v-model="selected" :options="options"  ></b-form-select>
             </b-form-group>
+            <b-form-group id="input-group-selectData4">
+              Days of selection from now <vue-slider v-model="value" :enable-cross="false"></vue-slider>
+            </b-form-group>
             <b-button type="submit" pill block variant="success">Select</b-button>
           </b-form>
         </div>
@@ -51,10 +54,14 @@
 </template>
 
 <script>
+import VueSlider from 'vue-slider-component'
+import 'vue-slider-component/theme/default.css'
+
 export default {
   name: "AppHeader",
   data(){
     return {
+    value: [0, 30],
     selected: null,
         options: [
           { value: null, text: 'Please select a variable' },
@@ -68,6 +75,9 @@ export default {
         passwd:null
       }
     };
+  },
+  components: {
+    VueSlider
   },
   methods:{
     onSubmit() {
