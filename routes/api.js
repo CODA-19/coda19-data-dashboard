@@ -61,6 +61,23 @@ exec("Rscript ./scripts/meta.R -la", (error, stdout, stderr) => {
   
 })
 
+let length_of_stay_data = [
+  [[8, 'CHUM']],
+  [[12, "MUHC"]],
+  [[17,  'MUHQ']],
+  [[15, 'JGH']],
+  [[13, 'Mean']]
+],
+
+  age_data = [
+    ['age', 'CHUM', 'MUHC', 'MUHQ', 'JGH'],
+    ['0 to 4yrs', 6, 4, 5, 7, ],
+    ['5 to 19 yrs', 5, 7, 6, 7],
+    ['20 to 49 yrs', 15, 14, 13, 16],
+    ['50 to 64 yrs', 26, 28, 25, 23],
+    ['65 and up', 34, 29, 31, 36]
+  ];
+
 let summaryRaw = {
   'Number_tested':{
     type: 'value',
@@ -141,13 +158,25 @@ let summaryRaw = {
 
 //test
 router.post('/summary', (req, res, next)=>{
-  res.json({
-    'categories': categories,
-    'data': summaryData,
-    'types': types,
-    'ranges': ranges,
-    'means' : means
-  })
+  var response = {
+    summary:{
+      'categories': categories,
+      'data': summaryData,
+      'types': types,
+      'ranges': ranges,
+      'means' : means
+    }
+  };
+  let request = req.body;
+  if(request.variables){
+    if(request.variables.indexOf('length_of_stay') >= 0 ){
+      response.length_of_stay = length_of_stay_data;
+    }
+    if(request.variables.indexOf('age_groups') >= 0 ){
+      response.age_groups = age_data
+    }
+  }
+  res.json(response);
 })
 
 module.exports = router

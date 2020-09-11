@@ -28,10 +28,10 @@
         </v-row>
 
       <v-row class="chartPanel">
-        <scatterChart style="height: 40vh" v-bind:colors="colors"></scatterChart>
+        <scatterChart style="height: 40vh" v-bind:colors="colors"  v-if="lengthOfStay" v-bind:data="lengthOfStay"></scatterChart>
       </v-row>
       <v-row class="chartPanel">
-        <BarChart style="height: 40vh" v-bind:colors="colors"></BarChart>
+        <BarChart style="height: 40vh" v-bind:colors="colors" v-if="ageGroups" v-bind:data="ageGroups"></BarChart>
       </v-row>
 
     </div>
@@ -55,6 +55,12 @@ export default {
   props:{
     summary: {
       type: Object
+    },
+    lengthOfStay:{
+      type: Array
+    },
+    ageGroups:{
+      type: Array
     }
   },
   methods:{

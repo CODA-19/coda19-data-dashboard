@@ -8,22 +8,21 @@
             <b-form-group id="input-group-selectData"  >
               <b-form-input
                   id="input-selectData1"
-                  v-model="form.id"
-                  required
+                  v-model="form.query"
+
                   placeholder="Query"
               ></b-form-input>
             </b-form-group>
             <b-form-group id="input-group-selectData2">
               <b-form-input
                   id="input-selectData2"
-                  v-model="form.passwd"
-                  type="password"
-                  required
+                  v-model="form.type"
+
                   placeholder="Type"
               ></b-form-input>
             </b-form-group>
              <b-form-group id="input-group-selectData3">
-                  <b-form-select v-model="selected" :options="options"  ></b-form-select>
+                  <b-form-select v-model="form.variables" :options="options"  multiple :select-size="5" ></b-form-select>
             </b-form-group>
             <b-form-group id="input-group-selectData4">
               Days of selection from now <vue-slider v-model="value" :enable-cross="false"></vue-slider>
@@ -66,14 +65,15 @@ export default {
     selected: null,
         options: [
           { value: null, text: 'Please select a variable' },
-          { value: 'a', text: 'Length of stay' },
-          { value: 'b', text: 'ICU' },
-          { value: { C: 'CIUSS' }, text: 'Group' },
-          { value: 'd', text: 'Age group', disabled: true }
+          { value: 'length_of_stay', text: 'Length of stay' },
+          { value: 'icu', text: 'ICU' , disabled: true },
+          { value: { C: 'CIUSS' }, text: 'Group' , disabled: true },
+          { value: 'age_groups', text: 'Age groups'}
         ],
       form: {
-        id:null,
-        passwd:null
+        query:null,
+        type:null,
+        variables: []
       }
     };
   },
@@ -84,9 +84,12 @@ export default {
     onSubmit() {
       //TODO: Send request to server
       this.$http.post('http://localhost:3000/api/summary',{
+        query: this.form.query,
+        type: this.form.type,
+        variables: this.form.variables
       })
           .then(response => response.data)
-          .then(data => {console.log(data);bus.$emit('showDashboard', data)})
+          .then(data => {bus.$emit('showDashboard', data)})
 
     },
     onReset() {

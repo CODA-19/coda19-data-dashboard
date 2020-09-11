@@ -7,13 +7,13 @@ import ECharts from 'vue-echarts';
 import 'echarts/lib/chart/scatter';
 import "echarts";
 
-var data = [
-    [[8, 'CHUM']],
-    [[12, "MUHC"]],
-    [[17,  'MUHQ']],
-    [[15, 'JGH']],
-    [[13, 'Mean']]
-];
+// var data = [
+//     [[8, 'CHUM']],
+//     [[12, "MUHC"]],
+//     [[17,  'MUHQ']],
+//     [[15, 'JGH']],
+//     [[13, 'Mean']]
+// ];
 
 export default {
   components: {
@@ -21,6 +21,9 @@ export default {
   },
   props:{
     colors:{
+      type: Array
+    },
+    data:{
       type: Array
     }
   },
@@ -61,8 +64,7 @@ export default {
         },
         series: []
       };
-
-      data.forEach((siteData,i)=>{
+      this.data.forEach((siteData,i)=>{
         this.option.series.push({
           name: siteData[0][1],
           data: siteData,

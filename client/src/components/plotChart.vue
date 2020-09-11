@@ -95,7 +95,6 @@ export default {
           symbolSize: 20
         });
       });
-      console.log(data.data);
       data.data.forEach((dataItems, i)=> {
         dataItems.forEach((dataItem, j)=>{
           that.option.series[i].data.push({
@@ -105,7 +104,6 @@ export default {
           });
         })
       });
-      console.log(that.option);
       data.means.forEach((cat, i)=>{
         that.option.series[i].data.push({
           name: 'Mean',

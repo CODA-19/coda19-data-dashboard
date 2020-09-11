@@ -4,7 +4,7 @@
 <!--      <Forest title="CODA-19"/>-->
 <!--    </v-container>-->
   <keep-alive>
-    <component v-bind:is="component" v-bind:summary="summary"/>
+    <component v-bind:is="component" v-bind:summary="summary" v-bind:lengthOfStay="length_of_stay" v-bind:ageGroups="age_groups"/>
   </keep-alive>
 
 </template>
@@ -28,7 +28,9 @@ export default {
   },
   created(){
     bus.$on("showDashboard", (data)=>{
-      this.summary = data;//{data:data.data, types: data.types, ranges: data.ranges, means: data.means};
+      this.summary = data.summary;//{data:data.data, types: data.types, ranges: data.ranges, means: data.means};
+      this.length_of_stay = data.length_of_stay;
+      this.age_groups = data.age_groups;
       this.component = "Dashboard"
     });
     bus.$on("newSearch", ()=>{
@@ -38,7 +40,9 @@ export default {
   data() {
     return {
       component: 'SelectData',
-      summary: {}
+      summary: {},
+      length_of_stay: [],
+      age_groups: []
     }
   }
 }
