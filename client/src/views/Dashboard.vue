@@ -1,9 +1,9 @@
 <template>
-  <div>
+  <div class="mainContainer">
     <v-row id="backBtn">
-      <b-button variant="outline-dark"><b-icon icon="arrow-left-circle" aria-hidden="true"></b-icon><a  @click="newSearch"> New Search</a></b-button>
+      <a @click="newSearch"><b-button variant="outline-dark"><b-icon icon="arrow-left-circle" aria-hidden="true"></b-icon>   New Search</b-button></a>
     </v-row>
-  <v-container class="mainContainer">
+  <v-container >
     <v-row>
     <div class="col-lg-6 col-md-12 col-sm-12">
       <v-row>
