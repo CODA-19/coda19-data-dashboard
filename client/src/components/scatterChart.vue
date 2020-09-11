@@ -8,11 +8,11 @@ import 'echarts/lib/chart/scatter';
 import "echarts";
 
 var data = [
-    [[8, 'CHUM', 8]],
-    [[12, "MUHC", 12]],
-    [[17,  'MUHQ', 17]],
-    [[15, 'JGH', 15]],
-    [[13, 'Mean', 13]]
+    [[8, 'CHUM']],
+    [[12, "MUHC"]],
+    [[17,  'MUHQ']],
+    [[15, 'JGH']],
+    [[13, 'Mean']]
 ];
 
 export default {

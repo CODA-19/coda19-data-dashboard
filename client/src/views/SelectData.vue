@@ -83,7 +83,11 @@ export default {
   methods:{
     onSubmit() {
       //TODO: Send request to server
-        bus.$emit('showDashboard')
+      this.$http.post('http://localhost:3000/api/summary',{
+      })
+          .then(response => response.data)
+          .then(data => {console.log(data);bus.$emit('showDashboard', data)})
+
     },
     onReset() {
 

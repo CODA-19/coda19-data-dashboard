@@ -23,6 +23,7 @@ Vue.use(underscore)
 
 Vue.config.productionTip = false
 
+//prep for Keycloak
 // let initOptions = {
 //   url: 'http://127.0.0.1:8080/auth', realm: 'keycloak-demo', clientId: 'app-vue', onLoad: 'login-required'
 // }

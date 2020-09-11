@@ -4,7 +4,7 @@
 <!--      <Forest title="CODA-19"/>-->
 <!--    </v-container>-->
   <keep-alive>
-    <component v-bind:is="component" />
+    <component v-bind:is="component" v-bind:summary="summary"/>
   </keep-alive>
 
 </template>
@@ -23,8 +23,12 @@ export default {
     SelectData,
     Forest
   },
+  props:{
+
+  },
   created(){
-    bus.$on("showDashboard", ()=>{
+    bus.$on("showDashboard", (data)=>{
+      this.summary = data;//{data:data.data, types: data.types, ranges: data.ranges, means: data.means};
       this.component = "Dashboard"
     });
     bus.$on("newSearch", ()=>{
@@ -33,7 +37,8 @@ export default {
   },
   data() {
     return {
-      component: 'SelectData'
+      component: 'SelectData',
+      summary: {}
     }
   }
 }

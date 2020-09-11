@@ -4,7 +4,7 @@ import AppHeader from '@/components/AppHeader'
 import Footer from '@/components/Footer'
 import About from '@/views/About'
 import SelectData from '@/views/SelectData'
-import Dashboard from "@/views/Dashboard"
+import Forest from "@/components/Forest"
 
 
   const routes = [
@@ -49,7 +49,7 @@ import Dashboard from "@/views/Dashboard"
       name: 'Forest',
       components: {
         header:AppHeader,
-        default: Home,
+        default: Forest,
         footer: Footer
       },
       meta: {

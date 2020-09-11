@@ -10,7 +10,7 @@
         <h3>Summary</h3>
       </v-row>
       <v-row class="chartPanel">
-        <plotChart style="height: 40vh" :colors="colors" :sites="sites"></plotChart>
+        <plotChart style="height: 40vh" :colors="colors" :sites="sites" :data="summary" ></plotChart>
       </v-row>
       <v-row style="flex-direction: column">
         <h3>Legend</h3>
@@ -52,6 +52,11 @@ import { bus } from "@/main";
 export default {
   name: "Dashboard",
   components: {PlotChart, ScatterChart, BarChart, Legend},
+  props:{
+    summary: {
+      type: Object
+    }
+  },
   methods:{
     newSearch() {
       bus.$emit('newSearch')
