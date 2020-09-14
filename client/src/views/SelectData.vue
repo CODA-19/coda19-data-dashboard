@@ -22,10 +22,12 @@
               ></b-form-input>
             </b-form-group>
              <b-form-group id="input-group-selectData3">
+                   <p>Please select a variable</p>
                   <b-form-select v-model="form.variables" :options="options"  multiple :select-size="5" ></b-form-select>
             </b-form-group>
             <b-form-group id="input-group-selectData4">
-              Days of selection from now <vue-slider v-model="value" :enable-cross="false"></vue-slider>
+              <p>Days of selection from now </p>
+              <vue-slider v-model="value" :enable-cross="false"></vue-slider>
             </b-form-group>
             <b-button type="submit" pill block variant="success" @click="onSubmit">Select</b-button>
           </b-form>
@@ -64,9 +66,8 @@ export default {
     value: [0, 30],
     selected: null,
         options: [
-          { value: null, text: 'Please select a variable' },
           { value: 'length_of_stay', text: 'Length of stay' },
-          { value: 'icu', text: 'ICU' , disabled: true },
+          { value: 'icu', text: 'ICU'   },
           { value: { C: 'CIUSS' }, text: 'Group' , disabled: true },
           { value: 'age_groups', text: 'Age groups'}
         ],
