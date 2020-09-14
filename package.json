@@ -13,6 +13,11 @@
     "http-errors": "~1.6.3",
     "jade": "~1.11.0",
     "morgan": "~1.9.1",
-    "r-script": "0.0.4"
+    "r-script": "0.0.4",
+    "underscore": "^1.11.0"
+  },
+  "devDependencies": {
+    "cors": "^2.8.5",
+    "jsonwebtoken": "^8.5.1"
   }
 }
