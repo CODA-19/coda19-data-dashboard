@@ -23,7 +23,7 @@
             </b-form-group>
              <b-form-group id="input-group-selectData3">
                    <p>Please select a variable</p>
-                  <b-form-select v-model="form.variables" :options="options"  multiple :select-size="5" ></b-form-select>
+                  <b-form-select v-model="form.variables" :options="options"  multiple :select-size="4" ></b-form-select>
             </b-form-group>
             <b-form-group id="input-group-selectData4">
               <p>Days of selection from now </p>
@@ -59,15 +59,8 @@
             <div class="connectedPanel">
            <h3>Connected repositories</h3>
            <hr/>
-           <ul>
-                <li>Centre Hospitalier de l'Universit&eacute; de Montr&eacute;al </li>
-                <li>H&ocirc;pital Maisonneuve-Rosemont  </li>
-                <li>H&ocirc;pital G&eacute;n&eacute;ral Juif </li>
-                <li>Centre Universitaire Sant&eacute; McGill </li>
-                <li>H&ocirc;pital Sacr&eacute;-C&oelig;ur de Montr&eacute;al</li>
-                <li>Centre Hospitalier Universitaire Sainte-Justine </li>
-                <li>Centre Hospitalier Universitaire de Qu&eacute;bec  </li>
-                <li>CISSS de Chaudi&egrave;re-Appalaches </li>
+           <ul v-for="place in places">
+                <li>{{place}}</li>
            </ul>
             </div>
       </div>
@@ -84,6 +77,7 @@ export default {
   name: "AppHeader",
   data(){
     return {
+    places: ["Centre Hospitalier de l'Université; de Montréal", "Hôpital Maisonneuve-Rosemont","Hôpital Général Juif", "Centre Universitaire Santé McGill", "Hôpital Sacré-Coueur de Montréal", "Centre Hospitalier Universitaire Sainte-Justine","Centre Hospitalier Universitaire de Québec", "CISSS de Chaudière-Appalaches"],
     value: [0, 30],
     selected: null,
         options: [
