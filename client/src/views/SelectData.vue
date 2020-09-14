@@ -29,6 +29,27 @@
               <p>Days of selection from now </p>
               <vue-slider v-model="value" :enable-cross="false"></vue-slider>
             </b-form-group>
+            <b-form-group>
+
+              <b>Select hospitals to include:</b><br>
+              <b-form-checkbox
+                  v-model="allSelected"
+                  :indeterminate="indeterminate"
+                  aria-describedby="sitesOptions"
+                  aria-controls="sitesOptions"
+                  @change="toggleAll"
+              >
+                {{ allSelected ? 'Un-select All' : 'Select All' }}
+              </b-form-checkbox>
+
+              <b-form-checkbox-group
+                  id="site_checkbox_group"
+                  v-model="sites"
+                  :options="sitesOptions"
+                  name="flavour-1"
+                  stacked
+              ></b-form-checkbox-group>
+            </b-form-group>
             <b-button type="submit" pill block variant="success" @click="onSubmit">Select</b-button>
           </b-form>
         </div>
@@ -71,11 +92,25 @@ export default {
           { value: { C: 'CIUSS' }, text: 'Group' , disabled: true },
           { value: 'age_groups', text: 'Age groups'}
         ],
+      sitesOptions:[
+        {text:'Centre Hospitalier de l\'Université de Montréal', value:'CHUM'},
+        {text:'Hôpital Général Juif', value:'HGJ'},
+        {text:'Centre Universitaire Santé McGill', value:"MUHC"},
+        {text:'Hôpital Maisonneuve-Rosemont', value: 'HMR'},
+        {text:'Hôpital Sacré-Cœur de Montréal', value:'HSCM'},
+        {text:'Centre Hospitalier Universitaire de Québec', value: 'CHUQ'},
+        {text:'Centre Hospitalier Universitaire Sainte-Justine', value:'CHUSJ'},
+        {text:'CISSS de Chaudière-Appalaches', value:'CISSS-CA'},
+        {text:'The Ottawa Hospital', value:'OttawaHospital'}
+      ],
+      allSelected: false,
+      indeterminate: false,
       form: {
         query:null,
         type:null,
-        variables: []
-      }
+        variables: [],
+      },
+      sites: []
     };
   },
   components: {
@@ -85,6 +120,7 @@ export default {
     onSubmit() {
       //TODO: Send request to server
       this.$http.post('http://localhost:3000/api/summary',{
+        sites: this.sites,
         query: this.form.query,
         type: this.form.type,
         variables: this.form.variables
@@ -95,6 +131,23 @@ export default {
     },
     onReset() {
 
+    },
+    toggleAll(checked) {
+      this.sites = checked ? this.sitesOptions.map(option=>{return option.value}).slice() : []
+    }
+  },
+  watch: {
+    sites(newVal, oldVal) {
+      if (newVal.length === 0) {
+        this.indeterminate = false
+        this.allSelected = false
+      } else if (newVal.length === this.sitesOptions.length) {
+        this.indeterminate = false
+        this.allSelected = true
+      } else {
+        this.indeterminate = true
+        this.allSelected = false
+      }
     }
   }
 }
