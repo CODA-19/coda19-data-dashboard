@@ -1,0 +1,86 @@
+{
+  "length_of_stay":{
+    "data": {
+      "CHUM": 24,
+      "HGJ": 22,
+      "MUHC": 23,
+      "HMR": 13,
+      "HSCM": 19,
+      "CHUQ": 17,
+      "CHUSJ": 15,
+      "CISSS-CA": 7,
+      "OttawaHospital": 19
+    },
+    "type": "value"
+  },
+  "tested": {
+    "data": {
+    "CHUM": 495,
+    "HGJ": 877,
+    "MUHC": 362,
+    "HMR": 504,
+    "HSCM": 594,
+    "CHUQ": 733,
+    "CHUSJ": 978,
+    "CISSS-CA": 1034,
+    "OttawaHospital": 572
+    },
+    "type": "value"
+  },
+  "positive": {
+    "data": {
+      "CHUM": 411,
+    "HGJ": 254,
+    "MUHC": 377,
+    "HMR": 301,
+    "HSCM": 380,
+    "CHUQ": 815,
+    "CHUSJ": 577,
+    "CISSS-CA": 814,
+    "OttawaHospital": 784
+    },
+    "type": "value"
+  },
+"admitted":{
+  "data": {
+    "CHUM": 33183,
+    "HGJ": 32257,
+    "MUHC": 36691,
+    "HMR": 39579,
+    "HSCM": 18070,
+    "CHUQ": 25495,
+    "CHUSJ": 36024,
+    "CISSS-CA": 31910,
+    "OttawaHospital": 33062
+  },
+  "type": "value"
+  },
+"admission_date":{
+  "data": {
+    "CHUM": "2020-10-03",
+    "HGJ": "2020-08-25",
+    "MUHC": "2020-09-02",
+    "HMR": "2020-10-22",
+    "HSCM": "2020-10-21",
+    "CHUQ": "2020-10-01",
+    "CHUSJ": "2020-09-10",
+    "CISSS-CA": "2020-10-17",
+    "OttawaHospital": "2020-09-14"
+  },
+  "type": "time"
+  },
+  "mean_age":{
+    "data": {
+      "CHUM": 51,
+      "HGJ": 57,
+      "MUHC": 67,
+      "HMR": 50,
+      "HSCM": 57,
+      "CHUQ": 61,
+      "CHUSJ": 61,
+      "CISSS-CA": 65,
+      "OttawaHospital": 66
+    },
+    "type": "value"
+  }
+  }

@@ -46,7 +46,7 @@
                   id="site_checkbox_group"
                   v-model="sites"
                   :options="sitesOptions"
-                  name="flavour-1"
+                  name="site"
                   stacked
               ></b-form-checkbox-group>
             </b-form-group>

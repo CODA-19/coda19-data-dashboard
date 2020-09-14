@@ -56,6 +56,9 @@ export default {
     summary: {
       type: Object
     },
+    sites:{
+      type: Array
+    },
     lengthOfStay:{
       type: Array
     },
@@ -70,8 +73,10 @@ export default {
   },
   data(){
     return {
-      colors:['lightblue','blue','lightgreen', 'green', 'black'],
-      sites: ['CHUM', 'MUHC', 'MUHQ', 'JGH', 'Mean']
+      colors:[
+        '#C25C5C','#EEAA7C','#DCD2A2','#4C625C','#2F2D3D',
+        '#409469','#D0E346','#909773', '#840B3B', '#000000'
+      ]
     }
   }
 }
