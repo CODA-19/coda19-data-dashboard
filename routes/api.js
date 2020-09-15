@@ -187,7 +187,6 @@ router.post('/summary', (req, res, next)=>{
         return (parseInt(cat[1])+parseInt(cat[0]))/2
       })
 
-
     var response = {
       summary:{
         'categories': categories,
@@ -199,17 +198,21 @@ router.post('/summary', (req, res, next)=>{
       }
     };
 
+    if(request.variables){
+      if(request.variables.indexOf('length_of_stay') >= 0 ){
+        let idx = categories.indexOf('length_of_stay');
+        let length_of_stay = _.map(summaryData[idx], elm=>{return [elm];});
+        length_of_stay.push([[means[idx], "Mean"]]);
+        response.length_of_stay = length_of_stay;
+      }
+      // if(request.variables.indexOf('age_groups') >= 0 ){
+      //   response.age_groups = age_data
+      // }
+    }
+
     res.json(response);
   })
 
-  // if(request.variables){
-  //   if(request.variables.indexOf('length_of_stay') >= 0 ){
-  //     response.length_of_stay = length_of_stay_data;
-  //   }
-  //   if(request.variables.indexOf('age_groups') >= 0 ){
-  //     response.age_groups = age_data
-  //   }
-  // }
 
 })
 

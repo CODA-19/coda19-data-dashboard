@@ -92,7 +92,8 @@ export default {
           coordinateSystem: 'singleAxis',
           type: 'scatter',
           data: [],
-          symbolSize: 20
+          symbolSize: 20,
+          opacity: 50
         });
       });
       data.data.forEach((dataItems, i)=> {
