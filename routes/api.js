@@ -209,9 +209,14 @@ router.post('/summary', (req, res, next)=>{
         response.length_of_stay = length_of_stay;
       }
       if(request.variables.indexOf('age_groups') >= 0 ){
-        // response.age_groups = age_data
-        let header = ['age'].concat(Object.keys(age_group[Object.keys(age_group)[0]])),
-          body = _.map(age_group, (v,k)=>{return _.flatten([k,Object.values(v)]) });
+        let header = ['age'].concat(
+          _.filter(Object.keys(age_group[Object.keys(age_group)[0]]), site=>{return sites.indexOf(site) > -1 })
+          ),
+          body = _.map(age_group, (v,k)=>{return _.flatten([k,Object.values(
+            _.filter(v, (va,ke)=>{
+              return sites.indexOf(ke) > -1
+            })
+          )]) });
 
         response.age_groups = [header].concat(body);
       }
