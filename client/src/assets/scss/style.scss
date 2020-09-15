@@ -28,6 +28,8 @@ html, body{
   padding: 22px;
 
   ul{ margin-left:10px; }
+  li { padding-left:5px; }
+  li.ok{ list-style-type: "\02713"; }
 }
 .mainContainer{
   flex: 1;

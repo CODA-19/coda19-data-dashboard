@@ -60,7 +60,7 @@
            <h3>Connected repositories</h3>
            <hr/>
            <ul v-for="place in places">
-                <li>{{place}}</li>
+                <li class="ok">{{place}}</li>
            </ul>
             </div>
       </div>
@@ -78,6 +78,7 @@ export default {
   data(){
     return {
     places: ["Centre Hospitalier de l'Université; de Montréal", "Hôpital Maisonneuve-Rosemont","Hôpital Général Juif", "Centre Universitaire Santé McGill", "Hôpital Sacré-Coueur de Montréal", "Centre Hospitalier Universitaire Sainte-Justine","Centre Hospitalier Universitaire de Québec", "CISSS de Chaudière-Appalaches"],
+
     value: [0, 30],
     selected: null,
         options: [
