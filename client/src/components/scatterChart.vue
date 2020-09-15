@@ -68,7 +68,7 @@ export default {
         this.option.series.push({
           name: siteData[0][1],
           data: siteData,
-          itemStyle:{color:this.colors[i]},
+          itemStyle:{color:siteData[0][1]==="Mean"?"black":this.colors[i]},
           type: 'scatter',
           symbolSize: 20
         })
