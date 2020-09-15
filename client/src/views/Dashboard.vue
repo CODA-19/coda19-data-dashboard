@@ -14,7 +14,7 @@
       </v-row>
       <v-row style="flex-direction: column">
         <h3>Legend</h3>
-        <Legend :colors="colors" :sites="sites"></Legend>
+        <Legend :colors="legendColors" :sites="legendSites"></Legend>
       </v-row>
       <v-row>
 
@@ -49,6 +49,11 @@ import BarChart from "@/components/barChart";
 import Legend from "@/components/legend";
 import { bus } from "@/main";
 
+let colors = [
+  '#C25C5C','#EEAA7C','#DCD2A2','#4C625C','#2F2D3D',
+  '#409469','#D0E346','#909773', '#840B3B'
+];
+
 export default {
   name: "Dashboard",
   components: {PlotChart, ScatterChart, BarChart, Legend},
@@ -66,17 +71,28 @@ export default {
       type: Array
     }
   },
+  created(){
+    this.getLegendColor();
+    this.getLegendSites();
+  },
   methods:{
     newSearch() {
       bus.$emit('newSearch')
+    },
+    getLegendColor(){
+      this.legendColors = colors.slice(0, this.sites.length);
+      this.legendColors.push('black')
+    },
+    getLegendSites(){
+      this.legendSites = this.sites;
+      this.legendSites.push('Mean');
     }
   },
   data(){
     return {
-      colors:[
-        '#C25C5C','#EEAA7C','#DCD2A2','#4C625C','#2F2D3D',
-        '#409469','#D0E346','#909773', '#840B3B', '#000000'
-      ]
+      colors: colors,
+      legendColors: this.legendColors,
+      legendSites: this.legendSites
     }
   }
 }

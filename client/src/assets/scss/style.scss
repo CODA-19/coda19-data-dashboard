@@ -68,10 +68,13 @@ html, body{
 }
 
 .legendContainer{
-  margin: 30px auto;
+  margin: 30px;
   text-align: left;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
 }
-#ToggleController{
+.ToggleController{
   list-style: none;
   font-size: 16px;
 

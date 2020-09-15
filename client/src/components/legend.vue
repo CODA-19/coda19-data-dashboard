@@ -1,13 +1,28 @@
 <template>
   <div class="legendContainer">
-  <ul id="ToggleController">
-    <li v-for="(site, x) in sites" v-if="isCategoryToShow(x)" v-bind:key="x">
-      <label class="siteItem">
-        <span class="siteIcon" v-bind:style="{background:colors[x]}"></span>
-        <span class="siteLabel">{{site}}</span>
-      </label>
-    </li>
-  </ul>
+
+      <div>
+        <ul class="ToggleController">
+          <li v-for="(site, x) in sites.slice(0,5)" >
+            <label class="siteItem">
+              <span class="siteIcon" v-bind:style="{background:colors[x]}"></span>
+              <span class="siteLabel">{{site}}</span>
+            </label>
+          </li>
+        </ul>
+      </div>
+
+      <div v-if="tooManySites()">
+        <ul class="ToggleController">
+          <li v-for="(site, x) in sites.slice(5,10)">
+            <label class="siteItem">
+              <span class="siteIcon" v-bind:style="{background:colors.slice(5,10)[x]}"></span>
+              <span class="siteLabel">{{site}}</span>
+            </label>
+          </li>
+        </ul>
+      </div>
+
   </div>
 </template>
 
@@ -23,8 +38,11 @@ export default {
     }
   },
   methods:{
-    isCategoryToShow(x){
-      return true
+    tooManySites(){
+      if(this.sites.length>4)
+        return true;
+      else
+        return false;
     }
   }
 }
