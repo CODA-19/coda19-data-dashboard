@@ -34,6 +34,8 @@ export default {
   },
   methods:{
     prepOption(){
+      let numBar = this.data[0].length - 1,
+          seriesTypes = Array(numBar).fill({type: 'bar'}) ;
       this.option = {
         title:{
           text:'Age Groups',
@@ -56,12 +58,7 @@ export default {
         color: this.colors,
         xAxis: {type: 'category'},
         yAxis: {},
-        series: [
-          {type: 'bar'},
-          {type: 'bar'},
-          {type: 'bar'},
-          {type: 'bar'}
-        ]
+        series: seriesTypes
       };
     }
   }

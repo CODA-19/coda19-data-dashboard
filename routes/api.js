@@ -160,6 +160,9 @@ router.post('/summary', (req, res, next)=>{
       console.log("File read failed:", err)
       return
     }
+    let age_group = raw.age_group;
+    delete raw.age_group;
+
     let categories = Object.keys(raw),
       types = _.map(raw,(v,k)=>{return raw[k].type}),
       summaryData = _.map(raw, (v,k)=>{
@@ -205,9 +208,13 @@ router.post('/summary', (req, res, next)=>{
         length_of_stay.push([[means[idx], "Mean"]]);
         response.length_of_stay = length_of_stay;
       }
-      // if(request.variables.indexOf('age_groups') >= 0 ){
-      //   response.age_groups = age_data
-      // }
+      if(request.variables.indexOf('age_groups') >= 0 ){
+        // response.age_groups = age_data
+        let header = ['age'].concat(Object.keys(age_group[Object.keys(age_group)[0]])),
+          body = _.map(age_group, (v,k)=>{return _.flatten([k,Object.values(v)]) });
+
+        response.age_groups = [header].concat(body);
+      }
     }
 
     res.json(response);
