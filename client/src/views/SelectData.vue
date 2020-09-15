@@ -4,7 +4,7 @@
   <div class="row">
     <div class="col-lg-7 col-md-7">
     <div class="selectData">
-          <b-form class="mx-5 my-3" @submit="onSubmit" @reset="onReset" >
+          <b-form class="mx-5 my-3" @submit.prevent="onSubmit" @reset="onReset" >
             <b-form-group id="input-group-selectData"  >
               <b-form-input
                   id="input-selectData1"
@@ -50,7 +50,7 @@
                   stacked
               ></b-form-checkbox-group>
             </b-form-group>
-            <b-button type="submit" pill block variant="success" @click="onSubmit">Select</b-button>
+            <b-button type="submit" pill block variant="success">Select</b-button>
           </b-form>
         </div>
 
