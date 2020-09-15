@@ -72,6 +72,7 @@
 import VueSlider from 'vue-slider-component'
 import 'vue-slider-component/theme/default.css'
 import { bus } from "@/main"
+import _ from 'underscore'
 
 export default {
   name: "AppHeader",
@@ -98,7 +99,7 @@ export default {
         {text:'CISSS de Chaudière-Appalaches', value:'CISSS-CA'},
         {text:'The Ottawa Hospital', value:'OttawaHospital'}
       ],
-      allSelected: false,
+      allSelected: true,
       indeterminate: false,
       form: {
         query:null,
@@ -110,6 +111,11 @@ export default {
   },
   components: {
     VueSlider
+  },
+  mounted(){
+    this.sites = _.map(this.sitesOptions, opt=>{
+      return opt.value
+    })
   },
   methods:{
     onSubmit() {
