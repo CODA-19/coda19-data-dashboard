@@ -8,7 +8,8 @@ import underscore from 'vue-underscore';
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 import vuetify from './plugins/vuetify';
 import Axios from 'axios'
-import Keycloak from "keycloak-js";
+import VueLogger from 'vuejs-logger';
+import * as Keycloak from 'keycloak-js';
 
 Vue.prototype.$http = Axios;
 
@@ -21,11 +22,15 @@ Vue.use(IconsPlugin)
 
 Vue.use(underscore)
 
+Vue.use(VueLogger);
+
 Vue.config.productionTip = false
 
-//prep for Keycloak
+export const bus = new Vue();
+
+// prep for Keycloak
 // let initOptions = {
-//   url: 'http://127.0.0.1:8080/auth', realm: 'keycloak-demo', clientId: 'app-vue', onLoad: 'login-required'
+//   url: 'http://127.0.0.1:8080/auth', realm: 'myrealm', clientId: 'app-vue', onLoad: 'login-required'
 // }
 //
 // let keycloak = Keycloak(initOptions);
@@ -39,7 +44,7 @@ Vue.config.productionTip = false
 //     new Vue({
 //       router,
 //       vuetify,
-//       render: function (h) { return h(App) }
+//       render: h => h(App, { props: { keycloak: keycloak } })
 //     }).$mount('#app')
 //
 //   }
@@ -62,8 +67,6 @@ Vue.config.productionTip = false
 // }).catch(() => {
 //   Vue.$log.error("Authenticated Failed");
 // });
-
-export const bus = new Vue();
 
 new Vue({
   router,
