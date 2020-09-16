@@ -13,14 +13,6 @@
                   placeholder="Query"
               ></b-form-input>
             </b-form-group>
-            <b-form-group id="input-group-selectData2">
-              <b-form-input
-                  id="input-selectData2"
-                  v-model="form.type"
-
-                  placeholder="Type"
-              ></b-form-input>
-            </b-form-group>
              <b-form-group id="input-group-selectData3">
                    <p>Please select a variable</p>
                   <b-form-select v-model="form.variables" :options="options"  multiple :select-size="4" ></b-form-select>
@@ -103,7 +95,6 @@ export default {
       indeterminate: false,
       form: {
         query:null,
-        type:null,
         variables: [],
       },
       sites: []
@@ -123,7 +114,6 @@ export default {
       this.$http.post('http://localhost:3000/api/summary',{
         sites: this.sites,
         query: this.form.query,
-        type: this.form.type,
         variables: this.form.variables
       })
           .then(response => response.data)
