@@ -28,14 +28,14 @@ Vue.config.productionTip = false
 
 export const bus = new Vue();
 
-// prep for Keycloak
+// // prep for Keycloak
 // let initOptions = {
-//   url: 'http://127.0.0.1:8080/auth', realm: 'myrealm', clientId: 'app-vue', onLoad: 'login-required'
+//   url: 'http://localhost:8080/auth/', realm: 'coda', clientId: 'app-vue', onLoad: 'login-required'
 // }
 //
 // let keycloak = Keycloak(initOptions);
 //
-// keycloak.init({ onLoad: initOptions.onLoad }).then((auth) => {
+// keycloak.init({ onLoad: initOptions.onLoad  }).then((auth) => {
 //   if (!auth) {
 //     window.location.reload();
 //   } else {
@@ -46,6 +46,7 @@ export const bus = new Vue();
 //       vuetify,
 //       render: h => h(App, { props: { keycloak: keycloak } })
 //     }).$mount('#app')
+//
 //
 //   }
 //
@@ -68,7 +69,7 @@ export const bus = new Vue();
 //   Vue.$log.error("Authenticated Failed");
 // });
 
-new Vue({
+new Vue({   //  comment this section when uncommenting the section above 
   router,
   vuetify,
   render: function (h) { return h(App) }
