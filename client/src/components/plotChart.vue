@@ -1,5 +1,5 @@
 <template>
-  <v-chart :options="option"/>
+  <v-chart ref="plotChart" :options="option"/>
 </template>
 
 <script>
@@ -10,6 +10,23 @@ import "echarts";
 export default {
   components: {
     'v-chart': ECharts
+  },
+  watch:{
+  'highlight':function(newVal, oldVal){
+    let dataIndex = this.sites.indexOf(newVal),
+        oldIndex = this.sites.indexOf(oldVal);
+    const plotChart = this.$refs.plotChart;
+    plotChart.dispatchAction({
+      type: 'downplay',
+      seriesIndex: [0,1,2,3,4,5],
+      oldIndex
+    })
+    plotChart.dispatchAction({
+      type: 'highlight',
+      seriesIndex: [0,1,2,3,4,5],
+      dataIndex
+    })
+  }
   },
   created(){
     this.setOptions();
@@ -23,6 +40,9 @@ export default {
     },
     data:{
       type: Object
+    },
+    highlight:{
+      type: String
     }
   },
   methods:{

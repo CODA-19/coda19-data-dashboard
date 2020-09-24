@@ -74,9 +74,13 @@ html, body{
   flex-direction: row;
   justify-content: space-evenly;
 }
-.ToggleController{
+.ToggleController {
   list-style: none;
   font-size: 16px;
+
+  .siteItem {
+    cursor: pointer;
+  }
 
   .siteIcon {
     position: relative;
@@ -90,6 +94,16 @@ html, body{
     //border: 1px solid #000000;
     border-radius: 50%
   }
+
+  .siteItem:hover {
+    .siteIcon {
+      width: 18px;
+      height: 18px;
+    }
+    .siteLabel {
+      font-weight: bold;
+    }
+}
 
 }
 

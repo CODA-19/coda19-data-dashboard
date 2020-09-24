@@ -10,11 +10,11 @@
         <h3>Summary</h3>
       </v-row>
       <v-row class="chartPanel">
-        <plotChart style="height: 40vh" :colors="colors" :sites="sites" :data="summary" ></plotChart>
+        <plotChart style="height: 40vh" :colors="colors" :sites="sites" :data="summary" :highlight="highlight" autoresize></plotChart>
       </v-row>
       <v-row style="flex-direction: column">
         <h3>Legend</h3>
-        <Legend :colors="legendColors" :sites="legendSites"></Legend>
+        <Legend :colors="legendColors" :sites="legendSites" :highlight.sync="highlight"></Legend>
       </v-row>
       <v-row>
 
@@ -28,10 +28,10 @@
         </v-row>
 
       <v-row class="chartPanel">
-        <scatterChart style="height: 40vh" v-bind:colors="colors"  v-if="lengthOfStay" v-bind:data="lengthOfStay"></scatterChart>
+        <scatterChart style="height: 40vh" v-bind:colors="colors"  v-if="lengthOfStay" v-bind:data="lengthOfStay" autoresize></scatterChart>
       </v-row>
       <v-row class="chartPanel">
-        <BarChart style="height: 40vh" v-bind:colors="colors" v-if="ageGroups" v-bind:data="ageGroups"></BarChart>
+        <BarChart style="height: 40vh" v-bind:colors="colors" v-if="ageGroups" v-bind:data="ageGroups" autoresize></BarChart>
       </v-row>
 
     </div>
@@ -92,7 +92,8 @@ export default {
     return {
       colors: colors,
       legendColors: this.legendColors,
-      legendSites: this.legendSites
+      legendSites: this.legendSites,
+      highlight: null
     }
   }
 }
