@@ -1,6 +1,6 @@
 <template>
 <v-container class="mainContainer">
- <h1>Select data</h1>
+ <h1>{{ $t('titleTxt')}}</h1>
   <div class="row">
     <div class="col-lg-7 col-md-7">
     <div class="selectData">
@@ -14,16 +14,16 @@
               ></b-form-input>
             </b-form-group>
              <b-form-group id="input-group-selectData3">
-                   <p>Please select a variable</p>
+                   <p>{{$t('selectVariableTxt')}}</p>
                   <b-form-select v-model="form.variables" :options="options"  multiple :select-size="4" ></b-form-select>
             </b-form-group>
             <b-form-group id="input-group-selectData4">
-              <p>Days of selection from now </p>
+              <p>{{$t('selectDaysTxt')}} </p>
               <vue-slider v-model="value" :enable-cross="false"></vue-slider>
             </b-form-group>
             <b-form-group>
 
-              <b>Select hospitals to include:</b><br>
+              <b>{{$t('selectHospitalTxt')}}</b><br>
               <b-form-checkbox
                   v-model="allSelected"
                   :indeterminate="indeterminate"
@@ -42,14 +42,14 @@
                   stacked
               ></b-form-checkbox-group>
             </b-form-group>
-            <b-button type="submit" pill block variant="success">Select</b-button>
+            <b-button type="submit" pill block variant="success">{{$t('selectTxt')}}</b-button>
           </b-form>
         </div>
 
       </div>
            <div class="col-lg-5 col-md-5">
             <div class="connectedPanel">
-           <h3>Connected repositories</h3>
+           <h3>{{$t('siteTitleTxt')}}</h3>
            <hr/>
            <ul v-for="place in places">
                 <li class="ok">{{place}}</li>
@@ -68,18 +68,22 @@ import _ from 'underscore'
 
 export default {
   name: "AppHeader",
+  computed:{
+    options(){
+      return [
+        { value: 'length_of_stay', text: this.$t('length_of_stay') },
+        { value: 'icu', text: 'ICU'   },
+        { value: { C: 'CIUSS' }, text: 'Group' , disabled: true },
+        { value: 'age_groups', text: this.$t('age_groups')}
+      ]
+    }
+  },
   data(){
     return {
     places: ["Centre Hospitalier de l'Université; de Montréal", "Hôpital Maisonneuve-Rosemont","Hôpital Général Juif", "Centre Universitaire Santé McGill", "Hôpital Sacré-Coueur de Montréal", "Centre Hospitalier Universitaire Sainte-Justine","Centre Hospitalier Universitaire de Québec", "CISSS de Chaudière-Appalaches"],
 
     value: [0, 30],
     selected: null,
-        options: [
-          { value: 'length_of_stay', text: 'Length of stay' },
-          { value: 'icu', text: 'ICU'   },
-          { value: { C: 'CIUSS' }, text: 'Group' , disabled: true },
-          { value: 'age_groups', text: 'Age groups'}
-        ],
       sitesOptions:[
         {text:'Centre Hospitalier de l\'Université de Montréal', value:'CHUM'},
         {text:'Hôpital Général Juif', value:'HGJ'},

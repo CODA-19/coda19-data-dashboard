@@ -16,6 +16,7 @@
     "keycloak-js": "^11.0.2",
     "vue": "^2.6.11",
     "vue-echarts": "^5.0.0-beta.0",
+    "vue-i18n": "^8.21.1",
     "vue-router": "^3.2.0",
     "vue-slider-component": "^3.2.5",
     "vue-underscore": "^0.1.4",
