@@ -31,7 +31,7 @@
                   aria-controls="sitesOptions"
                   @change="toggleAll"
               >
-                {{ allSelected ? 'Un-select All' : 'Select All' }}
+                {{ allSelected ? $t('unselectAllTxt') : $t('selectAllTxt') }}
               </b-form-checkbox>
 
               <b-form-checkbox-group

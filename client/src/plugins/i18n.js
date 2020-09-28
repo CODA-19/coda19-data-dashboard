@@ -13,7 +13,10 @@ const messages = {
     age_groups: "Age groups",
     selectDaysTxt: "Days of selection from now",
     selectHospitalTxt: "Select hospitals to include: ",
-    selectTxt: "Select"
+    selectAllTxt: "Select all",
+    unselectAllTxt: "Un-select all",
+    selectTxt: "Select",
+
   },
 
   'fr': {
@@ -26,7 +29,11 @@ const messages = {
     age_groups: "Les groupes d'âge",
     selectDaysTxt: "Jours de sélection à partir de maintenant",
     selectHospitalTxt: "Sélectionnez les hôpitaux à inclure: ",
-    selectTxt: "Sélectionner"
+    selectAllTxt: "Tout sélectionner",
+    unselectAllTxt: "Désélectionner tout",
+    selectTxt: "Sélectionner",
+
+
   }};
 
 const i18n = new VueI18n({locale: 'en',  fallbackLocale: 'fr',  messages});
