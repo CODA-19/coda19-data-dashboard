@@ -1,19 +1,19 @@
 <template>
   <div class="mainContainer">
     <v-row id="backBtn">
-      <a @click="newSearch"><b-button variant="outline-dark"><b-icon icon="arrow-left-circle" aria-hidden="true"></b-icon>   New Search</b-button></a>
+      <a @click="newSearch"><b-button variant="outline-dark"><b-icon icon="arrow-left-circle" aria-hidden="true"></b-icon>   {{$t('newSearchTxt')}}</b-button></a>
     </v-row>
   <v-container >
     <v-row>
     <div class="col-lg-6 col-md-12 col-sm-12">
       <v-row>
-        <h3>Summary</h3>
+        <h3>{{$t('summaryTxt')}}</h3>
       </v-row>
       <v-row class="chartPanel">
         <plotChart style="height: 40vh" :colors="colors" :sites="sites" :data="summary" :highlight="highlight" autoresize></plotChart>
       </v-row>
       <v-row style="flex-direction: column">
-        <h3>Legend</h3>
+        <h3>{{$t('legendTxt')}}</h3>
         <Legend :colors="legendColors" :sites="legendSites" :highlight.sync="highlight"></Legend>
       </v-row>
       <v-row>
@@ -24,7 +24,7 @@
 
       <div class="col-lg-6 col-md-12 col-sm-12">
         <v-row class="chartPanel">
-          <h3>Key Variables</h3>
+          <h3>{{$t("keyVariablesTxt")}}</h3>
         </v-row>
 
       <v-row class="chartPanel">

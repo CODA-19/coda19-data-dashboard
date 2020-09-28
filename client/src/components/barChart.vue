@@ -29,16 +29,13 @@ export default {
       type: Array
     }
   },
-  created(){
-    this.prepOption()
-  },
-  methods:{
-    prepOption(){
+  computed:{
+    option(){
       let numBar = this.data[0].length - 1,
           seriesTypes = Array(numBar).fill({type: 'bar'}) ;
-      this.option = {
+      var option = {
         title:{
-          text:'Age Groups',
+          text:this.$t("age_groups"),
           left: 'center',
           bottom: '0'
         },
@@ -60,6 +57,8 @@ export default {
         yAxis: {},
         series: seriesTypes
       };
+
+      return option;
     }
   }
 }

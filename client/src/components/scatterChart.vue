@@ -14,7 +14,7 @@ import "echarts";
 //     [[15, 'JGH']],
 //     [[13, 'Mean']]
 // ];
-
+let that = this;
 export default {
   components: {
     'v-chart': ECharts
@@ -27,12 +27,9 @@ export default {
       type: Array
     }
   },
-  created(){
-    this.setOption()
-  },
-  methods:{
-    setOption(){
-      this.option = {
+  computed:{
+    option(){
+      var option = {
         xAxis: {
           splitLine: {
             show: false
@@ -44,13 +41,14 @@ export default {
           inverse: true
         },
         title: {
-          text: 'Length of Stay',
+          text: this.$t('length_of_stay'),
           left: 'center',
           bottom: '5'
         },
         tooltip:{
-          formatter: function (params) {
-           return params.value[1]+': '+params.value[0]
+          formatter: (params) => {
+            var site = params.value[1] === "Mean" ? this.$t('meanTxt') : params.value[1];
+            return site+': '+params.value[0]
           }
         },
         toolbox:{
@@ -65,14 +63,16 @@ export default {
         series: []
       };
       this.data.forEach((siteData,i)=>{
-        this.option.series.push({
-          name: siteData[0][1],
+        option.series.push({
+          name: siteData[0][1] === "Mean" ? this.$t('meanTxt') : siteData[0][1],
           data: siteData,
           itemStyle:{color:siteData[0][1]==="Mean"?"black":this.colors[i]},
           type: 'scatter',
           symbolSize: 20
         })
       });
+
+      return option
     }
   }
 }

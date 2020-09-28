@@ -4,6 +4,7 @@ Vue.use(VueI18n);
 
 const messages = {
   'en': {
+    //select
     titleTxt: "Select data",
     langTxt: "Fr",
     logoutTxt: "logout",
@@ -17,9 +18,16 @@ const messages = {
     unselectAllTxt: "Un-select all",
     selectTxt: "Select",
 
+    //dashboard
+    newSearchTxt: "New Search",
+    summaryTxt: "Summary",
+    keyVariablesTxt: "Key Variables",
+    legendTxt: "Legend",
+    meanTxt: "Mean"
   },
 
   'fr': {
+    //select
     titleTxt: "Sélectionnez des données",
     langTxt: "En",
     logoutTxt: "Se déconnecter",
@@ -33,7 +41,12 @@ const messages = {
     unselectAllTxt: "Désélectionner tout",
     selectTxt: "Sélectionner",
 
-
+    //dashboard
+    newSearchTxt: "Nouvelle Recherche",
+    summaryTxt: "Résumé",
+    keyVariablesTxt: "Variables-Clés",
+    legendTxt: "Légende",
+    meanTxt: "Moyenne"
   }};
 
 const i18n = new VueI18n({locale: 'en',  fallbackLocale: 'fr',  messages});
