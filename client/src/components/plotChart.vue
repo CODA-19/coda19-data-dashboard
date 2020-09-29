@@ -28,33 +28,16 @@ export default {
     })
   }
   },
-  created(){
-    this.setOptions();
-  },
-  props:{
-    colors:{
-      type:Array
-    },
-    sites:{
-      type: Array
-    },
-    data:{
-      type: Object
-    },
-    highlight:{
-      type: String
-    }
-  },
-  methods:{
-    setOptions(){
+  computed:{
+    option(){
       let that = this,
           data = this.data;
-      that.option = {
+      var option = {
         tooltip: {
           position: 'top',
-          formatter: function (params) {
+          formatter: (params) => {
             if(params.value.length === 1)
-              return 'Mean: '+params.value[0] ;
+              return this.$t('meanTxt')+': '+params.value[0] ;
             else return params.value[1]+': '+params.value[0]
           }
         },
@@ -74,23 +57,23 @@ export default {
           feature:{
             saveAsImage:{
               show:true,
-              title:"Save Image"
+              title:this.$t("saveImgTxt")
             }
           }
         },
       };
       data.categories.forEach((cat, idx)=>{
-        that.option.title.push({
+        option.title.push({
           textBase: 'middle',
           top: (idx*80/6+12)+'%',//(idx + 0.6) * 100 / 6 + '%',
-          text: cat,
-          left: 120,
+          text: this.$t(cat),
+          left: 130,
           textStyle:{
             fontSize: 14
           },
           textAlign: 'right'
         });
-        that.option.singleAxis.push({
+        option.singleAxis.push({
           left: 150,
           type: data.types[idx],
           align: 'left',
@@ -107,7 +90,7 @@ export default {
             interval: 2
           }
         });
-        that.option.series.push({
+        option.series.push({
           singleAxisIndex: idx,
           coordinateSystem: 'singleAxis',
           type: 'scatter',
@@ -118,7 +101,7 @@ export default {
       });
       data.data.forEach((dataItems, i)=> {
         dataItems.forEach((dataItem, j)=>{
-          that.option.series[i].data.push({
+          option.series[i].data.push({
             name: that.sites[i],
             value:[dataItem[0], dataItem[1]],
             itemStyle:{color:that.colors[j]}
@@ -126,7 +109,7 @@ export default {
         })
       });
       data.means.forEach((cat, i)=>{
-        that.option.series[i].data.push({
+        option.series[i].data.push({
           name: 'Mean',
           value:[cat],
           itemStyle:{
@@ -137,10 +120,23 @@ export default {
 
         })
       })
+
+      return option;
     }
   },
-  data () {
-    return {option: this.option};
+  props:{
+    colors:{
+      type:Array
+    },
+    sites:{
+      type: Array
+    },
+    data:{
+      type: Object
+    },
+    highlight:{
+      type: String
+    }
   }
 }
 </script>

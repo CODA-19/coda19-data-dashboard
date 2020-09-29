@@ -84,7 +84,7 @@
     "type": "value"
   },
   "age_group": {
-    "0_to_4_yrs": {
+    "age_0_to_4": {
       "CHUM": 7,
       "HGJ": 8,
       "MUHC": 8,
@@ -95,7 +95,7 @@
       "CISSS-CA": 9,
       "OttawaHospital": 6
     },
-    "5_to_19_yrs": {
+    "age_5_to_19": {
       "CHUM": 9,
       "HGJ": 6,
       "MUHC": 7,
@@ -106,7 +106,7 @@
       "CISSS-CA": 5,
       "OttawaHospital": 7
     },
-    "20_to_49_yrs": {
+    "age_20_to_49": {
       "CHUM": 13,
       "HGJ": 12,
       "MUHC": 14,
@@ -117,7 +117,7 @@
       "CISSS-CA": 15,
       "OttawaHospital": 16
     },
-    "50_to_64_yrs": {
+    "age_50_to_64": {
       "CHUM": 23,
       "HGJ": 28,
       "MUHC": 25,
@@ -128,7 +128,7 @@
       "CISSS-CA": 23,
       "OttawaHospital": 27
     },
-    "65_and_up": {
+    "age_65_and_up": {
       "CHUM": 29,
       "HGJ": 29,
       "MUHC": 32,

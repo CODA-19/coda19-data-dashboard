@@ -33,9 +33,20 @@ export default {
     option(){
       let numBar = this.data[0].length - 1,
           seriesTypes = Array(numBar).fill({type: 'bar'}) ;
+
+      var data = [];
+      this.data.forEach((group,i)=>{
+        if(i===0)
+          return data.push(group);
+        var new_group = [];
+        new_group[0] = this.$t(group[0]);
+        new_group = new_group.concat(group.slice(1));
+        data.push(new_group);
+      });
+
       var option = {
         title:{
-          text:this.$t("age_groups"),
+          text: this.$t("age_groups"),
           left: 'center',
           bottom: '0'
         },
@@ -45,12 +56,12 @@ export default {
           feature:{
             saveAsImage:{
               show:true,
-              title:"Save Image"
+              title:this.$t("saveImgTxt")
             }
           }
         },
         dataset: {
-          source: this.data
+          source: data
         },
         color: this.colors,
         xAxis: {type: 'category'},

@@ -37,7 +37,6 @@ export default {
         },
         yAxis: {
           type: 'category',
-
           inverse: true
         },
         title: {
@@ -56,16 +55,20 @@ export default {
           feature:{
             saveAsImage:{
               show:true,
-              title:"Save Image"
+              title:this.$t("saveImgTxt")
             }
           }
         },
         series: []
       };
       this.data.forEach((siteData,i)=>{
+        var data = [];
+        data[0] = siteData[0][0]
+        data[1] = siteData[0][1] === "Mean" ? this.$t('meanTxt') : siteData[0][1];
+
         option.series.push({
           name: siteData[0][1] === "Mean" ? this.$t('meanTxt') : siteData[0][1],
-          data: siteData,
+          data: [data],
           itemStyle:{color:siteData[0][1]==="Mean"?"black":this.colors[i]},
           type: 'scatter',
           symbolSize: 20
