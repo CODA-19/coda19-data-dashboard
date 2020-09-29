@@ -40,7 +40,7 @@ const messages = {
 
   'fr': {
     //select
-    titleTxt: "Sélectionnez des données",
+    titleTxt: "Sélection des données",
     langTxt: "En",
     logoutTxt: "Se déconnecter",
     siteTitleTxt: "Dépôts connectés",
@@ -54,9 +54,9 @@ const messages = {
     selectTxt: "Sélectionner",
 
     //dashboard
-    newSearchTxt: "Nouvelle Recherche",
+    newSearchTxt: "Nouvelle recherche",
     summaryTxt: "Résumé",
-    keyVariablesTxt: "Variables-Clés",
+    keyVariablesTxt: "Variables-clés",
     legendTxt: "Légende",
     meanTxt: "Moyenne",
     saveImgTxt: "Enregistrer l'image",
