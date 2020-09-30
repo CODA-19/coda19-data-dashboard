@@ -69,6 +69,21 @@ html, body{
 
 #langBtn{
   margin: auto 15px;
+
+  background: linear-gradient(to bottom, $orange 0%, $orange 100%) repeat-x 0 100%;
+  background-size: 4px 4px;
+  color: #000;
+  text-decoration: none;
+  transition: background-size .2s;
+  font-weight: bold;
+
+  &:hover{
+    a{
+      color: #fff;
+    }
+    background-size: 4px 50px;
+  }
+
 }
 
 .legendContainer{
