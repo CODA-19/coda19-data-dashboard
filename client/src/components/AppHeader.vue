@@ -21,10 +21,7 @@
       <b-navbar-nav style="flex-direction: row">
       <!--        <b-nav-item href="" class="btn btn-default btn-rounded" data-toggle="modal" data-target="#modalLoginForm">Access Data</b-nav-item>-->
       <b-button variant="info" @click="keycloak.logout()">{{$t('logoutTxt')}}</b-button>
-
-        <b-nav-item id="langBtn">
-          <a @click="toggleLocale" >{{$t('langTxt')}}</a>
-        </b-nav-item>
+        <b-nav-item id="langBtn" @click="toggleLocale">{{$t('langTxt')}}</b-nav-item>
       </b-navbar-nav>
 <!--    </b-collapse>-->
   </b-navbar>
