@@ -9,8 +9,13 @@
       <v-row>
         <h3>{{$t('summaryTxt')}}</h3>
       </v-row>
+      <v-row>
+        ECharts <b-form-checkbox v-model="chart" name="check-button" switch>D3
+        </b-form-checkbox>
+      </v-row>
       <v-row class="chartPanel">
-        <plotChart style="height: 40vh" :colors="colors" :sites="sites" :data="summary" :highlight="highlight" autoresize></plotChart>
+        <d3_plot v-if="chart" :colors="colors" :sites="sites" :data="summary" ></d3_plot>
+        <plotChart v-if="!chart" style="height: 40vh" :colors="colors" :sites="sites" :data="summary" :highlight="highlight" autoresize></plotChart>
       </v-row>
       <v-row style="flex-direction: column">
         <h3>{{$t('legendTxt')}}</h3>
@@ -48,6 +53,7 @@ import ScatterChart from "@/components/scatterChart";
 import BarChart from "@/components/barChart";
 import Legend from "@/components/legend";
 import { bus } from "@/main";
+import D3_plot from "@/components/d3_plot";
 
 let colors = [
   '#C25C5C','#EEAA7C','#DCD2A2','#4C625C','#2F2D3D',
@@ -56,7 +62,7 @@ let colors = [
 
 export default {
   name: "Dashboard",
-  components: {PlotChart, ScatterChart, BarChart, Legend},
+  components: {D3_plot, PlotChart, ScatterChart, BarChart, Legend},
   props:{
     summary: {
       type: Object
@@ -69,6 +75,9 @@ export default {
     },
     ageGroups:{
       type: Array
+    },
+    chart:{
+      type: Boolean
     }
   },
   created(){
