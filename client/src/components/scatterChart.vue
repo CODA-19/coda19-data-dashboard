@@ -30,6 +30,10 @@ export default {
   computed:{
     option(){
       var option = {
+        grid:{
+          containLabel: true,
+          left: 0
+        },
         xAxis: {
           splitLine: {
             show: false
@@ -62,19 +66,49 @@ export default {
         series: []
       };
       this.data.forEach((siteData,i)=>{
-        var data = [];
+        var data = [], rangeData = [];
         data[0] = siteData[0][0]
-        data[1] = siteData[0][1] === "Mean" ? this.$t('meanTxt') : siteData[0][1];
+        data[1] = siteData[0][2] === "Mean" ? this.$t('meanTxt') : siteData[0][2];
+
+        rangeData[0] = siteData[0][1]
+        rangeData[1] = siteData[0][2] === "Mean" ? this.$t('meanTxt') : siteData[0][1];
 
         option.series.push({
-          name: siteData[0][1] === "Mean" ? this.$t('meanTxt') : siteData[0][1],
+          name: siteData[0][2] === "Mean" ? this.$t('meanTxt') : siteData[0][2],
           data: [data],
-          itemStyle:{color:siteData[0][1]==="Mean"?"black":this.colors[i]},
+          itemStyle:{color:siteData[0][2]==="Mean"?"black":this.colors[i]},
           type: 'scatter',
           symbolSize: 20
-        })
-      });
+        }),
+            rangeData = [
+              {
+                value:[rangeData[0][0], data[1]],
+                symbol: 'line',
+                symbolRotate: 90,
+                itemStyle: {
+                  color: siteData[0][2]==="Mean"?"black":this.colors[i],
+                },
+                symbolSize: 10,
+              },
+              {
+                value:[rangeData[0][1], data[1]],
+                symbol: 'line',
+                symbolRotate: 90,
+                itemStyle: {
+                  color: siteData[0][2]==="Mean"?"black":this.colors[i],
+                },
+                symbolSize: 10,
+              }
+            ],
+            option.series.push({
+              name: siteData[0][2] === "Mean" ? this.$t('meanTxt') : siteData[0][2],
+              data: rangeData,
+              lineStyle:{color:siteData[0][2]==="Mean"?"black":this.colors[i]},
+              type:'line',
+              symbolSize: 10
+            })
 
+      });
       return option
     }
   }

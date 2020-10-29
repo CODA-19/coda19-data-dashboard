@@ -11,6 +11,17 @@
       "CISSS-CA": 7,
       "OttawaHospital": 19
     },
+    "range": {
+      "CHUM": [20, 28],
+      "HGJ": [19, 25],
+      "MUHC": [20,26],
+      "HMR":  [9, 17],
+      "HSCM":  [15, 23],
+      "CHUQ": [14, 20],
+      "CHUSJ":  [13,17],
+      "CISSS-CA": [5,9],
+      "OttawaHospital":  [16,22]
+    },
     "type": "value"
   },
   "tested": {

@@ -204,8 +204,11 @@ router.post('/summary', (req, res, next)=>{
     if(request.variables){
       if(request.variables.indexOf('length_of_stay') >= 0 ){
         let idx = categories.indexOf('length_of_stay');
-        let length_of_stay = _.map(summaryData[idx], elm=>{return [elm];});
-        length_of_stay.push([[means[idx], "Mean"]]);
+        let length_of_stay = _.map(summaryData[idx], elm=>{return [[elm[0], raw.length_of_stay.range[elm[1]], elm[1]]];});
+        var minDays = _.map(raw.length_of_stay.range, (v,k)=>{return parseFloat(v[0])}),
+          maxDays = _.map(raw.length_of_stay.range, (v,k)=>{return parseFloat(v[1])}),
+        meanDays = [(_.reduce(minDays, function(memo, num) { return memo + num}, 0)/minDays.length), (_.reduce(maxDays, function(memo, num) { return memo + num}, 0)/maxDays.length)];
+        length_of_stay.push([[means[idx], meanDays, "Mean"]]);
         response.length_of_stay = length_of_stay;
       }
       if(request.variables.indexOf('age_groups') >= 0 ){
