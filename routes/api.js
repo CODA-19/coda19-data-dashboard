@@ -205,9 +205,23 @@ router.post('/summary', (req, res, next)=>{
       if(request.variables.indexOf('length_of_stay') >= 0 ){
         let idx = categories.indexOf('length_of_stay');
         let length_of_stay = _.map(summaryData[idx], elm=>{return [[elm[0], raw.length_of_stay.range[elm[1]], elm[1]]];});
-        var minDays = _.map(raw.length_of_stay.range, (v,k)=>{return parseFloat(v[0])}),
-          maxDays = _.map(raw.length_of_stay.range, (v,k)=>{return parseFloat(v[1])}),
-        meanDays = [(_.reduce(minDays, function(memo, num) { return memo + num}, 0)/minDays.length), (_.reduce(maxDays, function(memo, num) { return memo + num}, 0)/maxDays.length)];
+
+        var getValues = function(  idx, site){
+          var list = [];
+          _.keys(this).forEach(k=>{
+            if(site.indexOf(k)>-1){
+              list.push(this[k][idx])
+            }
+          });
+          return list;
+        }
+
+        var getMinDays = _.bind(getValues, raw.length_of_stay.range, 0, site),
+          getMaxDays = _.bind(getValues, raw.length_of_stay.range, 1, site),
+
+          minDays = getMinDays(),
+          maxDays = getMaxDays(),
+          meanDays = [(_.reduce(minDays, function(memo, num) { return memo + num}, 0)/minDays.length), (_.reduce(maxDays, function(memo, num) { return memo + num}, 0)/maxDays.length)];
         length_of_stay.push([[means[idx], meanDays, "Mean"]]);
         response.length_of_stay = length_of_stay;
       }

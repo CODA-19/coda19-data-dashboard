@@ -45,6 +45,7 @@ export const bus = new Vue();
 //     new Vue({
 //       router,
 //       vuetify,
+//       i18n,
 //       render: h => h(App, { props: { keycloak: keycloak } })
 //     }).$mount('#app')
 //
