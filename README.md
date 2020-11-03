@@ -1,4 +1,4 @@
-# CODA-19 dashboard
+# CODA-19 dashboard server
 
 ### Installing Node
 

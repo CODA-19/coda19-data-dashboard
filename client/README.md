@@ -1,4 +1,4 @@
-# client
+# dashboard client
 
 ## Project setup
 ```
@@ -9,6 +9,7 @@ npm install
 ```
 npm run serve
 ```
+Launch on `localhost:8000` by default.
 
 ### Compiles and minifies for production
 ```
