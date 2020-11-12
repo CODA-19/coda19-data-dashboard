@@ -1,0 +1,13 @@
+doctype html
+html
+  include head.pug
+  body
+    h1=title
+      p Welcome to the dashboard.
+      
+      div(id="root")
+        div(id="svg")
+
+    script(src='/javascripts/forest.js')
+    
+    include footer.pug
