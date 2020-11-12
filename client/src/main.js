@@ -27,6 +27,7 @@ Vue.use(VueLogger);
 
 Vue.config.productionTip = false
 
+// Note(malavv) : The dual instantiation of Vue is normal, here it is used just for an encapsulated EventBus.
 export const bus = new Vue();
 
 // // prep for Keycloak
