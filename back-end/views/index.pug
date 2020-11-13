@@ -1,13 +1,17 @@
 doctype html
 html
   include head.pug
+  meta(name="viewport" content="width=device-width, initial-scale=1.0")
   body
-    h1=title
-      p Welcome to the dashboard.
-      
-      div(id="root")
-        div(id="svg")
+    nav
+      a(href='/') /home
+      a(href='/sites') /sites
 
-    script(src='/javascripts/forest.js')
-    
-    include footer.pug
+    header
+      h1= title
+
+    #content
+      block content
+
+    footer
+      div Developed by CHUM and the MCHI, 2020

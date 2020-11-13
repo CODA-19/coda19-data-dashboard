@@ -7,6 +7,7 @@ const logger = require('morgan')
 const indexRouter = require('./routes/index')
 const apiRouter = require('./routes/api')
 const authRouter = require('./routes/auth')
+const sitesRouter = require('./routes/sites')
 
 const cors = require('cors'); //temp, for local test purpose
 const app = express()
@@ -26,6 +27,7 @@ app.use(express.static(path.join(__dirname, 'public')))
 app.use('/', indexRouter)
 app.use('/api', apiRouter)
 app.use('/auth', authRouter)
+app.use('/sites', sitesRouter)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

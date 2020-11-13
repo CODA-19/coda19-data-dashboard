@@ -1,7 +1,18 @@
 body {
-  padding: 50px;
+  padding: 0;
+  margin: 0;
   font: 14px Helvetica, Arial, sans-serif;
   text-align: center;
+}
+
+nav {
+  display: flex;
+  flex-direction: row;
+  padding: 1.5em;
+}
+nav a {
+  color: #333;
+  padding-right: 1em;
 }
 
 a {
@@ -12,4 +23,37 @@ a {
   width:500px;
   height:500px;
   margin:auto;
+}
+
+footer {
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
+  background-color: #f5f5f5;
+  position: fixed;
+}
+
+footer div {
+  padding: 10px;
+}
+
+div#sites {
+  width: 500px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+
+div.site {
+  background-color: #f5f5f5;
+  border: 1px solid #dfdfdf;
+  border-radius: 5px;
+  flex: 1;
+  margin-bottom: 2em;
+  padding-left: 1em;
+}
+
+div.site pre {
+  font-size: 11px;
 }
