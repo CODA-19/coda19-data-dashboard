@@ -8,11 +8,11 @@ As part of a microservice environment, the dashboard will communicate with:
 (2) The Hub for federated communication to the participating sites
 (3) The keycloack instance for Authentication and Authorizations.
 
-![Dashboard Diagram](/diagram.png?raw=true "DiagramIO Dashboard Overview")
+![Dashboard Diagram](/assets/diagram.png?raw=true "DiagramIO Dashboard Overview")
 
 ## Running Development Server
 
-Update local NPM package with `npm install` and launch the app with `npm start` which defaults to listening on `localhost:3000`.
+The development server needs to launch two instaces, the back and front end. This is done by running `yarn start` which opens the backend `localhost:3000` and front-end `localhost:8000`.
 
 As this application is part of a larger insfrastructure, this application alone will have limited functionalities. To launch a test infrastructure, you can use `docker-compose up` at the root of this repo. It will require a local copy of the other repo in the parent folder.
 
@@ -21,6 +21,7 @@ As this application is part of a larger insfrastructure, this application alone 
 ### To run the app
 
 * NodeJS - [website](https://nodejs.org/en/download)
+* Yarn - [website](https://classic.yarnpkg.com/en/docs/install)
 
 ### For the test infrastructure
 
