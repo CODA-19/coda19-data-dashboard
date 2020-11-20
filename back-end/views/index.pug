@@ -1,0 +1,17 @@
+doctype html
+html
+  include head.pug
+  meta(name="viewport" content="width=device-width, initial-scale=1.0")
+  body
+    nav
+      a(href='/') /home
+      a(href='/sites') /sites
+
+    header
+      h1= title
+
+    #content
+      block content
+
+    footer
+      div Developed by CHUM and the MCHI, 2020
