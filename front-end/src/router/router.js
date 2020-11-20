@@ -44,6 +44,18 @@ import Forest from "@/components/Forest"
       title: "CODA 19 - Data selection"
     }
   },
+  {
+    path: '/ui',
+    name: 'UI',
+    components: {
+      header: AppHeader,
+      default: SelectData,
+      footer: Footer
+    },
+    meta: {
+      title: "CODA 19 - UI Dashboard - (Connected data selection)"
+    }
+  },
     {
       path: '/forest',
       name: 'Forest',

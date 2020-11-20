@@ -73,6 +73,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@hapi/hoek@npm:^9.0.0":
+  version: 9.1.0
+  resolution: "@hapi/hoek@npm:9.1.0"
+  checksum: c77ac8f0c1ae6e21b3d77fa63f462dc1b0c84481388f5e54c651e86cf565d58cb701c396a1fa86a746d5dc278013ad5b3513a58c4cb19a493802d17b68c90740
+  languageName: node
+  linkType: hard
+
 "@hapi/joi@npm:^15.0.1":
   version: 15.1.1
   resolution: "@hapi/joi@npm:15.1.1"
@@ -91,6 +98,15 @@ __metadata:
   dependencies:
     "@hapi/hoek": ^8.3.0
   checksum: 4550d3d7498a203ce5c0e53753eb9f510aa2b74c08bfaf7d7c4676a0943b27d72f22297ff006e8396eb74e6b73154ebf98feab19c199b0768a084a777d024a50
+  languageName: node
+  linkType: hard
+
+"@hapi/topo@npm:^5.0.0":
+  version: 5.0.0
+  resolution: "@hapi/topo@npm:5.0.0"
+  dependencies:
+    "@hapi/hoek": ^9.0.0
+  checksum: f92797d5ef54bb801a3591a118ea483ed5a6b41cdd1aaa6f7bf427b64b5f76056bc7063447adf43be8f94b04408228cce12963ea498b8da8f9e01d01c78710ac
   languageName: node
   linkType: hard
 
@@ -134,6 +150,29 @@ __metadata:
   bin:
     opencollective: bin/opencollective.js
   checksum: 6cb123782c82241376997b6c2b72ff40492093622404db1cf5e617a19ebe7a86b9a52f733cb8060a5cd99de641e607bedd50e5a43fc844c40c07757363249ddc
+  languageName: node
+  linkType: hard
+
+"@sideway/address@npm:^4.1.0":
+  version: 4.1.0
+  resolution: "@sideway/address@npm:4.1.0"
+  dependencies:
+    "@hapi/hoek": ^9.0.0
+  checksum: 13f0a6b4178b03d7c0062894312313892d9a728987a5d07d43cb42c04bcdf55cd02092eb6f09ffb8d78a1dfae8cf5ce6c9b4ad66934771ea6a18e2b3fcd752d9
+  languageName: node
+  linkType: hard
+
+"@sideway/formula@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "@sideway/formula@npm:3.0.0"
+  checksum: b83ecd35fea33e7b826ddcdc9f0735a79bd374927efea36885203200c418ad0f9975c329eaf9e990a7c61cf96f560ed2020227a35e699324ddd3c94dd3f4045f
+  languageName: node
+  linkType: hard
+
+"@sideway/pinpoint@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "@sideway/pinpoint@npm:2.0.0"
+  checksum: e5528639aef1d266c23050897a6571c1e2aeccb59b6a22006a153fbd73aee78ae995bf19c022d70de5a00589a7f51372e78ef9aacd34a3dd9b13720c866aca7e
   languageName: node
   linkType: hard
 
@@ -1256,10 +1295,12 @@ __metadata:
     axios: ^0.21.0
     cookie-parser: ~1.4.4
     cors: ^2.8.5
+    cross-env: ^7.0.2
     csv-parse: ^4.11.1
     debug: ~2.6.9
     express: ~4.16.1
     http-errors: ~1.6.3
+    joi: ^17.3.0
     jsonwebtoken: ^8.5.1
     moment: ^2.28.0
     morgan: ~1.9.1
@@ -2600,6 +2641,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"cross-env@npm:^7.0.2":
+  version: 7.0.2
+  resolution: "cross-env@npm:7.0.2"
+  dependencies:
+    cross-spawn: ^7.0.1
+  bin:
+    cross-env: src/bin/cross-env.js
+    cross-env-shell: src/bin/cross-env-shell.js
+  checksum: 624d638db3b4b6b221f32238aeb6785b865365bf41154f01d46a23b6d78f807ca5588a3b32e9af5f17384b866fed3752d0e3ecf8c4a8cfca2935d363d27ba058
+  languageName: node
+  linkType: hard
+
 "cross-spawn@npm:^3.0.0":
   version: 3.0.1
   resolution: "cross-spawn@npm:3.0.1"
@@ -2623,7 +2676,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"cross-spawn@npm:^7.0.0":
+"cross-spawn@npm:^7.0.0, cross-spawn@npm:^7.0.1":
   version: 7.0.3
   resolution: "cross-spawn@npm:7.0.3"
   dependencies:
@@ -5877,6 +5930,19 @@ fsevents@~2.1.2:
     merge-stream: ^2.0.0
     supports-color: ^7.0.0
   checksum: 20ae005c58f9db5be0f9bced0df6aeca340c64e7e0c7c27264b5f5964c94013e98ccd678df935d629889136ce45594d230e547624ccce73de581a05d4a8e6315
+  languageName: node
+  linkType: hard
+
+"joi@npm:^17.3.0":
+  version: 17.3.0
+  resolution: "joi@npm:17.3.0"
+  dependencies:
+    "@hapi/hoek": ^9.0.0
+    "@hapi/topo": ^5.0.0
+    "@sideway/address": ^4.1.0
+    "@sideway/formula": ^3.0.0
+    "@sideway/pinpoint": ^2.0.0
+  checksum: 3a2a6a8df5df408b33661d61abf6389f21d71478748daebe4edf4be2176548a70396601fcf2fd4fc0bc44fc12ab67fa72de310509db47579ad21bca0f2e0611b
   languageName: node
   linkType: hard
 

@@ -3,16 +3,18 @@
   "version": "1.0.1",
   "private": true,
   "scripts": {
-    "start": "nodemon ./bin/www",
+    "start": "cross-env HUB_ENDPOINT=http://localhost:8080 HOST=http://localhost PORT=3000 nodemon ./bin/www",
     "start-node": "node ./bin/www"
   },
   "dependencies": {
     "axios": "^0.21.0",
     "cookie-parser": "~1.4.4",
+    "cross-env": "^7.0.2",
     "csv-parse": "^4.11.1",
     "debug": "~2.6.9",
     "express": "~4.16.1",
     "http-errors": "~1.6.3",
+    "joi": "^17.3.0",
     "moment": "^2.28.0",
     "morgan": "~1.9.1",
     "nodemon": "^2.0.6",

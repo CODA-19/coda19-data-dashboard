@@ -68,8 +68,8 @@ import _ from 'underscore'
 
 export default {
   name: "AppHeader",
-  computed:{
-    options(){
+  computed: {
+    options() {
       return [
         { value: 'length_of_stay', text: this.$t('length_of_stay') },
         { value: 'icu', text: 'ICU'   },
@@ -78,12 +78,12 @@ export default {
       ]
     }
   },
-  data(){
+  data() {
     return {
-    places: ["Centre Hospitalier de l'Université de Montréal", "Hôpital Maisonneuve-Rosemont","Hôpital Général Juif", "Centre Universitaire Santé McGill", "Hôpital Sacré-Coueur de Montréal", "Centre Hospitalier Universitaire Sainte-Justine","Centre Hospitalier Universitaire de Québec", "CISSS de Chaudière-Appalaches"],
+      places: ["Centre Hospitalier de l'Université de Montréal", "Hôpital Maisonneuve-Rosemont","Hôpital Général Juif", "Centre Universitaire Santé McGill", "Hôpital Sacré-Coueur de Montréal", "Centre Hospitalier Universitaire Sainte-Justine","Centre Hospitalier Universitaire de Québec", "CISSS de Chaudière-Appalaches"],
 
-    value: [0, 30],
-    selected: null,
+      value: [0, 30],
+      selected: null,
       sitesOptions:[
         {text:'Centre Hospitalier de l\'Université de Montréal', value:'CHUM'},
         {text:'Hôpital Général Juif', value:'HGJ'},
