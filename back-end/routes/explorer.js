@@ -16,7 +16,7 @@ router.get('/', async function(req, res) {
 
   const pathname = decodeURIComponent(req.query.pathname);
   const query = queries.find(q => `${q.path}${q.param}` === pathname);
-  const content = query ? (await axios.get(`${process.env.HOST}:${process.env.PORT}/${pathname}`)).data : undefined;
+  const content = query ? (await axios.get(`http://localhost:${process.env.PORT}/${pathname}`)).data : undefined;
 
   res.render('explorer', { title: 'CODA-19', queries: queries, content: content, active: query })
 

@@ -39,13 +39,21 @@ services:
     environment:
       - CODA19_HUB_API_SERVER_PORT=8080
     ports:
-      - 8080:8080
-  # If you reenable dash, it won't work right away. URL in ".env" need to be changed to localhost:8080
-  # and need docker-compose up --build to rebuild node app.
-  #dash:
-    #container_name: dash
-    #build: ../coda19-hub-dashboard
-    #ports:
-    #  - 3000:8080
-    #depends_on:
-    #  - hub
+      - 8081:8080
+  dash-backend:
+    container_name: dash-backend
+    build: ./back-end
+    ports:
+      - 3000:3000
+    environment:
+      - HUB_ENDPOINT=http://hub:8080
+      - PORT=3000
+    depends_on:
+      - hub
+  dash-frontend:
+    container_name: dash-frontend
+    build: ./front-end
+    ports:
+      - 8000:8000
+    depends_on:
+      - dash-backend
