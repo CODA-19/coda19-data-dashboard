@@ -7,15 +7,18 @@
 <!--    <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>-->
 <!--    <b-collapse id="nav-collapse" class="mr-lg-5" is-nav>-->
       <b-navbar-nav>
-<!--        <b-nav-item >-->
-<!--          <router-link to="/" class="nav-link">Home</router-link>-->
-<!--        </b-nav-item>-->
+        <b-nav-item >
+          <router-link to="/" class="nav-link">Home</router-link>
+        </b-nav-item>
 <!--          <b-nav-item >-->
 <!--          <router-link to="/selectData" class="nav-link">Select Data</router-link>-->
 <!--        </b-nav-item>-->
-<!--        <b-nav-item >-->
-<!--          <router-link to="/about" class="nav-link">About</router-link>-->
-<!--        </b-nav-item>-->
+        <!--<b-nav-item >-->
+          <!--<router-link to="/about" class="nav-link">About</router-link>-->
+        <!--</b-nav-item>-->
+        <b-nav-item >
+          <router-link to="/connections" class="nav-link">Active Connections</router-link>
+        </b-nav-item>
       </b-navbar-nav>
 
       <b-navbar-nav style="flex-direction: row">

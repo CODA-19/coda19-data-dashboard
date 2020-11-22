@@ -3,7 +3,7 @@
   "version": "1.0.1",
   "private": true,
   "scripts": {
-    "start": "cross-env HUB_ENDPOINT=http://localhost:8080 PORT=3000 nodemon ./bin/www",
+    "start": "cross-env HUB_ENDPOINT=http://localhost:8081 PORT=3000 nodemon ./bin/www",
     "start-node": "node ./bin/www"
   },
   "dependencies": {

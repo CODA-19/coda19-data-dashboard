@@ -5,6 +5,7 @@ const express = require('express')
 const { exec } = require("child_process")
 const router = express.Router()
 const { _ } = require('underscore')
+const axios = require('axios').default
 const moment = require('moment')
 
 router.get('/data', function(req, res, next) {
@@ -150,6 +151,51 @@ let length_of_stay_data = [
 
 
 //test
+router.get('/nsummary', async (req, res) => {
+  const sites = (req.query.sites || '').split(',');
+  const resourceKeys = (req.query.var || '').split(',');
+  const resources = resourceKeys.map(key => key.split('|')).map(arr => ({ type: arr[0], attribute: arr[1], datatype: arr[2] }));
+
+  // Base response
+  let tmpResponse = {
+    "summary": {
+      "categories": [  ],
+      "data": [  ],
+      "means": [  ],
+      "ranges": [  ],
+      "sites": sites,
+      "types": [ ]
+    }
+  };
+
+  for (let res of resources) {
+    const { type, attribute, datatype } = res;
+    const data = await axios.get(`http://localhost:3000/exec?cmd=mean&resourceType=${type}&resourceAttribute=${attribute}`).then(res => res.data);
+    const conns = data.connections;
+
+    const cat = `${res.type}|${res.attribute}|${res.datatype}`;
+    const dat = conns.map(conn => ([conn.value.mean, conn.uid.toString()]));
+    
+    // Weighted mean
+    const sum = (acc, el) => acc + el;
+    let totalN = conns.map(conn => conn.value.n).reduce(sum);
+    const mean = conns.map(conn => conn.value.mean * (conn.value.n / totalN)).reduce(sum);
+
+    // Range
+    const allMeans = conns.map(conn => conn.value.mean);
+    const range = [Math.min(...allMeans), Math.max(...allMeans)];
+
+    // Saving to obj.
+    tmpResponse.summary.categories.push(cat);
+    tmpResponse.summary.data.push(dat);
+    tmpResponse.summary.means.push(mean);
+    tmpResponse.summary.ranges.push(range);
+    tmpResponse.summary.types.push("value");
+  }
+
+  res.json(tmpResponse);
+});
+
 router.post('/summary', (req, res, next)=>{
 
   let request = req.body,

@@ -6,13 +6,10 @@
   </div>
 </template>
 
-
 <script>
-
-
 export default {
   props: ['keycloak'],
-  watch:{
+  watch: {
     '$route' (to, from) {
       document.title = to.meta.title
     }
