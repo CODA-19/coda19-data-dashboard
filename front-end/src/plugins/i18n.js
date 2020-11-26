@@ -35,7 +35,11 @@ const messages = {
     age_5_to_19: "5 to 19 yrs",
     age_20_to_49: "20 to 49 yrs",
     age_50_to_64: "50 to 64 yrs",
-    age_65_and_up: "65 and up"
+    age_65_and_up: "65 and up",
+
+     // header
+     homeTxt: "Home",
+     activeConnectionsTxt: "Active Connections"
   },
 
   'fr': {
@@ -70,7 +74,11 @@ const messages = {
     age_5_to_19: "5 à 19 ans",
     age_20_to_49: "20 à 49 ans",
     age_50_to_64: "50 à 64 ans",
-    age_65_and_up: "65 et plus"
+    age_65_and_up: "65 et plus",
+
+     // header
+     homeTxt: "Accueil",
+     activeConnectionsTxt: "Connections actives"
   }};
 
 const i18n = new VueI18n({locale: 'en',  fallbackLocale: 'fr',  messages});
