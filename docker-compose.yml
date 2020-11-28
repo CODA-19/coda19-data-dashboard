@@ -2,7 +2,7 @@ version: "3.8"
 services:
   api_111:
     container_name: api_111
-    build: ../api
+    build: ../coda19-stats-api
     environment:
       - FAKE_AIDBOX=true
     ports:
@@ -20,7 +20,7 @@ services:
       - api_111
   api_112:
     container_name: api_112
-    build: ../api
+    build: ../coda19-stats-api
     environment:
       - FAKE_AIDBOX=true
   spoke_112:
