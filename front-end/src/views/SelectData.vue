@@ -1,46 +1,56 @@
 <template>
   <v-container class="mainContainer">
+        <h1>{{ $t("titleTxt") }}</h1>
     <div class="row">
     <div class="col-lg-7 col-md-7">
-    <div class="row options">
+      <b-form  @submit.prevent="onSubmit" @reset="onReset">
 
-      <multiselect v-model="form.variables"
-                   :placeholder="$t('selectVariableTxt')"
-                   :options="resourceOptions"
-                    label="text"
-                   :multiple="true"
-                   track-by="value"
-                   :hide-selected="true"
-                   :clear-on-select="false"
-                   :close-on-select="false"
-      >
+          <div class="selectData"> <span>{{ $t('selectVariableTxt') }}</span>
 
-        <template slot="clear" slot-scope="variables">
-          <div class="multiselect__clear" v-if="form.variables.length" @mousedown.prevent.stop="clearAllVar(variables.search)"></div>
-        </template><span slot="noResult">No variable found.</span>
+            <multiselect v-model="form.variables"
+                         :placeholder="$t('selectVariableTxt')"
+                         :options="resourceOptions"
+                         label="text"
+                         :multiple="true"
+                         track-by="value"
+                         :clear-on-select="false"
+                         :close-on-select="false"
+                         :showLabels="false"
+            >
 
-      </multiselect>
-    </div>
-    <div class="row options">
-      <multiselect v-model="conns"
-                   :placeholder="$t('selectHospitalTxt')"
-                   :options="connOptions"
-                   label="text"
-                   :multiple="true"
-                   track-by="value"
-                   :hide-selected="true"
-                   :clear-on-select="false"
-                   :close-on-select="false"
-      >
-        <template slot="clear" slot-scope="sites">
-          <div class="multiselect__clear" v-if="conns.length" @mousedown.prevent.stop="clearAllSites(sites.search)"></div>
-        </template><span slot="noResult">No site found.</span>
+              <template slot="clear" slot-scope="variables">
+                <div class="multiselect__clear" v-if="form.variables.length" @mousedown.prevent.stop="clearAllVar(variables.search)"></div>
+              </template><span slot="noResult">No variable found.</span>
 
-      </multiselect>
-    </div>
-    <div class="row options">
-      <b-button type="submit" v-on:click="onSubmit" pill block variant="success">{{$t("selectTxt")}}</b-button>
-    </div>
+            </multiselect>
+          </div>
+
+          <div class="selectData">
+            <span>{{ $t("selectHospitalTxt") }}</span>
+          <multiselect v-model="conns"
+                       :placeholder="$t('selectHospitalTxt')"
+                       :options="connOptions"
+                       group-label="group"
+                       group-values="sites"
+                       :group-select="true"
+                       label="text"
+                       :multiple="true"
+                       track-by="value"
+                       :clear-on-select="false"
+                       :close-on-select="false"
+                       :showLabels="false"
+          >
+            <template slot="clear" slot-scope="sites">
+              <div class="multiselect__clear" v-if="conns.length" @mousedown.prevent.stop="clearAllSites(sites.search)"></div>
+            </template><span slot="noResult">No site found.</span>
+
+          </multiselect>
+        </div>
+
+<div class="col-lg-6 col-md-4 submit-btn">
+        <b-button type="submit" pill block variant="success">{{$t("selectTxt")}}</b-button>
+</div>
+      </b-form>
     </div>
     <div class="col-lg-5 col-md-5 ">
 
@@ -53,70 +63,9 @@
                 </div>
 
     </div>
+
     </div>
   </v-container>
-<!--  <v-container class="mainContainer">-->
-<!--    <h1>{{ $t("titleTxt") }}</h1>-->
-<!--    <div class="row">-->
-<!--      <div class="col-lg-7 col-md-7">-->
-<!--        <div class="selectData">-->
-<!--          <b-form class="mx-5 my-3" @submit.prevent="onSubmit" @reset="onReset">-->
-<!--            &lt;!&ndash;-->
-<!--            <b-form-group id="input-group-selectData">-->
-<!--              <b-form-input-->
-<!--                id="input-selectData1"-->
-<!--                v-model="form.query"-->
-<!--                placeholder="Query"-->
-<!--              ></b-form-input>-->
-<!--            </b-form-group>-->
-<!--            &ndash;&gt;-->
-<!--            <b-form-group id="input-group-selectData3">-->
-<!--              <p>{{ $t("selectVariableTxt") }}</p>-->
-<!--              <b-form-select-->
-<!--                v-model="form.variables"-->
-<!--                :options="resourceOptions"-->
-<!--                multiple-->
-<!--                :select-size="8"-->
-<!--              ></b-form-select>-->
-<!--            </b-form-group>-->
-<!--            <b-form-group>-->
-<!--              <b>{{ $t("selectHospitalTxt") }}</b-->
-<!--              ><br />-->
-<!--              <b-form-checkbox-->
-<!--                v-model="allSelected"-->
-<!--                :indeterminate="indeterminate"-->
-<!--                aria-describedby="connOptions"-->
-<!--                aria-controls="connOptions"-->
-<!--                @change="toggleAll"-->
-<!--              >-->
-<!--                {{ allSelected ? $t("unselectAllTxt") : $t("selectAllTxt") }}-->
-<!--              </b-form-checkbox>-->
-
-<!--              <b-form-checkbox-group-->
-<!--                id="site_checkbox_group"-->
-<!--                v-model="conns"-->
-<!--                :options="connOptions"-->
-<!--                name="conn"-->
-<!--                stacked-->
-<!--              ></b-form-checkbox-group>-->
-<!--            </b-form-group>-->
-<!--            <b-button type="submit" pill block variant="success">{{-->
-<!--              $t("selectTxt")-->
-<!--            }}</b-button>-->
-<!--          </b-form>-->
-<!--        </div>-->
-<!--      </div>-->
-<!--      <div class="col-lg-5 col-md-5">-->
-<!--        <div class="connectedPanel">-->
-<!--          <h3>{{ $t("siteTitleTxt") }}</h3>-->
-<!--          <hr />-->
-<!--          <ul v-for="conn in connections" v-bind:key="conn.uid">-->
-<!--            <li class="ok">{{ conn.name }}</li>-->
-<!--          </ul>-->
-<!--        </div>-->
-<!--      </div>-->
-<!--    </div>-->
-<!--  </v-container>-->
 </template>
 
 <script>
@@ -195,7 +144,7 @@ export default {
     },
 
     getNSummaryData: async function() {
-      const url = `http://localhost:3000/api/nsummary?sites=${encodeURI(this.conns)}&var=${encodeURI(this.form.variables)}`;
+      const url = `http://localhost:3000/api/nsummary?sites=${encodeURI(this.conns.map(conn=>{return conn.value}))}&var=${encodeURI(this.form.variables.map(conn=>{return conn.value}))}`;
       const dat = await fetch(url).then(res => res.json());
       return dat;
     },
@@ -220,8 +169,10 @@ export default {
   },
   watch: {
     connections(newVal, oldVal) {
-      this.connOptions = this.connections.map(conn => ({ 'text': conn.name, 'value': conn.uid }));
-      this.conns = this.connections.map(conn => conn.uid);
+      var sites = this.connections.map(conn => ({ 'text': conn.name, 'value': conn.uid }));
+      var group = this.$t("selectAllTxt");
+      this.connOptions.push({sites:sites, group:group})
+      this.conns = sites;
     },
     resources(newVal, oldVal) {
       this.resourceOptions = this.resources.map(res => ({ 'text': nameResource(res), 'value': idResource(res) }));

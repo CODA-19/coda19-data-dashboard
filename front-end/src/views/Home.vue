@@ -41,6 +41,11 @@ export default {
 
     bus.$on("newSearch", () => {
       this.component = "SelectData";
+
+      fetch('http://localhost:3000/sites')
+          .then(res => res.json())
+          .then(json => json.connections)
+          .then(conn => this.load(conn));
     });
 
     fetch('http://localhost:3000/sites')
