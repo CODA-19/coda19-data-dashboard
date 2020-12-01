@@ -29,7 +29,7 @@
             <span>{{ $t("selectHospitalTxt") }}</span>
           <multiselect v-model="conns"
                        :placeholder="$t('selectHospitalTxt')"
-                       :options="connOptions"
+                       :options="connectionOptions"
                        group-label="group"
                        group-values="sites"
                        :group-select="true"
@@ -90,6 +90,13 @@ export default {
         { value: "age_groups", text: this.$t("age_groups") },
       ];
     },
+    connectionOptions(){
+      var sites = this.connections.map(conn => ({ 'text': conn.name, 'value': conn.uid }));
+      var group = this.$t("selectAllTxt");
+      var connOptions = [{sites:sites, group:group}]
+      this.conns = sites;
+      return connOptions
+    }
   },
   data() {
     return {
@@ -168,7 +175,7 @@ export default {
     }
   },
   watch: {
-    connections(newVal, oldVal) {
+    connections() {
       var sites = this.connections.map(conn => ({ 'text': conn.name, 'value': conn.uid }));
       var group = this.$t("selectAllTxt");
       this.connOptions.push({sites:sites, group:group})

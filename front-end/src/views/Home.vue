@@ -30,7 +30,7 @@ export default {
     Forest,
   },
   props: { },
-  created() {
+  async created() {
     bus.$on("showDashboard", (data) => {
       this.summary = data.summary;
       this.sites = data.summary.sites;
@@ -48,10 +48,7 @@ export default {
           .then(conn => this.load(conn));
     });
 
-    fetch('http://localhost:3000/sites')
-      .then(res => res.json())
-      .then(json => json.connections)
-      .then(conn => this.load(conn));
+    await this.fetch('http://localhost:3000/sites');
   },
   data() {
     return {
@@ -80,6 +77,13 @@ export default {
         [ type, attr, dtype ] = key.split('|');
         return { type: type, attribute: attr, datatype: dtype }
       });
+    },
+    fetch: function(url){
+     return fetch(url)
+          .then(res => res.json())
+          .then(json => json.connections)
+          .then(conn => this.load(conn));
+
     }
   }
 };
