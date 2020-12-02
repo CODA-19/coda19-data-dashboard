@@ -1,8 +1,8 @@
 <template>
   <div class="mainContainer">
-    <v-row id="backBtn">
-      <a @click="newSearch"><b-button variant="outline-dark"><b-icon icon="arrow-left-circle" aria-hidden="true"></b-icon>   {{$t('newSearchTxt')}}</b-button></a>
-    </v-row>
+<!--    <v-row id="backBtn">-->
+<!--      <a @click="newSearch"><b-button variant="outline-dark"><b-icon icon="arrow-left-circle" aria-hidden="true"></b-icon>   {{$t('newSearchTxt')}}</b-button></a>-->
+<!--    </v-row>-->
   <v-container >
     <v-row>
     <div class="col-lg-6 col-md-12 col-sm-12">

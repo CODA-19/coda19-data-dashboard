@@ -1,14 +1,25 @@
 <template>
-  <component
-    v-bind:is="component"
-    v-bind:summary="summary"
-    v-bind:sites="sites"
-    v-bind:lengthOfStay="length_of_stay"
-    v-bind:ageGroups="age_groups"
+<!--  <component-->
+<!--    v-bind:is="component"-->
+<!--    v-bind:summary="summary"-->
+<!--    v-bind:sites="sites"-->
+<!--    v-bind:lengthOfStay="length_of_stay"-->
+<!--    v-bind:ageGroups="age_groups"-->
 
-    v-bind:connections="connections"
-    v-bind:resources="resources"
-  />
+<!--    v-bind:connections="connections"-->
+<!--    v-bind:resources="resources"-->
+<!--  />-->
+  <div class="mainContainer">
+  <SelectData
+        v-bind:connections="connections"
+        v-bind:resources="resources"
+    />
+  <Dashboard v-if="showDash"
+        v-bind:summary="summary"
+        v-bind:sites="sites"
+    />
+
+  </div>
 </template>
 
 <script>
@@ -37,6 +48,7 @@ export default {
       //this.length_of_stay = data.length_of_stay;
       //this.age_groups = data.age_groups;
       this.component = "Dashboard";
+      this.showDash = true;
     });
 
     bus.$on("newSearch", () => {
@@ -60,6 +72,7 @@ export default {
       // -- Down is good --
       connections: [],
       resources: [],
+      showDash: false
     };
   },
   methods: {

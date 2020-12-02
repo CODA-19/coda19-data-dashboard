@@ -1,6 +1,6 @@
 <template>
   <v-container class="mainContainer">
-        <h1>{{ $t("titleTxt") }}</h1>
+<!--        <h1>{{ $t("titleTxt") }}</h1>-->
     <div class="row">
     <div class="col-lg-7 col-md-7">
       <b-form  @submit.prevent="onSubmit" @reset="onReset">
