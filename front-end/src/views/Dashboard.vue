@@ -80,28 +80,26 @@ export default {
       type: Boolean
     }
   },
-  created(){
-    this.getLegendColor();
-    this.getLegendSites();
+  computed:{
+    legendSites(){
+      var legendSites = this.sites;
+      legendSites.push('Mean');
+      return legendSites;
+    },
+    legendColors(){
+      var legendColors = colors.slice(0, this.sites.length-1);
+      legendColors.push('black');
+      return legendColors;
+    }
   },
   methods:{
     newSearch() {
       bus.$emit('newSearch')
-    },
-    getLegendColor(){
-      this.legendColors = colors.slice(0, this.sites.length);
-      this.legendColors.push('black')
-    },
-    getLegendSites(){
-      this.legendSites = this.sites;
-      this.legendSites.push('Mean');
     }
   },
   data(){
     return {
       colors: colors,
-      legendColors: this.legendColors,
-      legendSites: this.legendSites,
       highlight: null
     }
   }

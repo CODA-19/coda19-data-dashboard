@@ -51,14 +51,14 @@ export default {
       this.showDash = true;
     });
 
-    bus.$on("newSearch", () => {
-      this.component = "SelectData";
-
-      fetch('http://localhost:3000/sites')
-          .then(res => res.json())
-          .then(json => json.connections)
-          .then(conn => this.load(conn));
-    });
+    // bus.$on("newSearch", () => {
+    //   this.component = "SelectData";
+    //
+    //   fetch('http://localhost:3000/sites')
+    //       .then(res => res.json())
+    //       .then(json => json.connections)
+    //       .then(conn => this.load(conn));
+    // });
 
     await this.fetch('http://localhost:3000/sites');
   },

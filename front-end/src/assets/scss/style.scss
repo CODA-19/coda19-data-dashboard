@@ -5,6 +5,11 @@
 html, body{
   overflow-y: auto;
 }
+@media (min-width: 1400px){
+  .container {
+    max-width: 1400px;
+  }
+}
 
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
