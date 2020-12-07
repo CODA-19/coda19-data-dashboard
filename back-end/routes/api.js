@@ -177,19 +177,22 @@ router.get('/nsummary', async (req, res) => {
     const dat = conns.map(conn => ([conn.value.mean, conn.uid.toString()]));
     
     // Weighted mean
-    const sum = (acc, el) => acc + el;
-    let totalN = conns.map(conn => conn.value.n).reduce(sum);
-    const mean = conns.map(conn => conn.value.mean * (conn.value.n / totalN)).reduce(sum);
+    if(res.datatype === "number"){
+      const sum = (acc, el) => acc + el;
+      let totalN = conns.map(conn => conn.value.n).reduce(sum);
+      const mean = conns.map(conn => conn.value.mean * (conn.value.n / totalN)).reduce(sum);
 
-    // Range
-    const allMeans = conns.map(conn => conn.value.mean);
-    const range = [Math.min(...allMeans), Math.max(...allMeans)];
+      // Range
+      const allMeans = conns.map(conn => conn.value.mean);
+      const range = [Math.min(...allMeans), Math.max(...allMeans)];
+
+      tmpResponse.summary.means.push(mean);
+      tmpResponse.summary.ranges.push(range);
+    }
 
     // Saving to obj.
     tmpResponse.summary.categories.push(cat);
     tmpResponse.summary.data.push(dat);
-    tmpResponse.summary.means.push(mean);
-    tmpResponse.summary.ranges.push(range);
     tmpResponse.summary.types.push("value");
   }
 
