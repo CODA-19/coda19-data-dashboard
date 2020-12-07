@@ -1,10 +1,9 @@
 <template>
-  <v-container class="mainContainer">
+  <v-container v-bind:class="[{ 'slim': minimize },'mainContainer']">
 <!--        <h1>{{ $t("titleTxt") }}</h1>-->
     <div class="row">
     <div class="col-lg-7 col-md-7">
-      <b-form  @submit.prevent="onSubmit" @reset="onReset">
-
+      <b-form  v-bind:class="{'inline': minimize}" @submit.prevent="onSubmit" @reset="onReset">
           <div class="selectData"> <span>{{ $t('selectVariableTxt') }}</span>
 
             <multiselect v-model="form.variables"
@@ -24,7 +23,6 @@
 
             </multiselect>
           </div>
-
           <div class="selectData">
             <span>{{ $t("selectHospitalTxt") }}</span>
           <multiselect v-model="conns"
@@ -57,9 +55,19 @@
                 <div class="connectedPanel">
                   <h3>{{ $t("siteTitleTxt") }}</h3>
                   <hr />
-                  <ul v-for="conn in connections" v-bind:key="conn.uid">
-                    <li class="ok">{{ conn.name }}</li>
-                  </ul>
+                  <div class="row">
+                  <div class="col-log-6 col-md-6 siteList">
+                    <ul v-for="conn in connections.slice(0,5)" v-bind:key="conn.uid">
+                      <li class="ok">{{ conn.name }}</li>
+                    </ul>
+                  </div>
+
+                  <div class="col-log-6 col-md-6 siteList">
+                    <ul v-for="conn in connections.slice(5,10)" v-bind:key="conn.uid">
+                      <li class="ok">{{ conn.name }}</li>
+                    </ul>
+                  </div>
+                  </div>
                 </div>
 
     </div>
@@ -80,7 +88,7 @@ const idResource = (res) => `${res.type}|${res.attribute}|${res.datatype}`;
 
 export default {
   name: "AppHeader",
-  props: [ 'connections', 'resources' ],
+  props: [ 'connections', 'resources', 'minimize'],
   computed: {
     options() {
       return [

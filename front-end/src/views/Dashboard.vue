@@ -17,17 +17,16 @@
         <d3_plot v-if="chart" :colors="colors" :sites="sites" :data="summary" ></d3_plot>
         <plotChart v-if="!chart" style="height: 40vh" :colors="colors" :sites="sites" :data="summary" :highlight="highlight" autoresize></plotChart>
       </v-row>
-      <v-row style="flex-direction: column">
-        <h3>{{$t('legendTxt')}}</h3>
-        <Legend :colors="legendColors" :sites="legendSites" :highlight.sync="highlight"></Legend>
-      </v-row>
-      <v-row>
-
-      </v-row>
-
     </div>
-
       <div class="col-lg-6 col-md-12 col-sm-12">
+        <v-row style="flex-direction: column">
+          <h3>{{$t('legendTxt')}}</h3>
+          <Legend :colors="legendColors" :sites="legendSites" :highlight.sync="highlight"></Legend>
+        </v-row>
+      </div>
+    </v-row>
+    <v-row>
+      <div class="col-lg-6 col-md-12 col-sm-12" v-if="lengthOfStay || ageGroups">
         <v-row class="chartPanel">
           <h3>{{$t("keyVariablesTxt")}}</h3>
         </v-row>

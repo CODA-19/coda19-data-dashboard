@@ -13,6 +13,7 @@
   <SelectData
         v-bind:connections="connections"
         v-bind:resources="resources"
+        v-bind:minimize = "showDash"
     />
   <Dashboard v-if="showDash"
         v-bind:summary="summary"

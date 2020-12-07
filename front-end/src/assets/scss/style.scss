@@ -35,7 +35,14 @@ html, body{
   border-radius: 12px;
   padding: 22px;
 
-  ul{ margin-left:10px; }
+  .siteList{
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+  ul{
+    margin-left:10px;
+    margin-bottom: 8px;
+  }
   li { padding-left:5px; }
   li.ok{ list-style-type: "\02713"; }
 }
@@ -45,6 +52,9 @@ html, body{
 
   h3{
     margin: auto;
+  }
+  &.slim{
+    margin-bottom: 0;
   }
 }
 
