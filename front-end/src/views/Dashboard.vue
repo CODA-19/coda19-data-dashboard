@@ -26,19 +26,22 @@
       </div>
     </v-row>
     <v-row>
-      <div class="col-lg-6 col-md-12 col-sm-12" v-if="lengthOfStay || ageGroups">
+      <div class="col-lg-12 col-md-12 col-sm-12" v-if="lengthOfStay || ageGroups">
         <v-row class="chartPanel">
           <h3>{{$t("keyVariablesTxt")}}</h3>
         </v-row>
+      </div>
 
-      <v-row class="chartPanel">
+      <v-row>
+        <div class="col-lg-6 col-md-12 col-sm-12 chartPanel">
         <scatterChart style="height: 40vh" v-bind:colors="colors"  v-if="lengthOfStay" v-bind:data="lengthOfStay" autoresize></scatterChart>
-      </v-row>
-      <v-row class="chartPanel">
+      </div>
+        <div class="col-lg-6 col-md-12 col-sm-12 chartPanel">
         <BarChart style="height: 40vh" v-bind:colors="colors" v-if="ageGroups" v-bind:data="ageGroups" autoresize></BarChart>
+        </div>
       </v-row>
 
-    </div>
+
     </v-row>
 
   </v-container>

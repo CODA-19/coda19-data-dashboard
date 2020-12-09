@@ -16,8 +16,10 @@
         v-bind:minimize = "showDash"
     />
   <Dashboard v-if="showDash"
-        v-bind:summary="summary"
-        v-bind:sites="sites"
+             v-bind:summary="summary"
+             v-bind:sites="sites"
+             v-bind:ageGroups="age_groups"
+             v-bind:lengthOfStay="length_of_stay"
     />
 
   </div>
@@ -48,6 +50,10 @@ export default {
       this.sites = data.summary.sites;
       //this.length_of_stay = data.length_of_stay;
       //this.age_groups = data.age_groups;
+      var ageIdx = data.summary.categories.indexOf('patient|age|number'),
+          stayIdx = data.summary.categories.indexOf('episode|los|number')
+      this.age_groups = data.summary.data[ageIdx];
+      this.length_of_stay = data.summary.data[stayIdx];
       this.component = "Dashboard";
       this.showDash = true;
     });
