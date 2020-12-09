@@ -3,6 +3,7 @@ import Home from '@/views/Home'
 import AppHeader from '@/components/AppHeader'
 import Footer from '@/components/Footer'
 import About from '@/views/About'
+import Request from '@/views/Request'
 import SelectData from '@/views/SelectData'
 import Connections from "@/views/Connections";
 import UI from '@/views/UI'
@@ -32,6 +33,18 @@ const routes = [
     },
     meta: {
       title: "CODA 19 - About"
+    }
+  },
+    {
+    path: '/request',
+    name: 'Request',
+    components: {
+      header: AppHeader,
+      default: Request,
+      footer: Footer
+    },
+    meta: {
+      title: "CODA 19 - Request"
     }
   },
   {

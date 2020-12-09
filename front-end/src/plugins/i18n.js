@@ -39,7 +39,11 @@ const messages = {
 
      // header
      homeTxt: "Home",
-     activeConnectionsTxt: "Active Connections"
+     activeConnectionsTxt: "Active Connections",
+     requestAccessTxt: "Request access",
+
+      // request access page
+      requestAccessDescriptionTxt: " To get access to CODA-19, contact this person",
   },
 
   'fr': {
@@ -78,7 +82,12 @@ const messages = {
 
      // header
      homeTxt: "Accueil",
-     activeConnectionsTxt: "Connections actives"
+     activeConnectionsTxt: "Connections actives",
+     requestAccessTxt: "Demande d'accès",
+
+      // request access page
+      requestAccessDescriptionTxt: " Pour obtenir accès aux données de CODA-19, contactez",
+
   }};
 
 const i18n = new VueI18n({locale: 'en',  fallbackLocale: 'fr',  messages});

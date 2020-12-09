@@ -22,6 +22,9 @@
       </b-navbar-nav>
 
       <b-navbar-nav style="flex-direction: row">
+        <b-nav-item >
+          <router-link to="/request" class="nav-link">{{$t('requestAccessTxt')}}</router-link>
+        </b-nav-item>
       <!--        <b-nav-item href="" class="btn btn-default btn-rounded" data-toggle="modal" data-target="#modalLoginForm">Access Data</b-nav-item>-->
       <b-button variant="info" @click="keycloak.logout()">{{$t('logoutTxt')}}</b-button>
         <b-nav-item id="langBtn" @click="toggleLocale">{{$t('langTxt')}}</b-nav-item>
