@@ -33,11 +33,11 @@
       </div>
 
       <v-row>
-        <div class="col-lg-6 col-md-12 col-sm-12 chartPanel">
-        <scatterChart style="height: 40vh" v-bind:colors="colors"  v-if="lengthOfStay" v-bind:data="lengthOfStay" autoresize></scatterChart>
+        <div class="col-lg-6 col-md-12 col-sm-12 chartPanel" v-if="lengthOfStay" >
+        <scatterChart style="height: 40vh" v-bind:colors="colors"  v-bind:data="lengthOfStay" autoresize></scatterChart>
       </div>
-        <div class="col-lg-6 col-md-12 col-sm-12 chartPanel">
-        <BarChart style="height: 40vh" v-bind:colors="colors" v-if="ageGroups" v-bind:data="ageGroups" autoresize></BarChart>
+        <div class="col-lg-6 col-md-12 col-sm-12 chartPanel" v-if="ageGroups">
+        <BarChart style="height: 40vh" v-bind:colors="colors"  v-bind:data="ageGroups" autoresize></BarChart>
         </div>
       </v-row>
 
