@@ -1,8 +1,8 @@
 <template>
   <div class="mainContainer">
-    <v-row id="backBtn">
-      <a @click="newSearch"><b-button variant="outline-dark"><b-icon icon="arrow-left-circle" aria-hidden="true"></b-icon>   {{$t('newSearchTxt')}}</b-button></a>
-    </v-row>
+<!--    <v-row id="backBtn">-->
+<!--      <a @click="newSearch"><b-button variant="outline-dark"><b-icon icon="arrow-left-circle" aria-hidden="true"></b-icon>   {{$t('newSearchTxt')}}</b-button></a>-->
+<!--    </v-row>-->
   <v-container >
     <v-row>
     <div class="col-lg-6 col-md-12 col-sm-12">
@@ -17,29 +17,31 @@
         <d3_plot v-if="chart" :colors="colors" :sites="sites" :data="summary" ></d3_plot>
         <plotChart v-if="!chart" style="height: 40vh" :colors="colors" :sites="sites" :data="summary" :highlight="highlight" autoresize></plotChart>
       </v-row>
-      <v-row style="flex-direction: column">
-        <h3>{{$t('legendTxt')}}</h3>
-        <Legend :colors="legendColors" :sites="legendSites" :highlight.sync="highlight"></Legend>
-      </v-row>
-      <v-row>
-
-      </v-row>
-
     </div>
-
       <div class="col-lg-6 col-md-12 col-sm-12">
+        <v-row style="flex-direction: column">
+          <h3>{{$t('legendTxt')}}</h3>
+          <Legend :colors="legendColors" :sites="legendSites" :highlight.sync="highlight"></Legend>
+        </v-row>
+      </div>
+    </v-row>
+    <v-row>
+      <div class="col-lg-12 col-md-12 col-sm-12" v-if="lengthOfStay || ageGroups">
         <v-row class="chartPanel">
           <h3>{{$t("keyVariablesTxt")}}</h3>
         </v-row>
+      </div>
 
-      <v-row class="chartPanel">
+      <v-row>
+        <div class="col-lg-6 col-md-12 col-sm-12 chartPanel">
         <scatterChart style="height: 40vh" v-bind:colors="colors"  v-if="lengthOfStay" v-bind:data="lengthOfStay" autoresize></scatterChart>
-      </v-row>
-      <v-row class="chartPanel">
+      </div>
+        <div class="col-lg-6 col-md-12 col-sm-12 chartPanel">
         <BarChart style="height: 40vh" v-bind:colors="colors" v-if="ageGroups" v-bind:data="ageGroups" autoresize></BarChart>
+        </div>
       </v-row>
 
-    </div>
+
     </v-row>
 
   </v-container>
@@ -80,28 +82,26 @@ export default {
       type: Boolean
     }
   },
-  created(){
-    this.getLegendColor();
-    this.getLegendSites();
+  computed:{
+    legendSites(){
+      var legendSites = this.sites;
+      legendSites.push('Mean');
+      return legendSites;
+    },
+    legendColors(){
+      var legendColors = colors.slice(0, this.sites.length-1);
+      legendColors.push('black');
+      return legendColors;
+    }
   },
   methods:{
     newSearch() {
       bus.$emit('newSearch')
-    },
-    getLegendColor(){
-      this.legendColors = colors.slice(0, this.sites.length);
-      this.legendColors.push('black')
-    },
-    getLegendSites(){
-      this.legendSites = this.sites;
-      this.legendSites.push('Mean');
     }
   },
   data(){
     return {
       colors: colors,
-      legendColors: this.legendColors,
-      legendSites: this.legendSites,
       highlight: null
     }
   }

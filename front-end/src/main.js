@@ -23,7 +23,7 @@ Vue.use(IconsPlugin)
 
 Vue.use(underscore)
 
-Vue.use(VueLogger, {logLevel: 'debug'});
+Vue.use(VueLogger, { logLevel: 'debug' });
 
 Vue.config.productionTip = false
 

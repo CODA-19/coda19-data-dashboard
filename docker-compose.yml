@@ -1,5 +1,12 @@
 version: "3.8"
 services:
+  api_111:
+    container_name: api_111
+    build: ../coda19-stats-api
+    environment:
+      - FAKE_AIDBOX=true
+    ports:
+      - 8082:8082 # For debugging at least one of them
   spoke_111:
     container_name: spoke_111
     build: ../coda19-site-api
@@ -7,8 +14,15 @@ services:
       - CODA19_SITE_API_HUB_API_URL=http://hub:8080/
       - CODA19_SITE_API_HOSPITAL_CODE=111
       - CODA19_SITE_API_SERVER_PORT=5418
+      - API_ENDPOINT=http://api_111:8082
     depends_on:
       - hub
+      - api_111
+  api_112:
+    container_name: api_112
+    build: ../coda19-stats-api
+    environment:
+      - FAKE_AIDBOX=true
   spoke_112:
     container_name: spoke_112
     build: ../coda19-site-api
@@ -16,6 +30,7 @@ services:
       - CODA19_SITE_API_HUB_API_URL=http://hub:8080/
       - CODA19_SITE_API_HOSPITAL_CODE=112
       - CODA19_SITE_API_SERVER_PORT=5418
+      - API_ENDPOINT=http://api_112:8082
     depends_on:
       - hub
   hub:
@@ -24,13 +39,21 @@ services:
     environment:
       - CODA19_HUB_API_SERVER_PORT=8080
     ports:
-      - 8080:8080
-  # If you reenable dash, it won't work right away. URL in ".env" need to be changed to localhost:8080
-  # and need docker-compose up --build to rebuild node app.
-  #dash:
-    #container_name: dash
-    #build: ../coda19-hub-dashboard
-    #ports:
-    #  - 3000:8080
-    #depends_on:
-    #  - hub
+      - 8081:8080
+  dash-backend:
+    container_name: dash-backend
+    build: ./back-end
+    ports:
+      - 3000:3000
+    environment:
+      - HUB_ENDPOINT=http://hub:8080
+      - PORT=3000
+    depends_on:
+      - hub
+  dash-frontend:
+    container_name: dash-frontend
+    build: ./front-end
+    ports:
+      - 8000:8000
+    depends_on:
+      - dash-backend

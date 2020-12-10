@@ -9,7 +9,7 @@ const messages = {
     langTxt: "Fr",
     logoutTxt: "logout",
     siteTitleTxt: "Connected repositories",
-    selectVariableTxt: "Please select a variable: ",
+    selectVariableTxt: "Please select a variable among cross-site common resources: ",
     length_of_stay: "Length of stay",
     age_groups: "Age groups",
     selectDaysTxt: "Days of selection from now",
@@ -35,7 +35,15 @@ const messages = {
     age_5_to_19: "5 to 19 yrs",
     age_20_to_49: "20 to 49 yrs",
     age_50_to_64: "50 to 64 yrs",
-    age_65_and_up: "65 and up"
+    age_65_and_up: "65 and up",
+
+     // header
+     homeTxt: "Home",
+     activeConnectionsTxt: "Active Connections",
+     requestAccessTxt: "Request access",
+
+      // request access page
+      requestAccessDescriptionTxt: " To get access to CODA-19, contact this person",
   },
 
   'fr': {
@@ -44,7 +52,7 @@ const messages = {
     langTxt: "En",
     logoutTxt: "Se déconnecter",
     siteTitleTxt: "Dépôts connectés",
-    selectVariableTxt: "Veuillez sélectionner une variable: ",
+    selectVariableTxt: "Veuillez sélectionner une variable parmis les resources communes: ",
     length_of_stay: "Durée du séjour",
     age_groups: "Les groupes d'âge",
     selectDaysTxt: "Jours de sélection à partir de maintenant",
@@ -70,7 +78,16 @@ const messages = {
     age_5_to_19: "5 à 19 ans",
     age_20_to_49: "20 à 49 ans",
     age_50_to_64: "50 à 64 ans",
-    age_65_and_up: "65 et plus"
+    age_65_and_up: "65 et plus",
+
+     // header
+     homeTxt: "Accueil",
+     activeConnectionsTxt: "Connections actives",
+     requestAccessTxt: "Demande d'accès",
+
+      // request access page
+      requestAccessDescriptionTxt: " Pour obtenir accès aux données de CODA-19, contactez",
+
   }};
 
 const i18n = new VueI18n({locale: 'en',  fallbackLocale: 'fr',  messages});

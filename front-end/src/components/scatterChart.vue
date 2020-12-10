@@ -67,46 +67,47 @@ export default {
       };
       this.data.forEach((siteData,i)=>{
         var data = [], rangeData = [];
-        data[0] = siteData[0][0]
-        data[1] = siteData[0][2] === "Mean" ? this.$t('meanTxt') : siteData[0][2];
+        // data[0] = siteData[0][0]
+        // data[1] = siteData[0][2] === "Mean" ? this.$t('meanTxt') : siteData[0][2];
+        data = siteData,
 
-        rangeData[0] = siteData[0][1]
-        rangeData[1] = siteData[0][2] === "Mean" ? this.$t('meanTxt') : siteData[0][1];
+        // rangeData[0] = siteData[0][1]
+        // rangeData[1] = siteData[0][2] === "Mean" ? this.$t('meanTxt') : siteData[0][1];
 
         option.series.push({
-          name: siteData[0][2] === "Mean" ? this.$t('meanTxt') : siteData[0][2],
+          name: siteData[1] === "Mean" ? this.$t('meanTxt') : siteData[1],
           data: [data],
-          itemStyle:{color:siteData[0][2]==="Mean"?"black":this.colors[i]},
+          itemStyle:{color:siteData[1]==="Mean"?"black":this.colors[i]},
           type: 'scatter',
           symbolSize: 20
-        }),
-            rangeData = [
-              {
-                value:[rangeData[0][0], data[1]],
-                symbol: 'line',
-                symbolRotate: 90,
-                itemStyle: {
-                  color: siteData[0][2]==="Mean"?"black":this.colors[i],
-                },
-                symbolSize: 10,
-              },
-              {
-                value:[rangeData[0][1], data[1]],
-                symbol: 'line',
-                symbolRotate: 90,
-                itemStyle: {
-                  color: siteData[0][2]==="Mean"?"black":this.colors[i],
-                },
-                symbolSize: 10,
-              }
-            ],
-            option.series.push({
-              name: siteData[0][2] === "Mean" ? this.$t('meanTxt') : siteData[0][2],
-              data: rangeData,
-              lineStyle:{color:siteData[0][2]==="Mean"?"black":this.colors[i]},
-              type:'line',
-              symbolSize: 10
-            })
+        })//,
+            // rangeData = [
+            //   {
+            //     value:[rangeData[0][0], data[1]],
+            //     symbol: 'line',
+            //     symbolRotate: 90,
+            //     itemStyle: {
+            //       color: siteData[0][2]==="Mean"?"black":this.colors[i],
+            //     },
+            //     symbolSize: 10,
+            //   },
+            //   {
+            //     value:[rangeData[0][1], data[1]],
+            //     symbol: 'line',
+            //     symbolRotate: 90,
+            //     itemStyle: {
+            //       color: siteData[0][2]==="Mean"?"black":this.colors[i],
+            //     },
+            //     symbolSize: 10,
+            //   }
+            // ],
+            // option.series.push({
+            //   name: siteData[0][2] === "Mean" ? this.$t('meanTxt') : siteData[0][2],
+            //   data: rangeData,
+            //   lineStyle:{color:siteData[0][2]==="Mean"?"black":this.colors[i]},
+            //   type:'line',
+            //   symbolSize: 10
+            // })
 
       });
       return option
