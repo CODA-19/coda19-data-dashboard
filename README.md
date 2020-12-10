@@ -14,7 +14,16 @@ As part of a microservice environment, the dashboard will communicate with:
 
 The development server needs to launch two instaces, the back and front end. This is done by running `yarn start` which opens the backend `localhost:3000` and front-end `localhost:8000`.
 
-As this application is part of a larger insfrastructure, this application alone will have limited functionalities. To launch a test infrastructure, you can use `docker-compose up` at the root of this repo. It will require a local copy of the other repo in the parent folder.
+As this application is part of a larger insfrastructure, this application alone will have limited functionalities. To launch a test infrastructure, you can use `docker-compose up` at the root of this repo. It will require a local copy of the other repo in the parent folder. Meaning:
+
+```
+ROOT
+ |-> coda19-data-dashboard
+   |-> Launch docker-compose from here.
+ |-> coda19-hub-api
+ |-> coda19-site-api
+ |-> coda19-stats-api
+```
 
 ## Dependencies
 
