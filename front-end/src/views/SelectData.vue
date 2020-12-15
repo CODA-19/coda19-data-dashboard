@@ -25,7 +25,7 @@
           </div>
           <div class="selectData">
             <span>{{ $t("selectHospitalTxt") }}</span>
-          <multiselect v-model="conns"
+          <multiselect v-model="form.sites"
                        :placeholder="$t('selectHospitalTxt')"
                        :options="connectionOptions"
                        group-label="group"
@@ -39,14 +39,14 @@
                        :showLabels="false"
           >
             <template slot="clear" slot-scope="sites">
-              <div class="multiselect__clear" v-if="conns.length" @mousedown.prevent.stop="clearAllSites(sites.search)"></div>
+              <div class="multiselect__clear" v-if="form.sites.length" @mousedown.prevent.stop="clearAllSites(sites.search)"></div>
             </template><span slot="noResult">No site found.</span>
 
           </multiselect>
         </div>
 
 <div class="col-lg-6 col-md-4 submit-btn">
-        <b-button type="submit" pill block variant="success">{{$t("selectTxt")}}</b-button>
+        <b-button type="submit" pill block variant="success" :disabled="dataUpdate">{{$t("selectTxt")}}</b-button>
 </div>
       </b-form>
     </div>
@@ -102,8 +102,14 @@ export default {
       var sites = this.connections.map(conn => ({ 'text': conn.name, 'value': conn.uid }));
       var group = this.$t("selectAllTxt");
       var connOptions = [{sites:sites, group:group}]
-      this.conns = sites;
+      this.form.sites= sites;
       return connOptions
+    },
+    resourceOptions(){
+       return this.resources.map(res => ({ 'text': nameResource(res), 'value': idResource(res) }));
+    },
+    dataUpdate(){
+      return _.isEqual(this.form, this.cached);
     }
   },
   data() {
@@ -111,12 +117,15 @@ export default {
       selected: null,
       conns: [],
       connOptions: [],
-      resourceOptions: [],
       allSelected: true,
       indeterminate: false,
       form: {
-        query: null,
         variables: [],
+        sites: []
+      },
+      cached: {
+        variables: [],
+        sites: []
       },
       sites: [],
     };
@@ -144,7 +153,7 @@ export default {
     },
     getSummaryData: async function() {
       const post_data = {
-        conns: this.conns,
+        conns: this.form.sites,
         sites: ["CHUM", "MUHC"],
         query: this.form.query,
         variables: ["length_of_stay"],
@@ -159,7 +168,9 @@ export default {
     },
 
     getNSummaryData: async function() {
-      const url = `http://localhost:3000/api/nsummary?sites=${encodeURI(this.conns.map(conn=>{return conn.value}))}&var=${encodeURI(this.form.variables.map(conn=>{return conn.value}))}`;
+      const url = `http://localhost:3000/api/nsummary?sites=${encodeURI(this.form.sites.map(conn=>{return conn.value}))}&var=${encodeURI(this.form.variables.map(conn=>{return conn.value}))}`;
+      this.cached.variables = this.form.variables;
+      this.cached.sites = this.form.sites;
       const dat = await fetch(url).then(res => res.json());
       return dat;
     },
@@ -173,13 +184,13 @@ export default {
     },
     onReset() {},
     toggleAll(checked) {
-      this.conns = checked ? this.connOptions.map(opt => opt.value) : [];
+      this.form.sites = checked ? this.connOptions.map(opt => opt.value) : [];
     },
     clearAllVar () {
       this.form.variables = []
     },
     clearAllSites () {
-      this.conns = []
+      this.form.sites = []
     }
   },
   watch: {
@@ -187,10 +198,7 @@ export default {
       var sites = this.connections.map(conn => ({ 'text': conn.name, 'value': conn.uid }));
       var group = this.$t("selectAllTxt");
       this.connOptions.push({sites:sites, group:group})
-      this.conns = sites;
-    },
-    resources(newVal, oldVal) {
-      this.resourceOptions = this.resources.map(res => ({ 'text': nameResource(res), 'value': idResource(res) }));
+      this.form.sites = sites;
     },
     conns(newVal, oldVal) {
       if (newVal.length === 0) {
