@@ -15,6 +15,7 @@
                          :clear-on-select="false"
                          :close-on-select="false"
                          :showLabels="false"
+                         :allow-empty="false"
             >
 
               <template slot="clear" slot-scope="variables">
@@ -109,7 +110,7 @@ export default {
        return this.resources.map(res => ({ 'text': nameResource(res), 'value': idResource(res) }));
     },
     dataUpdate(){
-      return _.isEqual(this.form, this.cached);
+      return this.form.sites.length === 0 || this.form.variables.length === 0 || _.isEqual(this.form, this.cached);
     }
   },
   data() {
