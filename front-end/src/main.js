@@ -10,7 +10,8 @@ import vuetify from './plugins/vuetify';
 import Axios from 'axios'
 import VueLogger from 'vuejs-logger';
 import i18n from '@/plugins/i18n';
-import * as Keycloak from 'keycloak-js';
+import keycloak from './keycloak';
+import TokenContext from './api/TokenContext';
 
 Vue.prototype.$http = Axios;
 
@@ -30,51 +31,40 @@ Vue.config.productionTip = false
 // Note(malavv) : The dual instantiation of Vue is normal, here it is used just for an encapsulated EventBus.
 export const bus = new Vue();
 
-// // prep for Keycloak
-// let initOptions = {
-//   url: 'http://127.0.0.1:8080/auth', realm: 'myrealm', clientId: 'app-vue', onLoad: 'login-required'
-// }
-//
-// let keycloak = Keycloak(initOptions);
-//
-// keycloak.init({ onLoad: initOptions.onLoad }).then((auth) => {
-//   if (!auth) {
-//     window.location.reload();
-//   } else {
-//     Vue.$log.info("Authenticated");
-//
-//     new Vue({
-//       router,
-//       vuetify,
-//       i18n,
-//       render: h => h(App, { props: { keycloak: keycloak } })
-//     }).$mount('#app')
-//
-//   }
-//
-//
-// //Token Refresh
-//   setInterval(() => {
-//     keycloak.updateToken(70).then((refreshed) => {
-//       if (refreshed) {
-//         Vue.$log.info('Token refreshed' + refreshed);
-//       } else {
-//         Vue.$log.warn('Token not refreshed, valid for '
-//           + Math.round(keycloak.tokenParsed.exp + keycloak.timeSkew - new Date().getTime() / 1000) + ' seconds');
-//       }
-//     }).catch(() => {
-//       Vue.$log.error('Failed to refresh token');
-//     });
-//   }, 6000)
-//
-// }).catch(() => {
-//   Vue.$log.error("Authenticated Failed");
-// });
+// prep for Keycloak
+keycloak.init({ onLoad: 'login-required' }).then((auth) => {
+  if (!auth) {
+    window.location.reload();
+  } else {
+    Vue.$log.info("Authenticated");
+
+    TokenContext.setToken(keycloak.token);
+
+    new Vue({
+      router,
+      vuetify,
+      i18n,
+      render: h => h(App, { props: { keycloak: keycloak } })
+    }).$mount('#app')
+
+  }
 
 
-new Vue({
-  router,
-  vuetify,
-  i18n,
-  render: function (h) { return h(App) }
-}).$mount('#app')
+  //Token Refresh
+  setInterval(() => {
+    keycloak.updateToken(70).then((refreshed) => {
+      if (refreshed) {
+        Vue.$log.info('Token refreshed' + refreshed);
+        TokenContext.setToken(keycloak.token);
+      } else {
+        Vue.$log.warn('Token not refreshed, valid for '
+          + Math.round(keycloak.tokenParsed.exp + keycloak.timeSkew - new Date().getTime() / 1000) + ' seconds');
+      }
+    }).catch(() => {
+      Vue.$log.error('Failed to refresh token');
+    });
+  }, 6000)
+
+}).catch(() => {
+  Vue.$log.error("Authenticated Failed");
+});

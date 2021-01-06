@@ -3,3 +3,4 @@ node_modules/**/*
 scripts/.RData
 scripts/.Rhistory
 .idea
+back-end/node_modules/**/*

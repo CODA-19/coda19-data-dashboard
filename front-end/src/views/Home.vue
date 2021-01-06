@@ -32,6 +32,8 @@ import Dashboard from "@/views/Dashboard";
 import SelectData from "@/views/SelectData";
 import Connections from "@/views/Connections";
 import { bus } from "@/main";
+import SiteApi from '@/api/SiteApi'
+
 
 const intersection = (...sets) => sets.reduce((acc, el) => acc.filter({}.hasOwnProperty.bind(el)), Object.keys(sets[0]));
 const getSiteKeys = (resources) => resources.reduce((acc, el) => { acc[`${el.type}|${el.attribute}|${el.datatype}`] = el; return acc; }, {});
@@ -67,7 +69,9 @@ export default {
     //       .then(conn => this.load(conn));
     // });
 
-    await this.fetch('http://localhost:3000/sites');
+    await SiteApi.get().then(res => res.data)
+          .then(json => json.connections)
+          .then(conn => this.load(conn));
   },
   data() {
     return {

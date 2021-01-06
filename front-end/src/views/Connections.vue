@@ -16,14 +16,15 @@
 
 <script>
 import ActiveConnection from "@/components/ActiveConnection";
+import SiteApi from '@/api/SiteApi'
 
 export default {
     components: {
         ActiveConnection,
     },
     created() {
-      fetch('http://localhost:3000/sites')
-        .then(res => res.json())
+      SiteApi.get()
+        .then(res => res.data)
         .then(json => json.connections)
         .then(conn => (this.connections = conn));
     },

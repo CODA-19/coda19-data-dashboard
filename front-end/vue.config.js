@@ -3,6 +3,8 @@ module.exports = {
     "vuetify"
   ],
   devServer: {
-    port: 8000
+    port: 8000,
+    https: true,
+    disableHostCheck: true
   }
 }
