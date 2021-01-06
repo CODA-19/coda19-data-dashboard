@@ -44,6 +44,7 @@ const messages = {
 
       // request access page
       requestAccessDescriptionTxt: " To get access to CODA-19, contact this person",
+      mailRequestAccessTxt: "mailto:address_a_determiner@coda19.ca?subject=Request access"
   },
 
   'fr': {
@@ -87,6 +88,7 @@ const messages = {
 
       // request access page
       requestAccessDescriptionTxt: " Pour obtenir accès aux données de CODA-19, contactez",
+      mailRequestAccessTxt: "mailto:address_a_determiner@coda19.ca?subject=Demande d'accès"
 
   }};
 

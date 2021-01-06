@@ -5,7 +5,7 @@
     </div>
       <div class="text">
       <p>{{$t('requestAccessDescriptionTxt')}}</p>
-      <a href="mailto:address_a_determiner@coda19.ca?subject=Demande d'accès" target="_blank">access@coda19.ca</a>
+      <a :href="$t('mailRequestAccessTxt')" target="_blank">access@coda19.ca</a>
     </div>
   </v-container>
 </template>

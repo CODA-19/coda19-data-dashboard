@@ -28,6 +28,10 @@ html, body{
 }
 .submit-btn{
   margin: auto;
+
+  .btn-success:disabled{
+    cursor: unset;
+  }
 }
 .connectedPanel{
   text-align: left;
