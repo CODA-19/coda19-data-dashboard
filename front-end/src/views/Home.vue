@@ -63,7 +63,7 @@ export default {
     // bus.$on("newSearch", () => {
     //   this.component = "SelectData";
     //
-    //   fetch('http://localhost:3000/sites')
+    //   fetch('http://localhost:3000/sites') // Do not use this fetch pattern, use apis instead.
     //       .then(res => res.json())
     //       .then(json => json.connections)
     //       .then(conn => this.load(conn));

@@ -8,6 +8,7 @@
 
 <script>
 import * as d3 from 'd3'
+import GeneralApi from '../api/GeneralApi';
 
 export default {
   name: 'Forest',
@@ -16,9 +17,8 @@ export default {
   },
   mounted() {
     let that = this;
-    fetch('http://localhost:3000/api/data',{
-    })
-        .then(response => response.json())
+    GeneralApi.data()
+        .then(response => response.data)
         .then(data => {console.log(data);that.forestPlot(data.plotConfig, data.data)})
   },
   created() {
