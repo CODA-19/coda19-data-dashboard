@@ -8,6 +8,8 @@ const path = require('path')
 const cookieParser = require('cookie-parser')
 const logger = require('morgan')
 
+const KeycloakFactory = require('./keycloak-factory');
+
 const indexRouter = require('./routes/index')
 const apiRouter = require('./routes/api')
 const authRouter = require('./routes/auth')
@@ -30,12 +32,15 @@ app.use(express.urlencoded({ extended: false }))
 app.use(cookieParser())
 app.use(express.static(path.join(__dirname, 'public')))
 
+const keycloak = KeycloakFactory.get(app);
+app.use(keycloak.middleware());
+
 app.use('/', indexRouter)
-app.use('/api', apiRouter)
-app.use('/auth', authRouter)
-app.use('/sites', sitesRouter)
-app.use('/exec', execRouter)
-app.use('/explorer', explorerRouter)
+app.use('/api', keycloak.protect(), apiRouter)
+app.use('/auth', keycloak.protect(), authRouter)
+app.use('/sites', keycloak.protect(), sitesRouter)
+app.use('/exec', keycloak.protect(), execRouter)
+app.use('/explorer', keycloak.protect(), explorerRouter)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
