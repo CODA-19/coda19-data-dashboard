@@ -59,8 +59,7 @@ exec("Rscript ./scripts/meta.R -la", (error, stdout, stderr) => {
       
     })
     
-  })
-  
+  }) 
 })
 
 let length_of_stay_data = [

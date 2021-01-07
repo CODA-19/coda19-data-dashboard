@@ -1,13 +1,10 @@
 const express = require('express');
-const router = express.Router()
-const { _ } = require('underscore')
-const { response } = require('../app')
-const axios = require('axios').default
+const router = express.Router();
+const axiosInstance = require('../api/axios-instance');
 
 router.get('/', async function(req, res, next) {
-
   // SiteInfo from all connected sites
-  const sites = await axios.get(`${process.env.HUB_ENDPOINT}/info`).then(res => res.data);
+  const sites = await axiosInstance.get('/info', {headers: req.headers}).then(res => res.data);
 
   res.status(200).send(sites);
 })

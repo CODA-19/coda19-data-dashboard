@@ -3,7 +3,7 @@ import TokenBearerHeaderFactory from './TokenBearerHeaderFactory';
 
 function get() {
     const headers = TokenBearerHeaderFactory.get();
-    return AxiosInstance.get('/info', {headers: headers});
+    return AxiosInstance.get('/sites', {headers: headers});
 }
 
 
