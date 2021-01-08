@@ -173,7 +173,6 @@ router.get('/nsummary', async (req, res) => {
     const data = await axiosInstance.get(`/exec?cmd=mean&resourceType=${type}&resourceAttribute=${attribute}`,
       { headers: req.headers }).then(res => res.data);
 
-    console.warn(`data: ${data}`);
     const conns = data.connections;
 
     const cat = `${res.type}|${res.attribute}|${res.datatype}`;
