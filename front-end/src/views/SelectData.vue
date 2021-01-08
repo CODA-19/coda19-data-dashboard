@@ -174,9 +174,9 @@ export default {
 
       const sitesUri = encodeURI(this.form.sites.map(conn=>{return conn.value}));
       const varUri = encodeURI(this.form.variables.map(conn=>{return conn.value}));
-      const data = await GeneralApi.nsummary(sitesUri, varUri);
+      const data = await GeneralApi.nsummary(sitesUri, varUri).then(res => res.data);
 
-      return dat;
+      return data;
     },
 
     onSubmit: async function() {

@@ -8,71 +8,73 @@ const { _ } = require('underscore')
 const axios = require('axios').default
 const moment = require('moment')
 
-router.get('/data', function(req, res, next) {
+const axiosInstance = require('../api/axios-instance');
 
-exec("Rscript ./scripts/meta.R -la", (error, stdout, stderr) => {
-    
+router.get('/data', function (req, res, next) {
+
+  exec("Rscript ./scripts/meta.R -la", (error, stdout, stderr) => {
+
     if (error) {
       console.log(`error: ${error.message}`)
       res.status(500)
       return
     }
-    
-    csvParse(stdout, {columns: false, trim: true}, function(error, rows) {
-      
+
+    csvParse(stdout, { columns: false, trim: true }, function (error, rows) {
+
       if (error) {
         console.log(`error: ${error.message}`)
         res.status(500)
         return
       }
-      
+
       const plotConfig = {
         "effectLabel": "SMD",
         "vBar": 1,
         "nTicks": 6,
         "width": 500
       }
-      
+
       const plotData = [
         {
           "description": "Site",
           "overrideLabel": "SMD (95% CI)"
         }
       ]
-      
+
       for (row of rows.slice(1)) {
         plotData.push({
           "description": row[0],
           "effect": {
-            "effect": parseFloat(row[1]), 
+            "effect": parseFloat(row[1]),
             "low": parseFloat(row[2]),
             "high": parseFloat(row[3])
           },
           "markerSize": 0.5
         })
       }
-      
+
       res.json({
         "plotConfig": plotConfig,
         "data": plotData
       })
-      
+
     })
-    
-  }) 
+
+  })
 })
 
 let length_of_stay_data = [
   [[8, 'CHUM']],
   [[12, "MUHC"]],
-  [[17,  'MUHQ']],
+  [[17, 'MUHQ']],
   [[15, 'JGH']],
   [[13, 'Mean']]
 ],
 
   age_data = [
     ['age', 'CHUM', 'MUHC', 'MUHQ', 'JGH'],
-    ['0 to 4yrs', 6, 4, 5, 7, ],
+    ['0 to 4yrs', 6, 4, 5, 7,],
     ['5 to 19 yrs', 5, 7, 6, 7],
     ['20 to 49 yrs', 15, 14, 13, 16],
     ['50 to 64 yrs', 26, 28, 25, 23],
@@ -158,25 +160,28 @@ router.get('/nsummary', async (req, res) => {
   // Base response
   let tmpResponse = {
     "summary": {
-      "categories": [  ],
-      "data": [  ],
-      "means": [  ],
-      "ranges": [  ],
+      "categories": [],
+      "data": [],
+      "means": [],
+      "ranges": [],
       "sites": sites,
-      "types": [ ]
+      "types": []
     }
   };
 
   for (let res of resources) {
     const { type, attribute, datatype } = res;
-    const data = await axios.get(`http://localhost:3000/exec?cmd=mean&resourceType=${type}&resourceAttribute=${attribute}`).then(res => res.data);
+    const data = await axiosInstance.get(`/exec?cmd=mean&resourceType=${type}&resourceAttribute=${attribute}`,
+      { headers: req.headers }).then(res => res.data);
+
+    console.warn(`data: ${data}`);
     const conns = data.connections;
 
     const cat = `${res.type}|${res.attribute}|${res.datatype}`;
     const dat = conns.map(conn => ([conn.value.mean, conn.uid.toString()]));
-    
+
     // Weighted mean
-    if(res.datatype === "number"){
+    if (res.datatype === "number") {
       const sum = (acc, el) => acc + el;
       let totalN = conns.map(conn => conn.value.n).reduce(sum);
       const mean = conns.map(conn => conn.value.mean * (conn.value.n / totalN)).reduce(sum);
@@ -198,7 +203,7 @@ router.get('/nsummary', async (req, res) => {
   res.json(tmpResponse);
 });
 
-router.post('/summary', (req, res, next)=>{
+router.post('/summary', (req, res, next) => {
 
   let request = req.body,
     sites = request.sites;
@@ -212,52 +217,52 @@ router.post('/summary', (req, res, next)=>{
     delete raw.age_group;
 
     let categories = Object.keys(raw),
-      types = _.map(raw,(v,k)=>{return raw[k].type}),
-      summaryData = _.map(raw, (v,k)=>{
-        return _.map(raw[k].data,(va,ke)=>{
-          if(sites.indexOf(ke)>-1)
-            return [va,ke]
+      types = _.map(raw, (v, k) => { return raw[k].type }),
+      summaryData = _.map(raw, (v, k) => {
+        return _.map(raw[k].data, (va, ke) => {
+          if (sites.indexOf(ke) > -1)
+            return [va, ke]
         });
       })
 
-    summaryData = _.map(summaryData,cat=>{return _.filter(cat,e=>{return e!==undefined})})
+    summaryData = _.map(summaryData, cat => { return _.filter(cat, e => { return e !== undefined }) })
 
-    let site = _.map(summaryData[0], e=>{return e[1]});
+    let site = _.map(summaryData[0], e => { return e[1] });
 
-    let ranges = _.map(summaryData, (e,i)=>{
-      if(types[i]==='time'){
-        return [moment.min(_.map(e,set=>{return moment(set[0])})).add(-3,'days').format('YYYY-MM-DD'), moment.max(_.map(e,set=>{return moment(set[0])})).add(3,'days').format('YYYY-MM-DD')]
+    let ranges = _.map(summaryData, (e, i) => {
+      if (types[i] === 'time') {
+        return [moment.min(_.map(e, set => { return moment(set[0]) })).add(-3, 'days').format('YYYY-MM-DD'), moment.max(_.map(e, set => { return moment(set[0]) })).add(3, 'days').format('YYYY-MM-DD')]
       }
-      return [_.min(_.map(e,set=>{return set[0]})).toFixed(0), _.max(_.map(e,set=>{return set[0]})).toFixed(0)];
+      return [_.min(_.map(e, set => { return set[0] })).toFixed(0), _.max(_.map(e, set => { return set[0] })).toFixed(0)];
     }),
-      means = _.map(ranges, (cat, i)=>{
-        if(types[i] === 'time'){
-          let diff = moment(cat[0]).diff(moment(cat[1]),'days')
-          return moment(cat[1]).add( diff/2, 'days' ).format('YYYY-MM-DD');
+      means = _.map(ranges, (cat, i) => {
+        if (types[i] === 'time') {
+          let diff = moment(cat[0]).diff(moment(cat[1]), 'days')
+          return moment(cat[1]).add(diff / 2, 'days').format('YYYY-MM-DD');
         }
-        return (parseInt(cat[1])+parseInt(cat[0]))/2
+        return (parseInt(cat[1]) + parseInt(cat[0])) / 2
       })
 
     var response = {
-      summary:{
+      summary: {
         'categories': categories,
         'data': summaryData,
         'types': types,
         'ranges': ranges,
-        'means' : means,
-        'sites' : site
+        'means': means,
+        'sites': site
       }
     };
 
-    if(request.variables){
-      if(request.variables.indexOf('length_of_stay') >= 0 ){
+    if (request.variables) {
+      if (request.variables.indexOf('length_of_stay') >= 0) {
         let idx = categories.indexOf('length_of_stay');
-        let length_of_stay = _.map(summaryData[idx], elm=>{return [[elm[0], raw.length_of_stay.range[elm[1]], elm[1]]];});
+        let length_of_stay = _.map(summaryData[idx], elm => { return [[elm[0], raw.length_of_stay.range[elm[1]], elm[1]]]; });
 
-        var getValues = function(  idx, site){
+        var getValues = function (idx, site) {
           var list = [];
-          _.keys(this).forEach(k=>{
-            if(site.indexOf(k)>-1){
+          _.keys(this).forEach(k => {
+            if (site.indexOf(k) > -1) {
               list.push(this[k][idx])
             }
           });
@@ -269,19 +274,21 @@ router.post('/summary', (req, res, next)=>{
 
           minDays = getMinDays(),
           maxDays = getMaxDays(),
-          meanDays = [(_.reduce(minDays, function(memo, num) { return memo + num}, 0)/minDays.length), (_.reduce(maxDays, function(memo, num) { return memo + num}, 0)/maxDays.length)];
+          meanDays = [(_.reduce(minDays, function (memo, num) { return memo + num }, 0) / minDays.length), (_.reduce(maxDays, function (memo, num) { return memo + num }, 0) / maxDays.length)];
         length_of_stay.push([[means[idx], meanDays, "Mean"]]);
         response.length_of_stay = length_of_stay;
       }
-      if(request.variables.indexOf('age_groups') >= 0 ){
+      if (request.variables.indexOf('age_groups') >= 0) {
         let header = ['age'].concat(
-          _.filter(Object.keys(age_group[Object.keys(age_group)[0]]), site=>{return sites.indexOf(site) > -1 })
-          ),
-          body = _.map(age_group, (v,k)=>{return _.flatten([k,Object.values(
-            _.filter(v, (va,ke)=>{
-              return sites.indexOf(ke) > -1
-            })
-          )]) });
+          _.filter(Object.keys(age_group[Object.keys(age_group)[0]]), site => { return sites.indexOf(site) > -1 })
+        ),
+          body = _.map(age_group, (v, k) => {
+            return _.flatten([k, Object.values(
+              _.filter(v, (va, ke) => {
+                return sites.indexOf(ke) > -1
+              })
+            )])
+          });
 
         response.age_groups = [header].concat(body);
       }
