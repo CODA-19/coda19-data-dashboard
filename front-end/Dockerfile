@@ -9,4 +9,4 @@ RUN yarn install
 RUN yarn build
 
 EXPOSE 8000
-CMD [ "http-server", "--port", "8000",  "dist" ]
+CMD [ "http-server", "--port", "8000",  "-S", "-C", "cert.pem", "dist" ]
