@@ -5,7 +5,6 @@ const express = require('express')
 const { exec } = require("child_process")
 const router = express.Router()
 const { _ } = require('underscore')
-const axios = require('axios').default
 const moment = require('moment')
 
 const axiosInstance = require('../api/axios-instance');
