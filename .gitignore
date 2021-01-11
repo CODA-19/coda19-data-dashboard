@@ -5,3 +5,4 @@ scripts/.Rhistory
 .idea
 back-end/node_modules/**/*
 .env
+openshift-project-params.env

@@ -26,7 +26,8 @@ router.get('/', async function(req, res, next) {
     resAttribute: value.resourceAttribute.toLowerCase() 
   };
 
-  const exec = await axios.get(`${process.env.HUB_ENDPOINT}/exec?cmd=${query.command}&resourceType=${query.resType}&resourceAttribute=${query.resAttribute}`).then(res => res.data);
+  const exec = await axios.get(`${process.env.CODA19_DASHBOARD_BACKEND_HUB_ENDPOINT}/exec?cmd=${query.command}&resourceType=${query.resType}&resourceAttribute=${query.resAttribute}`,
+  { headers: req.headers }).then(res => res.data);
   
   res.status(200).send(exec);
 })

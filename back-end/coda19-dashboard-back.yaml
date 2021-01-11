@@ -1,0 +1,134 @@
+apiVersion: v1
+kind: Template
+metadata:
+  creationTimestamp: null
+  name: coda19-hub-api
+  annotations:
+    openshift.io/display-name: coda19-hub-api
+    description: Coda node purple api (hub)
+    iconClass: icon-nodejs
+    tags: coda19
+objects:
+- apiVersion: v1
+  kind: Secret
+  metadata:
+    name: ${CODA19_HUB_DASH_BACK}-kc-identifiers
+    labels:
+      application: ${CODA19_HUB_DASH_BACK}
+  type: Opaque
+  stringData:
+    secret: ${CODA19_DASHBOARD_BACKEND_KEYCLOAK_CLIENT_SECRET}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      openshift.io/generated-by: OpenShiftWebConsole
+    creationTimestamp: null
+    labels:
+      app: ${CODA19_HUB_DASH_BACK}
+    name: ${CODA19_HUB_DASH_BACK}
+  spec:
+    ports:
+    - name: 8080-tcp
+      port: 8080
+      protocol: TCP
+      targetPort: 8080
+    selector:
+      deploymentconfig: ${CODA19_HUB_DASH_BACK}
+    sessionAffinity: None
+    type: ClusterIP
+- apiVersion: v1
+  kind: Route
+  metadata:
+    labels:
+      app: ${CODA19_HUB_DASH_BACK}
+    annotations:
+      description: Route pour coda19-hub-api
+      haproxy.router.openshift.io/timeout: 90s
+    name: ${CODA19_HUB_DASH_BACK}
+  spec:
+    host: '${CODA19_HUB_DASH_BACK_FQDN}'
+    port:
+      targetPort: 8080-tcp
+    tls:
+      termination: edge
+    to:
+      kind: Service
+      name: ${CODA19_HUB_DASH_BACK}
+      weight: 100
+    wildcardPolicy: None
+- apiVersion: v1
+  kind: DeploymentConfig
+  metadata:
+    annotations:
+      openshift.io/generated-by: OpenShiftWebConsole
+    labels:
+      app: ${CODA19_HUB_DASH_BACK}
+    name: ${CODA19_HUB_DASH_BACK}
+  spec:
+    replicas: 1
+    selector:
+      app: ${CODA19_HUB_DASH_BACK}
+      deploymentconfig: ${CODA19_HUB_DASH_BACK}
+    strategy:
+      type: Rolling
+    template:
+      metadata:
+        labels:
+          app: ${CODA19_HUB_DASH_BACK}
+          deploymentconfig: ${CODA19_HUB_DASH_BACK}
+      spec:
+        containers:
+          - env:
+            - name: CODA19_DASHBOARD_BACKEND_HUB_ENDPOINT
+              value: '${CODA19_DASHBOARD_BACKEND_HUB_ENDPOINT}'
+            - name: CODA19_DASHBOARD_BACKEND_KEYCLOAK_URL
+              value: '${CODA19_DASHBOARD_BACKEND_KEYCLOAK_URL}'
+            - name: CODA19_DASHBOARD_BACKEND_KEYCLOAK_REALM
+              value: '${CODA19_DASHBOARD_BACKEND_KEYCLOAK_REALM}'
+            - name: CODA19_HUB_DASH_CODA19_DASHBOARD_BACKEND_KEYCLOAK_CLIENT_SECRETBACK_KEYCLOAK_CLIENT_SECRET
+              valueFrom:
+                    secretKeyRef:
+                      key: secret
+                      name: ${CODA19_HUB_DASH_BACK}-kc-identifiers
+            name: ${CODA19_HUB_DASH_BACK}
+            image: coda19/coda19-hub-api:latest
+            ports:
+              - name: ${CODA19_HUB_DASH_BACK}
+                containerPort: 8080
+            securityContext:
+                runAsUser: 1000
+        serviceAccount: coda-builder
+        serviceAccountName: coda-builder
+    triggers:
+    - type: ConfigChange
+parameters:
+- displayName: Nom des objects OpenShift
+  name: CODA19_HUB_DASH_BACK
+  value: coda19-hub-back
+  required: true
+- name: CODA19_HUB_DASH_BACK_FQDN
+  displayName: Custom https Route Hostname
+  description: >-
+    Custom hostname for https service route. Leave blank for default hostname,
+    e.g.: <application-name>-<namespace>.<default-domain-suffix>
+  value: dashboard.backend.hub.coda19.com 
+- name: CODA19_DASHBOARD_BACKEND_HUB_ENDPOINT
+  displayName: HUB ENDPOINT
+  description: 'Hub Endpoint'
+  value: 'https://api.hub.coda19.com'
+  required: true
+- name: CODA19_DASHBOARD_BACKEND_KEYCLOAK_URL
+  displayName: KEYCLOAK URL
+  description: 'Keycloak Url'
+  value: 'https://auth.hub.coda19.com/auth'
+  required: true
+- name: CODA19_DASHBOARD_BACKEND_KEYCLOAK_REALM
+  displayName: KEYCLOAK REALM
+  description: 'Keycloak Realm'
+  value: 'coda19-pr'
+  required: true
+- name: CODA19_DASHBOARD_BACKEND_KEYCLOAK_CLIENT_SECRET
+  displayName: KEYCLOAK CLIENT SECRET
+  description: 'Keycloak client secret'
+  required: true
