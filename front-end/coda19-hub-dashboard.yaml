@@ -71,12 +71,14 @@ objects:
       spec:
         containers:
           - env:
-            - name: VUE_APP_CODA19_DASHBARD_BACKEND_URL
-              value: '${VUE_APP_CODA19_DASHBARD_BACKEND_URL}'
-            - name: VUE_APP_CODA19_DASHBARD_KEYCLOAK_REALM
-              value: '${VUE_APP_CODA19_DASHBARD_KEYCLOAK_REALM}'
+            - name: VUE_APP_CODA19_DASHBOARD_PORT
+              value: '${VUE_APP_CODA19_DASHBOARD_PORT}'
+            - name: VUE_APP_CODA19_DASHBOARD_BACKEND_URL
+              value: '${VUE_APP_CODA19_DASHBOARD_BACKEND_URL}'
+            - name: VUE_APP_CODA19_DASHBOARD_KEYCLOAK_REALM
+              value: '${VUE_APP_CODA19_DASHBOARD_KEYCLOAK_REALM}'
             name: ${CODA19_HUB_DASHBOARD}
-            image: coda19/coda19-hub-api:latest
+            image: coda19/coda19-hub-dashboard:latest
             ports:
               - name: ${CODA19_HUB_DASHBOARD}
                 containerPort: 8080
@@ -97,12 +99,17 @@ parameters:
     Custom hostname for https service route. Leave blank for default hostname,
     e.g.: <application-name>-<namespace>.<default-domain-suffix>
   value: dashboard.hub.coda19.com
-- name: VUE_APP_CODA19_DASHBARD_BACKEND_URL
+- name: VUE_APP_CODA19_DASHBOARD_PORT
+  displayName: PORT
+  description: 'Port'
+  value: '8080'
+  required: true
+- name: VUE_APP_CODA19_DASHBOARD_BACKEND_URL
   displayName: BACKEND ENDPOINT
   description: 'Backend Endpoint'
   value: 'https://dashboard.backend.hub.coda19.com'
   required: true
-- name: VUE_APP_CODA19_DASHBARD_KEYCLOAK_REALM
+- name: VUE_APP_CODA19_DASHBOARD_KEYCLOAK_REALM
   displayName: KEYCLOAK REALM
   description: 'Keycloak Realm'
   value: 'coda19-pr'
