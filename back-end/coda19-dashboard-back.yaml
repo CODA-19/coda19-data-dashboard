@@ -32,7 +32,7 @@ objects:
     - name: 8080-tcp
       port: 8080
       protocol: TCP
-      targetPort: 8080
+      targetPort: 3000
     selector:
       deploymentconfig: ${CODA19_HUB_DASH_BACK}
     sessionAffinity: None
@@ -86,13 +86,13 @@ objects:
               value: '${CODA19_DASHBOARD_BACKEND_KEYCLOAK_URL}'
             - name: CODA19_DASHBOARD_BACKEND_KEYCLOAK_REALM
               value: '${CODA19_DASHBOARD_BACKEND_KEYCLOAK_REALM}'
-            - name: CODA19_HUB_DASH_CODA19_DASHBOARD_BACKEND_KEYCLOAK_CLIENT_SECRETBACK_KEYCLOAK_CLIENT_SECRET
+            - name: CODA19_DASHBOARD_BACKEND_KEYCLOAK_CLIENT_SECRET
               valueFrom:
                     secretKeyRef:
                       key: secret
                       name: ${CODA19_HUB_DASH_BACK}-kc-identifiers
             name: ${CODA19_HUB_DASH_BACK}
-            image: coda19/coda19-hub-api:latest
+            image: coda19/coda19-hub-dashboard-back:latest
             ports:
               - name: ${CODA19_HUB_DASH_BACK}
                 containerPort: 8080
@@ -112,7 +112,7 @@ parameters:
   description: >-
     Custom hostname for https service route. Leave blank for default hostname,
     e.g.: <application-name>-<namespace>.<default-domain-suffix>
-  value: dashboard.backend.hub.coda19.com 
+  value: dashboard-backend.hub.coda19.com
 - name: CODA19_DASHBOARD_BACKEND_HUB_ENDPOINT
   displayName: HUB ENDPOINT
   description: 'Hub Endpoint'

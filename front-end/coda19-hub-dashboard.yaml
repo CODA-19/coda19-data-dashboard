@@ -107,7 +107,7 @@ parameters:
 - name: VUE_APP_CODA19_DASHBOARD_BACKEND_URL
   displayName: BACKEND ENDPOINT
   description: 'Backend Endpoint'
-  value: 'https://dashboard.backend.hub.coda19.com'
+  value: 'https://dashboard-backend.hub.coda19.com'
   required: true
 - name: VUE_APP_CODA19_DASHBOARD_KEYCLOAK_REALM
   displayName: KEYCLOAK REALM

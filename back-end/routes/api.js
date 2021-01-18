@@ -8,6 +8,7 @@ const { _ } = require('underscore')
 const moment = require('moment')
 
 const axiosInstance = require('../api/axios-instance');
+const getCredentialsHeader = require('../api/credentials-helper');
 
 router.get('/data', function (req, res, next) {
 
@@ -171,7 +172,7 @@ router.get('/nsummary', async (req, res) => {
   for (let res of resources) {
     const { type, attribute, datatype } = res;
     const data = await axiosInstance.get(`/exec?cmd=mean&resourceType=${type}&resourceAttribute=${attribute}`,
-      { headers: req.headers }).then(res => res.data);
+    getCredentialsHeader(req)).then(res => res.data);
 
     const conns = data.connections;
 

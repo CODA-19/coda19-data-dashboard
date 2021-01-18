@@ -53,14 +53,17 @@ services:
     ports:
       - 3000:3000
     environment:
-      - HUB_ENDPOINT=http://hub:8080
-      - PORT=3000
+      - CODA19_DASHBOARD_BACKEND_HUB_ENDPOINT=http://hub:8080
     depends_on:
       - hub
   dash-frontend:
     container_name: dash-frontend
     build: ./front-end
     ports:
-      - 8000:8000
+      - 8000:8080
+    environment:
+      - VUE_APP_CODA19_DASHBOARD_PORT=8080 # Keep variable overrides as .env is for production and not local. 
+      - VUE_APP_CODA19_DASHBOARD_BACKEND_URL=http://localhost:3000 # Identical
+      - VUE_APP_CODA19_DASHBOARD_KEYCLOAK_REALM=coda19-dv # Identical
     depends_on:
       - dash-backend
