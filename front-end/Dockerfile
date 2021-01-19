@@ -1,9 +1,12 @@
 FROM node:lts-alpine
 
+ARG BUILD_ENV=prod
+
 RUN npm install -g http-server
 
 WORKDIR /usr/src/app
 COPY ./ ./
+COPY ./${BUILD_ENV}.env ./.env
 
 RUN yarn cache clean
 RUN yarn install

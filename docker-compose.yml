@@ -58,12 +58,12 @@ services:
       - hub
   dash-frontend:
     container_name: dash-frontend
-    build: ./front-end
+    build:
+      context: ./front-end
+      args:
+        - BUILD_ENV=local
     ports:
       - 8000:8080
-    environment:
-      - VUE_APP_CODA19_DASHBOARD_PORT=8080 # Keep variable overrides as .env is for production and not local. 
-      - VUE_APP_CODA19_DASHBOARD_BACKEND_URL=http://localhost:3000 # Identical
-      - VUE_APP_CODA19_DASHBOARD_KEYCLOAK_REALM=coda19-dv # Identical
     depends_on:
       - dash-backend
+    command: http-server --port 8080 -S -C cert.pem dist # Do not modify docker file for this. Docker command is for production envrionnement.
