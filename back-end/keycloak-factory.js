@@ -9,9 +9,13 @@ function get(app) {
 
   var memoryStore = new session.MemoryStore();
 
+  const sessionSecret = process.env.CODA19_DASHBOARD_BACKEND_KEYCLOAK_SESSION_MEMORY_SECRET
+    ? process.env.CODA19_DASHBOARD_BACKEND_KEYCLOAK_SESSION_MEMORY_SECRET
+    : '';
+
   //session
   app.use(session({
-    secret: 'thisShouldBeLongAndSecret',
+    secret: sessionSecret,
     resave: false,
     saveUninitialized: true,
     store: memoryStore

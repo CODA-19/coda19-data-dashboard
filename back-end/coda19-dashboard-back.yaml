@@ -19,6 +19,15 @@ objects:
   stringData:
     secret: ${CODA19_DASHBOARD_BACKEND_KEYCLOAK_CLIENT_SECRET}
 - apiVersion: v1
+  kind: Secret
+  metadata:
+    name: ${CODA19_HUB_DASH_BACK}-kc-sessions
+    labels:
+      application: ${CODA19_HUB_DASH_BACK}
+  type: Opaque
+  stringData:
+    secret: ${CODA19_DASHBOARD_BACKEND_KEYCLOAK_SESSION_MEMORY_SECRET}
+- apiVersion: v1
   kind: Service
   metadata:
     annotations:
@@ -91,6 +100,11 @@ objects:
                     secretKeyRef:
                       key: secret
                       name: ${CODA19_HUB_DASH_BACK}-kc-identifiers
+            - name: CODA19_DASHBOARD_BACKEND_KEYCLOAK_SESSION_MEMORY_SECRET
+              valueFrom:
+                    secretKeyRef:
+                      key: secret
+                      name: ${CODA19_HUB_DASH_BACK}-kc-sessions
             name: ${CODA19_HUB_DASH_BACK}
             image: coda19/coda19-hub-dashboard-back:latest
             ports:
@@ -131,4 +145,8 @@ parameters:
 - name: CODA19_DASHBOARD_BACKEND_KEYCLOAK_CLIENT_SECRET
   displayName: KEYCLOAK CLIENT SECRET
   description: 'Keycloak client secret'
+  required: true
+- name: CODA19_DASHBOARD_BACKEND_KEYCLOAK_SESSION_MEMORY_SECRET
+  displayName: KEYCLOAK SESSION MEMORY SECRET
+  description: 'Keycloak session memory secret'
   required: true
