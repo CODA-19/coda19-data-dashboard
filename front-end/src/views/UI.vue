@@ -65,6 +65,8 @@ import VueSlider from 'vue-slider-component'
 import 'vue-slider-component/theme/default.css'
 import { bus } from "@/main"
 import _ from 'underscore'
+import GeneralApi from "../api/GeneralApi";
+
 
 export default {
   name: "AppHeader",
@@ -123,7 +125,7 @@ export default {
       console.info('post_data', post_data);
 
       //TODO: Send request to server
-      this.$http.post('http://localhost:3000/api/summary', post_data)
+      GeneralApi.summary(post_data)
           .then(response => response.data)
           .then(data => {
             console.info('res_data', data);

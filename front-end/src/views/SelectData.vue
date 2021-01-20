@@ -83,6 +83,7 @@ import "vue-slider-component/theme/default.css";
 import { bus } from "@/main";
 import _ from "underscore";
 import Multiselect from "vue-multiselect";
+import GeneralApi from "../api/GeneralApi";
 
 const nameResource = (res) => `${res.type} > ${res.attribute} (${res.datatype})`;
 const idResource = (res) => `${res.type}|${res.attribute}|${res.datatype}`;
@@ -121,6 +122,7 @@ export default {
       allSelected: true,
       indeterminate: false,
       form: {
+        query: null,
         variables: [],
         sites: []
       },
@@ -163,17 +165,18 @@ export default {
       console.info("post_data", post_data);
 
       //TODO: Send request to server
-      return this.$http
-        .post("http://localhost:3000/api/summary", post_data)
-        .then(res => res.data);
+      return GeneralApi.summary(post_data).then(res => res.data);
     },
 
     getNSummaryData: async function() {
-      const url = `http://localhost:3000/api/nsummary?sites=${encodeURI(this.form.sites.map(conn=>{return conn.value}))}&var=${encodeURI(this.form.variables.map(conn=>{return conn.value}))}`;
       this.cached.variables = this.form.variables;
       this.cached.sites = this.form.sites;
-      const dat = await fetch(url).then(res => res.json());
-      return dat;
+
+      const sitesUri = encodeURI(this.form.sites.map(conn=>{return conn.value}));
+      const varUri = encodeURI(this.form.variables.map(conn=>{return conn.value}));
+      const data = await GeneralApi.nsummary(sitesUri, varUri).then(res => res.data);
+
+      return data;
     },
 
     onSubmit: async function() {
