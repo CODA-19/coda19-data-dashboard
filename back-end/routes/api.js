@@ -171,7 +171,7 @@ router.get('/nsummary', async (req, res) => {
 
   for (let res of resources) {
     const { type, attribute, datatype } = res;
-    const data = await axiosInstance.get(`/exec?cmd=mean&resourceType=${type}&resourceAttribute=${attribute}`,
+    const data = await axiosInstance.get(`/exec?cmd=mean&resourceType=${type}&resourceAttribute=${attribute}&sites=${req.query.sites}`,
     getCredentialsHeader(req)).then(res => res.data);
 
     const conns = data.connections;
