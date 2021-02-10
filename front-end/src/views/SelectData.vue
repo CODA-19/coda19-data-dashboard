@@ -15,7 +15,7 @@
                          :clear-on-select="false"
                          :close-on-select="false"
                          :showLabels="false"
-                         :allow-empty="false"
+
             >
 
               <template slot="clear" slot-scope="variables">
@@ -122,7 +122,7 @@ export default {
       allSelected: true,
       indeterminate: false,
       form: {
-        query: null,
+        // query: null,
         variables: [],
         sites: []
       },
