@@ -172,3 +172,13 @@ html, body{
 .options{
   margin: 20px auto;
 }
+
+@media (max-width: 992px){
+  #nav, .navbar{
+    padding-bottom: 0!important;
+  }
+  .nav-link{
+    padding-left: 3px!important;
+    padding-right: 3px!important;
+  }
+}

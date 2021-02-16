@@ -1,10 +1,11 @@
 import VueRouter from 'vue-router'
 import Home from '@/views/Home'
+import Stats from '@/views/Stats'
 import AppHeader from '@/components/AppHeader'
 import Footer from '@/components/Footer'
 import About from '@/views/About'
 import Request from '@/views/Request'
-import SelectData from '@/views/SelectData'
+import Learning from '@/views/Learning'
 import Connections from "@/views/Connections";
 import UI from '@/views/UI'
 import Forest from "@/components/Forest"
@@ -24,11 +25,11 @@ const routes = [
     }
   },
   {
-    path: '/about',
-    name: 'About',
+    path: '/stats',
+    name: 'Stats',
     components: {
       header: AppHeader,
-      default: About,
+      default: Stats,
       footer: Footer
     },
     meta: {
@@ -48,11 +49,11 @@ const routes = [
     }
   },
   {
-    path: '/selectData',
-    name: 'SelectData',
+    path: '/learning',
+    name: 'Learning',
     components: {
       header: AppHeader,
-      default: SelectData,
+      default: Learning,
       footer: Footer
     },
     meta: {

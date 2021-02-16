@@ -39,6 +39,8 @@ const messages = {
 
      // header
      homeTxt: "Home",
+     statsTxt: "Stats",
+     learningTxt: 'Learning',
      activeConnectionsTxt: "Active Connections",
      requestAccessTxt: "Request access",
 
@@ -83,6 +85,8 @@ const messages = {
 
      // header
      homeTxt: "Accueil",
+     statsTxt: "Stats",
+     learningTxt: 'Learning',
      activeConnectionsTxt: "Connections actives",
      requestAccessTxt: "Demande d'accès",
 
