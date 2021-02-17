@@ -50,11 +50,7 @@ import ScatterChart from "@/components/scatterChart";
 import BarChart from "@/components/barChart";
 import Legend from "@/components/legend";
 import { bus } from "@/main";
-
-let colors = [
-  '#C25C5C','#EEAA7C','#DCD2A2','#4C625C','#2F2D3D',
-  '#409469','#D0E346','#909773', '#840B3B'
-];
+import Const from "@/const";
 
 export default {
   name: "Dashboard",
@@ -80,7 +76,7 @@ export default {
       return legendSites;
     },
     legendColors(){
-      var legendColors = colors.slice(0, this.sites.length-1);
+      var legendColors = Const.colors.slice(0, this.sites.length-1);
       legendColors.push('black');
       return legendColors;
     }
@@ -92,7 +88,7 @@ export default {
   },
   data(){
     return {
-      colors: colors,
+      colors: Const.colors,
       highlight: null
     }
   }

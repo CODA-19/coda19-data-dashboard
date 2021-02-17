@@ -33,7 +33,7 @@ const routes = [
       footer: Footer
     },
     meta: {
-      title: "CODA 19 - About"
+      title: "CODA 19 - Stats"
     }
   },
     {
