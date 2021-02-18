@@ -1,0 +1,46 @@
+{
+
+  "titleTxt": "Select data",
+  "langTxt": "Fr",
+  "logoutTxt": "logout",
+  "siteTitleTxt": "Connected repositories",
+  "selectVariableTxt": "Please select a variable among cross-site common resources: ",
+  "length_of_stay": "Length of stay",
+  "age_groups": "Age groups",
+  "selectDaysTxt": "Days of selection from now",
+  "selectHospitalTxt": "Select hospitals to include: ",
+  "selectAllTxt": "Select all",
+  "unselectAllTxt": "Un-select all",
+  "selectTxt": "Select",
+
+
+  "newSearchTxt": "New Search",
+  "summaryTxt": "Summary",
+  "keyVariablesTxt": "Key Variables",
+  "legendTxt": "Legend",
+  "meanTxt": "Mean",
+  "saveImgTxt": "Save Image",
+  "tested": "Number Tested",
+  "positive": "Number Positive",
+  "admitted": "Number Admitted",
+  "admission_date": "Median COVID-19 \n Admission Date",
+  "mean_age": "Mean Age",
+
+  "age_0_to_4": "0 to 4 yrs",
+  "age_5_to_19": "5 to 19 yrs",
+  "age_20_to_49": "20 to 49 yrs",
+  "age_50_to_64": "50 to 64 yrs",
+  "age_65_and_up": "65 and up",
+
+
+  "homeTxt": "Home",
+  "statsTxt": "Stats",
+  "learningTxt": "Learning",
+  "activeConnectionsTxt": "Active Connections",
+  "noActiveConnectionsTxt": "No active connection",
+  "requestAccessTxt": "Request access",
+
+
+  "requestAccessDescriptionTxt": " To get access to CODA-19, contact this person",
+  "mailRequestAccessTxt": "mailto:address_a_determiner@coda19.ca?subject=Request access"
+}

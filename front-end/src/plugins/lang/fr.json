@@ -1,0 +1,43 @@
+{
+  "titleTxt": "Sélection des données",
+  "langTxt": "En",
+  "logoutTxt": "Se déconnecter",
+  "siteTitleTxt": "Dépôts connectés",
+  "selectVariableTxt": "Veuillez sélectionner une variable parmis les resources communes: ",
+  "length_of_stay": "Durée du séjour",
+  "age_groups": "Les groupes d'âge",
+  "selectDaysTxt": "Jours de sélection à partir de maintenant",
+  "selectHospitalTxt": "Sélectionnez les hôpitaux à inclure: ",
+  "selectAllTxt": "Tout sélectionner",
+  "unselectAllTxt": "Désélectionner tout",
+  "selectTxt": "Sélectionner",
+
+  "newSearchTxt": "Nouvelle recherche",
+  "summaryTxt": "Résumé",
+  "keyVariablesTxt": "Variables-clés",
+  "legendTxt": "Légende",
+  "meanTxt": "Moyenne",
+  "saveImgTxt": "Enregistrer l'image",
+  "tested": "Nombre Testé",
+  "positive": "Nombre Positif",
+  "admitted": "Numbre d'Admis",
+  "admission_date": "Date d'Admission \n Médiane du COVID-19",
+  "mean_age": "Âge Moyen",
+
+  "age_0_to_4": "0 à 4 ans",
+  "age_5_to_19": "5 à 19 ans",
+  "age_20_to_49": "20 à 49 ans",
+  "age_50_to_64": "50 à 64 ans",
+  "age_65_and_up": "65 et plus",
+
+  "homeTxt": "Accueil",
+  "statsTxt": "Stats",
+  "learningTxt": "Learning",
+  "activeConnectionsTxt": "Connections actives",
+  "noActiveConnectionsTxt": "Aucune connection active",
+  "requestAccessTxt": "Demande d'accès",
+
+  "requestAccessDescriptionTxt": " Pour obtenir accès aux données de CODA-19, contactez",
+  "mailRequestAccessTxt": "mailto:address_a_determiner@coda19.ca?subject=Demande d'accès"
+
+}
