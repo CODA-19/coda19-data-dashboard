@@ -32,7 +32,7 @@
         <scatterChart style="height: 40vh" v-bind:colors="colors"  v-bind:data="lengthOfStay" autoresize></scatterChart>
       </div>
         <div class="col-lg-6 col-md-12 col-sm-12 chartPanel" v-if="ageGroups">
-        <BarChart style="height: 40vh" v-bind:colors="colors"  v-bind:data="ageGroups" autoresize></BarChart>
+        <BarChart style="height: 40vh" v-bind:colors="colors"  v-bind:data="ageGroups" v-bind:title="'age_groups'" autoresize></BarChart>
         </div>
       </v-row>
 

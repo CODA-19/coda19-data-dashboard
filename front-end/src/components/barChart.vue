@@ -27,6 +27,9 @@ export default {
     },
     data:{
       type: Array
+    },
+    title:{
+      type: String
     }
   },
   computed:{
@@ -46,7 +49,7 @@ export default {
 
       var option = {
         title:{
-          text: this.$t("age_groups"),
+          text: this.$t(this.title),
           left: 'center',
           bottom: '0'
         },

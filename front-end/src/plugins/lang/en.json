@@ -1,5 +1,10 @@
 {
 
+  "covid_cases":  "Number of covid cases",
+  "death": "Number of death",
+  "ventilator":  "Number of patient on ventilator",
+  "icu":  "Number of patient in ICU",
+
   "titleTxt": "Select data",
   "langTxt": "Fr",
   "logoutTxt": "logout",

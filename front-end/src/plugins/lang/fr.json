@@ -1,4 +1,10 @@
 {
+
+  "covid_cases": "Nombre de cas de covid",
+  "death": "Nombre de décès",
+  "ventilator": "Nombre de patients sous respirateur",
+  "icu": "Nombre de patients en USI",
+
   "titleTxt": "Sélection des données",
   "langTxt": "En",
   "logoutTxt": "Se déconnecter",
