@@ -1,9 +1,9 @@
 <template>
   <v-container class="mainContainer">
     <div class="connection">
-      <h1>Active Connections</h1>
+       <h1>{{$t('activeConnectionsTxt')}}</h1>
     </div>
-    <div v-if="!connections.length">No active connection</div>
+    <div v-if="!connections.length">{{$t('noActiveConnectionsTxt')}}</div>
     <ActiveConnection class="col-md-8 offset-md-2"
       v-for="conn in connections"
       v-bind:uid="conn.uid"

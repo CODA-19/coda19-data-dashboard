@@ -42,6 +42,7 @@ const messages = {
      statsTxt: "Stats",
      learningTxt: 'Learning',
      activeConnectionsTxt: "Active Connections",
+     noActiveConnectionsTxt: "No active connection",
      requestAccessTxt: "Request access",
 
       // request access page
@@ -88,6 +89,7 @@ const messages = {
      statsTxt: "Stats",
      learningTxt: 'Learning',
      activeConnectionsTxt: "Connections actives",
+     noActiveConnectionsTxt: "Aucune connection active",
      requestAccessTxt: "Demande d'accès",
 
       // request access page
