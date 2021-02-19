@@ -39,6 +39,8 @@
   "homeTxt": "Accueil",
   "statsTxt": "Stats",
   "learningTxt": "Learning",
+  "learningTitle": "Learning",
+  "startLearning": "Démarrer un processus d'aprentissage",
   "activeConnectionsTxt": "Connections actives",
   "noActiveConnectionsTxt": "Aucune connection active",
   "requestAccessTxt": "Demande d'accès",

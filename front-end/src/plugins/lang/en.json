@@ -44,7 +44,8 @@
   "activeConnectionsTxt": "Active Connections",
   "noActiveConnectionsTxt": "No active connection",
   "requestAccessTxt": "Request access",
-
+  "learningTitle": "Learning",
+  "startLearning": "Start a machine learning process",
 
   "requestAccessDescriptionTxt": " To get access to CODA-19, contact this person",
   "mailRequestAccessTxt": "mailto:address_a_determiner@coda19.ca?subject=Request access"
