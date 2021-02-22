@@ -114,6 +114,20 @@ html, body{
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
+
+  &.horizontal{
+    //flex-direction: column;
+
+    ul{
+      display: flex;
+      justify-content: space-evenly;
+
+      li{
+        margin: auto;
+        flex: 1;
+      }
+    }
+  }
 }
 .ToggleController {
   list-style: none;
