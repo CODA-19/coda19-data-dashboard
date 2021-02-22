@@ -1,7 +1,7 @@
 <template>
   <div :class="'legendContainer '+direction">
 
-      <div :class="direction==='horizontal'? 'col-lg-6 col-md-12 col-sm-12':''" >
+      <div v-if="direction==='vertical'">
         <ul class="ToggleController">
           <li v-for="(site, x) in sites.slice(0,5)" >
             <label class="siteItem" v-model="highlight" @mousemove="$emit('update:highlight', site)" @mouseout="$emit('update:highlight', null)">
@@ -12,7 +12,7 @@
         </ul>
       </div>
 
-      <div v-if="tooManySites()" :class="direction==='horizontal'? 'col-lg-6 col-md-12 col-sm-12':''">
+      <div  v-if="direction==='vertical' && tooManySites()" :class="direction==='horizontal'? 'col-lg-6 col-md-12 col-sm-12':''">
         <ul class="ToggleController">
           <li v-for="(site, x) in sites.slice(5,10)"  >
             <label class="siteItem" v-model="highlight" @mousemove="$emit('update:highlight', site)" @mouseout="$emit('update:highlight', null)">
@@ -22,6 +22,17 @@
           </li>
         </ul>
       </div>
+
+    <div v-if="direction === 'horizontal'" class="horizontal">
+      <div class="ToggleController">
+        <div v-for="(site, x) in sites" class="site">
+          <label class="siteItem" v-model="highlight" @mousemove="$emit('update:highlight', site)" @mouseout="$emit('update:highlight', null)">
+            <span class="siteIcon" :class="site ==='Mean' ? 'Mean' : ''" v-bind:style="{background:colors[x]}"></span>
+            <span class="siteLabel">{{site ==="Mean" ? $t('meanTxt') : site}}</span>
+          </label>
+        </div>
+      </div>
+    </div>
 
   </div>
 </template>

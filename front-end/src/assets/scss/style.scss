@@ -116,15 +116,18 @@ html, body{
   justify-content: space-evenly;
 
   &.horizontal{
-    //flex-direction: column;
-
-    ul{
+    margin: auto;
+    .ToggleController{
       display: flex;
-      justify-content: space-evenly;
+      justify-content: flex-start;
+      flex-flow: wrap;
 
-      li{
-        margin: auto;
-        flex: 1;
+      .site{
+        margin: 0 10px;
+
+        .siteItem{
+          width: max-content;
+        }
       }
     }
   }

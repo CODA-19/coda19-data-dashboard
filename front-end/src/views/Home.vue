@@ -34,11 +34,6 @@ export default {
   computed:{
     legendSites(){
       var legendSites = mockData[0].slice(1,mockData[0].length);
-      if(legendSites.length<10 && legendSites.length >5){
-        while (legendSites.length < 11) {
-          legendSites.push('');
-        }
-      }
       return legendSites;
     },
   },
