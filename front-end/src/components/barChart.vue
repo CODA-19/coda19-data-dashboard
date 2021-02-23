@@ -60,7 +60,8 @@ export default {
             saveAsImage:{
               show:true,
               title:this.$t("saveImgTxt")
-            }
+            },
+            // magicType:{show: true, type: ['stack']}
           }
         },
         dataset: {
@@ -68,7 +69,10 @@ export default {
         },
         color: this.colors,
         xAxis: {type: 'category'},
-        yAxis: {},
+        yAxis: {type: 'value',
+          axisLine: {
+            show: true
+          }},
         series: seriesTypes
       };
 

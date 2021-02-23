@@ -114,6 +114,23 @@ html, body{
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
+
+  &.horizontal{
+    margin: auto;
+    .ToggleController{
+      display: flex;
+      justify-content: flex-start;
+      flex-flow: wrap;
+
+      .site{
+        margin: 0 10px;
+
+        .siteItem{
+          width: max-content;
+        }
+      }
+    }
+  }
 }
 .ToggleController {
   list-style: none;

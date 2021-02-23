@@ -4289,11 +4289,12 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]
       ]],
       ["echarts", [
-        ["npm:4.9.0", {
-          "packageLocation": "./.yarn/cache/echarts-npm-4.9.0-28889b5074-a0666250c1.zip/node_modules/echarts/",
+        ["npm:5.0.2", {
+          "packageLocation": "./.yarn/cache/echarts-npm-5.0.2-408940d253-1e0953adca.zip/node_modules/echarts/",
           "packageDependencies": [
-            ["echarts", "npm:4.9.0"],
-            ["zrender", "npm:4.3.2"]
+            ["echarts", "npm:5.0.2"],
+            ["tslib", "npm:2.0.3"],
+            ["zrender", "npm:5.0.4"]
           ],
           "linkType": "HARD",
         }]
@@ -5143,7 +5144,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["bootstrap-validator", "npm:0.11.9"],
             ["bootstrap-vue", "npm:2.19.0"],
             ["d3", "npm:5.16.0"],
-            ["echarts", "npm:4.9.0"],
+            ["echarts", "npm:5.0.2"],
             ["jquery", "npm:3.5.1"],
             ["keycloak-js", "npm:11.0.3"],
             ["node-sass", "npm:4.14.1"],
@@ -11849,6 +11850,13 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["tslib", "npm:1.14.1"]
           ],
           "linkType": "HARD",
+        }],
+        ["npm:2.0.3", {
+          "packageLocation": "./.yarn/cache/tslib-npm-2.0.3-62a2b3751d-447bfca5de.zip/node_modules/tslib/",
+          "packageDependencies": [
+            ["tslib", "npm:2.0.3"]
+          ],
+          "linkType": "HARD",
         }]
       ]],
       ["tty-browserify", [
@@ -12366,7 +12374,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/echarts", null],
             ["@types/vue", null],
             ["core-js", "npm:3.7.0"],
-            ["echarts", "npm:4.9.0"],
+            ["echarts", "npm:5.0.2"],
             ["lodash", "npm:4.17.20"],
             ["resize-detector", "npm:0.1.10"],
             ["vue", "npm:2.6.12"]
@@ -13062,10 +13070,11 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]
       ]],
       ["zrender", [
-        ["npm:4.3.2", {
-          "packageLocation": "./.yarn/cache/zrender-npm-4.3.2-3d8019b924-ff2632296a.zip/node_modules/zrender/",
+        ["npm:5.0.4", {
+          "packageLocation": "./.yarn/cache/zrender-npm-5.0.4-b886181d36-dc8cf5c1c9.zip/node_modules/zrender/",
           "packageDependencies": [
-            ["zrender", "npm:4.3.2"]
+            ["zrender", "npm:5.0.4"],
+            ["tslib", "npm:2.0.3"]
           ],
           "linkType": "HARD",
         }]
