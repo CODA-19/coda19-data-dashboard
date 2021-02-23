@@ -57,7 +57,7 @@ const routes = [
       footer: Footer
     },
     meta: {
-      title: "CODA 19 - Data selection"
+      title: "CODA 19 - Learning"
     }
   },
   {
