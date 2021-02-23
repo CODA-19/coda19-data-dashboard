@@ -2,9 +2,9 @@
   <div class="mainContainer">
     <v-container>
       <div class="row">
-        <Legend class="col-12 row" v-bind:colors="colors" :sites="legendSites" :direction="'horizontal'"></Legend>
+        <Legend class="col-12 row" v-bind:colors="colors" :sites="legendSites" :direction="'horizontal'" :highlight.sync="highlight"></Legend>
         <div v-for="set in sets" class="col-lg-6 col-md-12 col-sm-12">
-          <BarChart style="height: 30vh" v-bind:colors="colors"  v-bind:data="data[set]" v-bind:title="set" autoresize></BarChart>
+          <BarChart style="height: 30vh" v-bind:colors="colors"  v-bind:data="data[set]" v-bind:title="set" :highlight="highlight" autoresize></BarChart>
         </div>
       </div>
     </v-container>

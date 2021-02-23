@@ -16,7 +16,7 @@
       <div class="col-lg-6 col-md-12 col-sm-12">
         <v-row style="flex-direction: column">
           <h3>{{$t('legendTxt')}}</h3>
-          <Legend :colors="legendColors" :sites="legendSites" :highlight.sync="highlight"></Legend>
+          <Legend :colors="legendColors" :sites="legendSites" :highlight.sync="highlight" :direction="'vertical'"></Legend>
         </v-row>
       </div>
     </v-row>

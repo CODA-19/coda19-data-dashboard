@@ -1,5 +1,5 @@
 <template>
-  <v-chart :options="option"/>
+  <v-chart ref="barChart" :options="option"/>
 </template>
 
 <script>
@@ -30,12 +30,25 @@ export default {
     },
     title:{
       type: String
+    },
+    highlight:{
+      type: String
     }
   },
   computed:{
     option(){
       let numBar = this.data[0].length - 1,
-          seriesTypes = Array(numBar).fill({type: 'bar'}) ;
+          seriesOpt = {
+            type: 'bar',
+            emphasis: {
+              focus: 'series'
+            },
+            label:{
+              show: true
+            }
+           },
+          seriesTypes = Array(numBar).fill(
+              seriesOpt) ;
 
       var data = [];
       this.data.forEach((group,i)=>{
@@ -78,7 +91,24 @@ export default {
 
       return option;
     }
-  }
+  },
+  watch:{
+    'highlight':function(newVal, oldVal){
+      let sites = this.data[0].slice(1,this.data[0].length);
+      let dataIndex = sites.indexOf(newVal),
+          oldIndex = sites.indexOf(oldVal);
+      console.log(dataIndex+", "+oldIndex)
+      const barChart = this.$refs.barChart;
+      barChart.dispatchAction({
+        type: 'downplay',
+        seriesIndex: oldIndex
+      })
+      barChart.dispatchAction({
+        type: 'highlight',
+        seriesIndex: dataIndex
+      })
+    }
+  },
 }
 </script>
 
