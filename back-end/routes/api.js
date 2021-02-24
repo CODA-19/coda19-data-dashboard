@@ -202,7 +202,32 @@ router.get('/nsummary', async (req, res) => {
   res.json(tmpResponse);
 });
 
-router.post('/summary', (req, res, next) => {
+router.get('/hospitalSummary', async (req, res) => {
+
+    const { type, attribute, datatype } = res;
+    const data = await axiosInstance.get(`/hospital`,
+      getCredentialsHeader(req)).then(res => res.data);
+
+    let tempResponse = {
+      covid_cases: [],
+      death: [],
+      ventilator: [],
+      icu: []
+    };
+
+  for( const k in tempResponse ){
+    tempResponse[k] = [];
+    tempResponse[k].push(['category'].concat(Object.keys(data[k])));
+    tempResponse[k].push([''].concat(Object.values(data[k])));
+  }
+
+  tempResponse['sites'] = data.hospitalsProvidingInfo;
+    console.log(tempResponse)
+
+  res.json(tempResponse);
+});
+
+router.post('/testData', (req, res, next) => {
 
   let request = req.body,
     sites = request.sites;

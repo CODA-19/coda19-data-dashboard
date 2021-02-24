@@ -165,7 +165,7 @@ export default {
       console.info("post_data", post_data);
 
       //TODO: Send request to server
-      return GeneralApi.summary(post_data).then(res => res.data);
+      return GeneralApi.testData(post_data).then(res => res.data);
     },
 
     getNSummaryData: async function() {

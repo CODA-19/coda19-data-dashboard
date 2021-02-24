@@ -125,7 +125,7 @@ export default {
       console.info('post_data', post_data);
 
       //TODO: Send request to server
-      GeneralApi.summary(post_data)
+      GeneralApi.testData(post_data)
           .then(response => response.data)
           .then(data => {
             console.info('res_data', data);
