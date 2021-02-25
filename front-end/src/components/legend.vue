@@ -17,7 +17,7 @@
           <li v-for="(site, x) in sites.slice(5,10)"  >
             <label class="siteItem" v-model="highlight" @mousemove="$emit('update:highlight', site)" @mouseout="$emit('update:highlight', null)">
               <span class="siteIcon" v-if="site!==''" :class="site ==='Mean' ? 'Mean' : ''"  v-bind:style="{background:colors.slice(5,10)[x]}"></span>
-              <span class="siteLabel">{{site ==="Mean" ? $t('meanTxt') : site}}</span>
+              <span class="siteLabel"  v-html="label(site)"></span>
             </label>
           </li>
         </ul>
@@ -28,7 +28,7 @@
         <div v-for="(site, x) in sites" class="site">
           <label class="siteItem" v-model="highlight" @mousemove="$emit('update:highlight', site)" @mouseout="$emit('update:highlight', null)">
             <span class="siteIcon" :class="site ==='Mean' ? 'Mean' : ''" v-bind:style="{background:colors[x]}"></span>
-            <span class="siteLabel">{{site ==="Mean" ? $t('meanTxt') : site}}</span>
+            <span class="siteLabel" v-html="label(site)"></span>
           </label>
         </div>
       </div>
@@ -52,6 +52,9 @@ export default {
     },
     direction:{
       type: String
+    },
+    labels:{
+      type: Object
     }
   },
   methods:{
@@ -60,8 +63,25 @@ export default {
         return true;
       else
         return false;
+    },
+    label(site){
+      var label = '';
+      if(site ==="Mean"){
+        label = `${this.$t('meanTxt')}`;
+      }
+      else if(site === "total") {
+        label = `${this.$t('total')}`;
+      }
+      else
+        label = `${this.labels[site][this.$i18n.locale]}`;
+      return label;
     }
-  }
+  },
+  // watch:{
+  //   labels(){
+  //     this.labels = this.labels
+  //   }
+  // }
 }
 </script>
 

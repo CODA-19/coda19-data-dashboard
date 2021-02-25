@@ -30,6 +30,7 @@
   "admitted": "Number Admitted",
   "admission_date": "Median COVID-19 \n Admission Date",
   "mean_age": "Mean Age",
+  "total": "Total",
 
   "age_0_to_4": "0 to 4 yrs",
   "age_5_to_19": "5 to 19 yrs",

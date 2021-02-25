@@ -33,36 +33,16 @@ export default {
     },
     highlight:{
       type: String
+    },
+    labels: {
+      type: Object
     }
   },
   computed:{
     option(){
-      let numBar = this.data[0].length - 1,
-          seriesOpt = {
-            type: 'bar',
-            emphasis: {
-              focus: 'series'
-            },
-            label:{
-              show: true
-            }
-           },
-          seriesTypes = Array(numBar).fill(
-              seriesOpt) ;
-
-      var data = [];
-      this.data.forEach((group,i)=>{
-        if(i===0)
-          return data.push(group);
-        var new_group = [];
-        new_group[0] = this.$t(group[0]);
-        new_group = new_group.concat(group.slice(1));
-        data.push(new_group);
-      });
-
       var option = {
         title:{
-          text: this.$t(this.title),
+          text: '',
           left: 'center',
           bottom: '0'
         },
@@ -78,16 +58,50 @@ export default {
           }
         },
         dataset: {
-          source: data
+          source: []
         },
         color: this.colors,
         xAxis: {type: 'category'},
         yAxis: {type: 'value',
           axisLine: {
             show: true
-          }},
-        series: seriesTypes
+          }}
       };
+
+      if(!this.data){
+        return option;
+      }
+
+      let numBar = this.data[0].length - 1,
+          seriesOpt = {
+            type: 'bar',
+            emphasis: {
+              focus: 'series'
+            },
+            label:{
+              show: true
+            }
+           },
+          seriesTypes = Array(numBar).fill(
+              seriesOpt) ;
+
+      var data = [], that = this;
+      this.data.forEach((group,i)=>{
+        group = group.map(g=>{return this.labels[g]?this.labels[g][this.$i18n.locale] : g})
+        if(i===0)
+          return data.push(group);
+        var new_group = [];
+        new_group[0] = this.$t(group[0]);
+        new_group = new_group.concat(group.slice(1));
+        data.push(new_group);
+      });
+
+      option.title.text = this.$t(this.title);
+      option.dataset = {
+        source: data
+      };
+      option.series = seriesTypes;
+
 
       return option;
     }
@@ -97,7 +111,7 @@ export default {
       let sites = this.data[0].slice(1,this.data[0].length);
       let dataIndex = sites.indexOf(newVal),
           oldIndex = sites.indexOf(oldVal);
-      console.log(dataIndex+", "+oldIndex)
+
       const barChart = this.$refs.barChart;
       barChart.dispatchAction({
         type: 'downplay',
