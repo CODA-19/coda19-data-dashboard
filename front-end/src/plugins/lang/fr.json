@@ -19,6 +19,11 @@
   "selectTxt": "Sélectionner",
   "total": "Tous",
 
+  "selectMeasuresTxt": "Mesures ",
+  "continuous": "Continues",
+  "discreet": "Discrètes",
+  "addNewMeasure": "+ Nouvelles mesures",
+
   "selectBreakdownTxt": "Stratification",
   "selectBreakdownByTxt": "Stratifier par",
   "selectResourceTypeTxt": "Type de resources",
