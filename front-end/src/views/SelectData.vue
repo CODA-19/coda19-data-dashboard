@@ -2,7 +2,7 @@
   <v-container v-bind:class="[{ 'slim': minimize },'mainContainer']">
 <!--        <h1>{{ $t("titleTxt") }}</h1>-->
     <div class="row">
-    <div class="col-lg-7 col-md-7">
+    <div class="col-lg-6 col-md-6">
       <b-form  v-bind:class="{'inline': minimize}" @submit.prevent="onSubmit" @reset="onReset">
           <div class="selectData"> <span>{{ $t('selectVariableTxt') }}</span>
 
@@ -45,10 +45,34 @@
 
           </multiselect>
         </div>
+        <div id="selectBreakdownContainer ">
+            <span>{{ $t("selectBreakdownTxt") }}</span>
+            <div class="selectBreakdown selectionPanel">
+                 <p class="panelTitle">{{ $t("selectBreakdownByTxt") }}</p>
+                  <div class="row">
+                    <div class="col-lg-4 col-md-4">
+                        <div>{{ $t("selectResourceTypeTxt") }}</div>
+                        <div>
+                            <select>
+                                <option :value="patien">{{ $t("selectResourcePatient") }}</option>
+                            </select>
+                        </div>
+                    </div>
+                  <div class="col-lg-4 col-md-4">
+                        <div>{{ $t("selectResourceAttributeTxt") }}</div>
+                        <div>
+                            <select>
+                                <option :value="age">age</option>
+                            </select>
+                        </div>
+                  </div>
+                  </div>
+            </div>
+        </div>
 
-<div class="col-lg-6 col-md-4 submit-btn">
-        <b-button type="submit" pill block variant="success" :disabled="dataUpdate">{{$t("selectTxt")}}</b-button>
-</div>
+        <div class="col-lg-6 col-md-4 submit-btn">
+                <b-button type="submit" pill block variant="success" :disabled="dataUpdate">{{$t("selectTxt")}}</b-button>
+        </div>
       </b-form>
     </div>
     <div class="col-lg-5 col-md-5 ">

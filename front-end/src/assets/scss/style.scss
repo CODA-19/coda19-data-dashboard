@@ -26,6 +26,22 @@ html, body{
   width:100%;
   margin: 20px auto;
 }
+
+.selectionPanel{
+  border:1px solid #cdcdcd;
+  padding: 15px;
+  margin-top:10px;
+  .panelTitle{
+    color:#cdcdcd;
+    font-weight: bolder;
+  }
+}
+
+.selectionPanel select{
+    border:1px solid #efefef;
+    padding: 3px;
+}
+
 .submit-btn{
   margin: auto;
 

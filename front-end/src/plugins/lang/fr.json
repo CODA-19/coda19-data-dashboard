@@ -19,6 +19,12 @@
   "selectTxt": "Sélectionner",
   "total": "Tous",
 
+  "selectBreakdownTxt": "Stratification",
+  "selectBreakdownByTxt": "Stratifier par",
+  "selectResourceTypeTxt": "Type de resources",
+  "selectResourceAttributeTxt": "Attribut de la resource",
+  "selectResourcePatient": "Patient",
+
   "newSearchTxt": "Nouvelle recherche",
   "summaryTxt": "Résumé",
   "keyVariablesTxt": "Variables-clés",

@@ -18,6 +18,11 @@
   "unselectAllTxt": "Un-select all",
   "selectTxt": "Select",
 
+  "selectBreakdownTxt": "Breakdown",
+  "selectBreakdownByTxt": "Breakdown by",
+  "selectResourceTypeTxt": "Resource type",
+  "selectResourceAttributeTxt": "Resource attribute",
+  "selectResourcePatient": "Patient",
 
   "newSearchTxt": "New Search",
   "summaryTxt": "Summary",
