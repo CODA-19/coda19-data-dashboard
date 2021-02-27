@@ -1,6 +1,7 @@
 @import "colors.scss";
-@import 'bootstrap/scss/bootstrap';
-@import 'bootstrap-vue/src/index.scss';
+@import "query-builder.css";
+@import "bootstrap/scss/bootstrap.scss";
+@import "bootstrap-vue/src/index.scss";
 
 html, body{
   overflow-y: auto;
