@@ -18,6 +18,11 @@
   "unselectAllTxt": "Un-select all",
   "selectTxt": "Select",
 
+  "selectMeasuresTxt": "Measures",
+  "continuous": "Continuous",
+  "discreet": "Discreet",
+  "addNewMeasure": "+ Add New Measure",
+
   "selectBreakdownTxt": "Breakdown",
   "selectBreakdownByTxt": "Breakdown by",
   "selectResourceTypeTxt": "Resource type",

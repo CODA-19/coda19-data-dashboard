@@ -45,7 +45,25 @@
 
           </multiselect>
         </div>
-        <div id="selectBreakdownContainer ">
+         <div id="selectContinuousContainer" class="selectContainer">
+                <span>{{ $t("selectMeasuresTxt") }}</span>
+              <div class="selectBreakdown selectionPanel">
+            <div>
+              <b-tabs content-class="mt-3">
+                <b-tab  :title="$t('continuous')" active>
+                   <p>
+                    <button class="closableButton">mean</button>
+                    <button class="closableButton">count</button>
+                    <button class="closableButton">stdev</button>
+                    <button>{{ $t("addNewMeasure") }}</button>
+                   </p>
+                </b-tab>
+                <b-tab  :title="$t('discreet')" ><p>lorem ipsum </p></b-tab>
+              </b-tabs>
+            </div>
+         </div>
+         </div>
+        <div id="selectBreakdownContainer " class="selectContainer">
             <span>{{ $t("selectBreakdownTxt") }}</span>
             <div class="selectBreakdown selectionPanel">
                  <p class="panelTitle">{{ $t("selectBreakdownByTxt") }}</p>
