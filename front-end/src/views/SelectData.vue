@@ -4,55 +4,65 @@
     <div class="row">
     <div class="col-lg-6 col-md-6">
       <b-form  v-bind:class="{'inline': minimize}" @submit.prevent="onSubmit" @reset="onReset">
-          <div class="selectData"> <span>{{ $t('selectVariableTxt') }}</span>
 
-            <multiselect v-model="form.variables"
-                         :placeholder="$t('selectVariableTxt')"
-                         :options="resourceOptions"
-                         label="text"
-                         :multiple="true"
-                         track-by="value"
-                         :clear-on-select="false"
-                         :close-on-select="false"
-                         :showLabels="false"
-
-            >
-
-              <template slot="clear" slot-scope="variables">
-                <div class="multiselect__clear" v-if="form.variables.length" @mousedown.prevent.stop="clearAllVar(variables.search)"></div>
-              </template><span slot="noResult">No variable found.</span>
-
-            </multiselect>
-          </div>
           <div class="selectData">
-            <span>{{ $t("selectHospitalTxt") }}</span>
-          <multiselect v-model="form.sites"
-                       :placeholder="$t('selectHospitalTxt')"
-                       :options="connectionOptions"
-                       group-label="group"
-                       group-values="sites"
-                       :group-select="true"
-                       label="text"
-                       :multiple="true"
-                       track-by="value"
-                       :clear-on-select="false"
-                       :close-on-select="false"
-                       :showLabels="false"
-          >
-            <template slot="clear" slot-scope="sites">
-              <div class="multiselect__clear" v-if="form.sites.length" @mousedown.prevent.stop="clearAllSites(sites.search)"></div>
-            </template><span slot="noResult">No site found.</span>
+            <div class="selectContainer">
+              <div class="panelTitle">
+                <span>{{ $t("selectHospitalTxt") }}</span>
+              </div>
 
-          </multiselect>
+              <multiselect v-model="form.sites"
+                           :placeholder="$t('selectHospitalTxt')"
+                           :options="connectionOptions"
+                           group-label="group"
+                           group-values="sites"
+                           :group-select="true"
+                           label="text"
+                           :multiple="true"
+                           track-by="value"
+                           :clear-on-select="false"
+                           :close-on-select="false"
+                           :showLabels="false"
+              >
+                <template slot="clear" slot-scope="sites">
+                  <div class="multiselect__clear" v-if="form.sites.length" @mousedown.prevent.stop="clearAllSites(sites.search)"></div>
+                </template><span slot="noResult">No site found.</span>
+
+              </multiselect>
+            </div>
+
+            <div id="selectContinuousContainer" class="selectContainer">
+              <div class="panelTitle">
+                <span>{{ $t("selectMeasuresTxt") }}</span>
+              </div>
+              <div class="selectBreakdown selectionPanel">
+                <div>
+                  <b-tabs content-class="mt-3">
+                    <b-tab  :title="$t('continuous')" active>
+                      <p>
+                        <button class="closableButton">mean</button>
+                        <button class="closableButton">count</button>
+                        <button class="closableButton">stdev</button>
+                        <button>{{ $t("addNewMeasure") }}</button>
+                      </p>
+                    </b-tab>
+                    <b-tab  :title="$t('discreet')" ><p>lorem ipsum </p></b-tab>
+                  </b-tabs>
+                </div>
+              </div>
+            </div>
 
             <div class="selectContainer">
-              <span>{{$t("resourceTxt")}}</span>
-              <div class="selectBreakdown selectionPanel">
-                <div class="filterContainer">
+              <div class="panelTitle">
+                <span>{{$t("resourceTxt")}}</span>
+              </div>
+
+              <div class="selectionPanel">
+                <div class="subPanel">
                   <span>Filters</span>
                   <QueryBuilder :query="query"></QueryBuilder>
                 </div>
-              <div class="fieldContainer">
+              <div class="subPanel">
                 <span>Fields</span>
                 <multiselect v-model="form.field"
                              :placeholder="$t('selectFieldTxt')"
@@ -73,49 +83,35 @@
               </div>
             </div>
 
-        </div>
-         <div id="selectContinuousContainer" class="selectContainer">
-                <span>{{ $t("selectMeasuresTxt") }}</span>
+            <div id="selectBreakdownContainer " class="selectContainer">
+              <div class="panel-title">
+                <span>{{ $t("selectBreakdownTxt") }}</span>
+              </div>
               <div class="selectBreakdown selectionPanel">
-            <div>
-              <b-tabs content-class="mt-3">
-                <b-tab  :title="$t('continuous')" active>
-                   <p>
-                    <button class="closableButton">mean</button>
-                    <button class="closableButton">count</button>
-                    <button class="closableButton">stdev</button>
-                    <button>{{ $t("addNewMeasure") }}</button>
-                   </p>
-                </b-tab>
-                <b-tab  :title="$t('discreet')" ><p>lorem ipsum </p></b-tab>
-              </b-tabs>
-            </div>
-         </div>
-         </div>
-        <div id="selectBreakdownContainer " class="selectContainer">
-            <span>{{ $t("selectBreakdownTxt") }}</span>
-            <div class="selectBreakdown selectionPanel">
-                 <p class="panelTitle">{{ $t("selectBreakdownByTxt") }}</p>
-                  <div class="row">
-                    <div class="col-lg-4 col-md-4">
-                        <div>{{ $t("selectResourceTypeTxt") }}</div>
-                        <div>
-                            <select>
-                                <option :value="patien">{{ $t("selectResourcePatient") }}</option>
-                            </select>
-                        </div>
-                    </div>
+                <p class="panelTitle">{{ $t("selectBreakdownByTxt") }}</p>
+                <div class="row">
                   <div class="col-lg-4 col-md-4">
-                        <div>{{ $t("selectResourceAttributeTxt") }}</div>
-                        <div>
-                            <select>
-                                <option :value="age">age</option>
-                            </select>
-                        </div>
+                    <div>{{ $t("selectResourceTypeTxt") }}</div>
+                    <div>
+                      <select>
+                        <option :value="patien">{{ $t("selectResourcePatient") }}</option>
+                      </select>
+                    </div>
                   </div>
+                  <div class="col-lg-4 col-md-4">
+                    <div>{{ $t("selectResourceAttributeTxt") }}</div>
+                    <div>
+                      <select>
+                        <option :value="age">age</option>
+                      </select>
+                    </div>
                   </div>
+                </div>
+              </div>
             </div>
         </div>
+
+
 
         <div class="col-lg-6 col-md-4 submit-btn">
                 <b-button type="submit" pill block variant="success" :disabled="dataUpdate">{{$t("selectTxt")}}</b-button>

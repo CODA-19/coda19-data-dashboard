@@ -28,22 +28,28 @@ html, body{
   width:100%;
   margin: 20px auto;
 }
-.selectContainer{
-  margin-top: 40px;
-}
-.selectionPanel{
-  border:1px solid #cdcdcd;
-  padding: 15px;
-  margin-top:10px;
-  .panelTitle{
-    color:#cdcdcd;
+.selectContainer {
+  margin-top: 20px;
+
+  .panelTitle {
     font-weight: bolder;
   }
-  button{
-    border:1px solid #cdcdcd;
-    border-radius: 4px;
-    padding:5px;
-    margin:5px;
+
+  .selectionPanel {
+    border: 1px solid #e8e8e8;
+    padding: 15px;
+    border-radius: 5px;
+
+    .subPanel{
+      margin-bottom: 10px;
+    }
+
+    button {
+      border: 1px solid #cdcdcd;
+      border-radius: 4px;
+      padding: 5px;
+      margin: 5px;
+    }
   }
 }
 

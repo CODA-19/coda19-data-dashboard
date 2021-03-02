@@ -9,7 +9,9 @@
 }
 
 .rules-group-container{
-  flex: 1
+  flex: 1;
+  background: #f0f8ff!important;
+  border: 1px solid #bde0ff!important;
 }
 
 .query-builder {
@@ -22,6 +24,10 @@
 
 .query-builder .pull-right {
   float: right !important;
+}
+
+.query-builder .rule-value-container {
+  border-left: 1px solid #ccc!important;
 }
 
 .query-builder .btn {
@@ -133,3 +139,6 @@
   border-radius: 3px;
 }
 
+.selectionPanel select{
+  border: 1px solid #ccc!important;
+}
