@@ -24,6 +24,9 @@
   "discreet": "Discrètes",
   "addNewMeasure": "+ Nouvelles mesures",
 
+  "resourceTxt": "Resources",
+  "selectFieldTxt" : "Sélectionnez les domaines",
+
   "selectBreakdownTxt": "Stratification",
   "selectBreakdownByTxt": "Stratifier par",
   "selectResourceTypeTxt": "Type de resources",

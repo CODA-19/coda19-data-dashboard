@@ -1,17 +1,33 @@
 <template>
-<div class="col-6" id="builder-basic"></div>
+<div class="col-12" ref="queryBuilder" id="builder-basic"></div>
 </template>
 
 <script>
 import $ from 'jquery'
-import 'bootstrap'
+import '@fortawesome/fontawesome-free/js/solid.js'
+import '@fortawesome/fontawesome-free/js/fontawesome.js'
 import 'jQuery-QueryBuilder'
+import { bus } from "@/main"
 
 export default {
   name: "QueryBuilder",
+  props:{
+    query:{
+      type: Object
+    },
+    rules: {
+      type: {
+        Object
+      }
+    }
+  },
+  data(){
+    return {
+
+    }
+  },
   mounted(){
     $('#builder-basic').queryBuilder({
-      // plugins: ['bt-tooltip-errors'],
 
       filters: [{
         id: 'name',
@@ -60,30 +76,31 @@ export default {
         }
       }],
 
-      rules: rules_basic
-    });
-  }
-}
-var rules_basic = {
-  condition: 'AND',
-  rules: [{
-    id: 'price',
-    operator: 'less',
-    value: 10.25
-  }, {
-    condition: 'OR',
-    rules: [{
-      id: 'category',
-      operator: 'equal',
-      value: 2
-    }, {
-      id: 'category',
-      operator: 'equal',
-      value: 1
-    }]
-  }]
-};
+      rules: this.query,
 
+      icons: {
+        add_group: 'fas fa-plus-square',
+        add_rule: 'fas fa-plus-circle',
+        remove_group: 'fas fa-minus-square',
+        remove_rule: 'fas fa-minus-circle',
+        error: 'fas fa-exclamation-triangle'
+      },
+
+    });
+
+    $(this.$refs.queryBuilder).on('rulesChanged.queryBuilder', function(){
+
+      const result = $(this).queryBuilder('getRules');
+
+      if (!$.isEmptyObject(result)) {
+        this.query = result
+        bus.$emit('queryUpdate', result)
+      }
+
+
+    })
+  },
+}
 
 
 $('#btn-reset').on('click', function() {

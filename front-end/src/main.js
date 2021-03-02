@@ -12,6 +12,9 @@ import VueLogger from 'vuejs-logger';
 import i18n from '@/plugins/i18n';
 import keycloak from './keycloak';
 import TokenContext from './api/TokenContext';
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { faUserSecret } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
 Vue.prototype.$http = Axios;
 
@@ -25,6 +28,10 @@ Vue.use(IconsPlugin)
 Vue.use(underscore)
 
 Vue.use(VueLogger, { logLevel: 'debug' });
+
+library.add(faUserSecret);
+
+Vue.component('font-awesome-icon', FontAwesomeIcon);
 
 Vue.config.productionTip = false
 

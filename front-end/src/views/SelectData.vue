@@ -44,6 +44,35 @@
             </template><span slot="noResult">No site found.</span>
 
           </multiselect>
+
+            <div class="selectContainer">
+              <span>{{$t("resourceTxt")}}</span>
+              <div class="selectBreakdown selectionPanel">
+                <div class="filterContainer">
+                  <span>Filters</span>
+                  <QueryBuilder :query="query"></QueryBuilder>
+                </div>
+              <div class="fieldContainer">
+                <span>Fields</span>
+                <multiselect v-model="form.field"
+                             :placeholder="$t('selectFieldTxt')"
+                             :options="fieldOptions"
+                             label="label"
+                             track-by="value"
+                             :multiple="true"
+                             :clear-on-select="false"
+                             :close-on-select="false"
+                             :showLabels="false"
+                >
+                  <template slot="clear" slot-scope="fields">
+                    <div class="multiselect__clear" v-if="form.field.length" @mousedown.prevent.stop="clearAllFields(fields.search)"></div>
+                  </template><span slot="noResult">No site found.</span>
+
+                </multiselect>
+              </div>
+              </div>
+            </div>
+
         </div>
          <div id="selectContinuousContainer" class="selectContainer">
                 <span>{{ $t("selectMeasuresTxt") }}</span>
@@ -126,6 +155,7 @@ import { bus } from "@/main";
 import _ from "underscore";
 import Multiselect from "vue-multiselect";
 import GeneralApi from "../api/GeneralApi";
+import QueryBuilder from "@/components/QueryBuilder"
 
 const nameResource = (res) => `${res.type} > ${res.attribute} (${res.datatype})`;
 const idResource = (res) => `${res.type}|${res.attribute}|${res.datatype}`;
@@ -133,6 +163,9 @@ const idResource = (res) => `${res.type}|${res.attribute}|${res.datatype}`;
 export default {
   name: "AppHeader",
   props: [ 'connections', 'resources', 'minimize'],
+  mounted(){
+    bus.$on('queryUpdate',(query)=>{this.getQuery(query)})
+  },
   computed: {
     options() {
       return [
@@ -164,20 +197,59 @@ export default {
       allSelected: true,
       indeterminate: false,
       form: {
-        // query: null,
+        query: {},
         variables: [],
-        sites: []
+        sites: [],
+        field: []
       },
       cached: {
         variables: [],
         sites: []
       },
       sites: [],
+      rules: [
+        {
+          type: "text",
+          id: "vegetable",
+          label: "Vegetable"
+        },
+        {
+          type: "radio",
+          id: "fruit",
+          label: "Fruit",
+          choices: [
+            { label: "Apple", value: "apple" },
+            { label: "Banana", value: "banana" }
+          ]
+        }
+      ],
+
+      query: {
+        condition: 'AND',
+        rules: [{
+          id: 'price',
+          operator: 'less',
+          value: 10.25
+        }, {
+          condition: 'OR',
+          rules: [{
+            id: 'category',
+            operator: 'equal',
+            value: 2
+          }, {
+            id: 'category',
+            operator: 'equal',
+            value: 1
+          }]
+        }]
+      },
+      fieldOptions:[{label:'age',value: 'age'},{label:'gender', value: 'gender'}]
     };
   },
   components: {
     VueSlider,
-    Multiselect
+    Multiselect,
+    QueryBuilder
   },
   methods: {
     getMockedSummaryData: async function() {
@@ -237,6 +309,12 @@ export default {
     },
     clearAllSites () {
       this.form.sites = []
+    },
+    clearAllFields (){
+      this.form.field = []
+    },
+    getQuery(query){
+      this.form.query = query;
     }
   },
   watch: {

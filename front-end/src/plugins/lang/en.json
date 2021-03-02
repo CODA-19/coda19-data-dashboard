@@ -23,6 +23,9 @@
   "discreet": "Discreet",
   "addNewMeasure": "+ Add New Measure",
 
+  "resourceTxt": "Resources",
+  "selectFieldTxt" : "Select field(s)",
+
   "selectBreakdownTxt": "Breakdown",
   "selectBreakdownByTxt": "Breakdown by",
   "selectResourceTypeTxt": "Resource type",
