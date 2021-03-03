@@ -6,12 +6,13 @@
       <b-form  v-bind:class="{'inline': minimize}" @submit.prevent="onSubmit" @reset="onReset">
 
           <div class="selectData">
-            <div class="selectContainer">
+            <v-card class="selectContainer">
               <div class="panelTitle">
                 <span>{{ $t("selectHospitalTxt") }}</span>
               </div>
 
-              <multiselect v-model="form.sites"
+              <div class="selectionPanel">
+                <multiselect v-model="form.sites"
                            :placeholder="$t('selectHospitalTxt')"
                            :options="connectionOptions"
                            group-label="group"
@@ -29,9 +30,10 @@
                 </template><span slot="noResult">No site found.</span>
 
               </multiselect>
-            </div>
+              </div>
+            </v-card>
 
-            <div id="selectContinuousContainer" class="selectContainer">
+            <v-card id="selectContinuousContainer" class="selectContainer">
               <div class="panelTitle">
                 <span>{{ $t("selectMeasuresTxt") }}</span>
               </div>
@@ -75,9 +77,9 @@
                 </div>
 
               </div>
-            </div>
+            </v-card>
 
-            <div class="selectContainer">
+            <v-card class="selectContainer">
               <div class="panelTitle">
                 <span>{{$t("resourceTxt")}}</span>
               </div>
@@ -106,10 +108,10 @@
                 </multiselect>
               </div>
               </div>
-            </div>
+            </v-card>
 
-            <div id="selectBreakdownContainer " class="selectContainer">
-              <div class="panel-title">
+            <v-card id="selectBreakdownContainer " class="selectContainer">
+              <div class="panelTitle">
                 <span>{{ $t("selectBreakdownTxt") }}</span>
               </div>
               <div class="selectBreakdown selectionPanel">
@@ -133,7 +135,7 @@
                   </div>
                 </div>
               </div>
-            </div>
+            </v-card>
         </div>
 
 
