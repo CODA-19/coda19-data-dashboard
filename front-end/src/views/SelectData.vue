@@ -85,28 +85,57 @@
               </div>
 
               <div class="selectionPanel">
-                <div class="subPanel">
-                  <span>Filters</span>
-                  <QueryBuilder :query="query"></QueryBuilder>
-                </div>
-              <div class="subPanel">
-                <span>Fields</span>
-                <multiselect v-model="form.field"
-                             :placeholder="$t('selectFieldTxt')"
-                             :options="fieldOptions"
-                             label="label"
-                             track-by="value"
-                             :multiple="true"
-                             :clear-on-select="false"
-                             :close-on-select="false"
-                             :showLabels="false"
-                >
-                  <template slot="clear" slot-scope="fields">
-                    <div class="multiselect__clear" v-if="form.field.length" @mousedown.prevent.stop="clearAllFields(fields.search)"></div>
-                  </template><span slot="noResult">No site found.</span>
 
-                </multiselect>
-              </div>
+                <b-card no-body>
+                  <b-tabs card>
+                    <b-tab v-for="i in tabs" :key="'dyn-tab-' + i" active>
+                      <template #title>
+                        {{i}}
+                        <a class="closeBtn" @click="removeTab(i)">X</a>
+                      </template>
+
+                      <div class="subPanel">
+                        <span>Filters</span>
+                        <QueryBuilder :id="i+'-queryBuilder'" :query="query"></QueryBuilder>
+                      </div>
+                      <div class="subPanel">
+                        <span>Fields</span>
+                        <multiselect v-model="form.field"
+                                     :placeholder="$t('selectFieldTxt')"
+                                     :options="fieldOptions"
+                                     label="label"
+                                     track-by="value"
+                                     :multiple="true"
+                                     :clear-on-select="false"
+                                     :close-on-select="false"
+                                     :showLabels="false"
+                        >
+                          <template slot="clear" slot-scope="fields">
+                            <div class="multiselect__clear" v-if="form.field.length" @mousedown.prevent.stop="clearAllFields(fields.search)"></div>
+                          </template><span slot="noResult">No site found.</span>
+
+                        </multiselect>
+                      </div>
+                    </b-tab>
+
+                    <!-- New Tab Button (Using tabs-end slot) -->
+                    <template #tabs-end>
+                      <b-nav-item role="presentation" @click.prevent="newTab" href="#"><b>Add (+)</b></b-nav-item>
+                    </template>
+
+                    <!-- Render this if no tabs -->
+                    <template #empty>
+                      <div class="text-center text-muted">
+                        There are no open tabs<br>
+                        Open a new tab using the <b>Add (+)</b> button above.
+                      </div>
+                    </template>
+
+
+                  </b-tabs>
+                </b-card>
+
+
               </div>
             </v-card>
 
@@ -273,7 +302,9 @@ export default {
       },
       fieldOptions:[{label:'age',value: 'age'},{label:'gender', value: 'gender'}],
       contOptions:[{label:'count', value:'count'},{label:'mean', value:'mean'},{label:'stdev', value:'stdev'},{label:'ci95', value:'ci95'}],
-      discOptions:[{label:'age',value: 'age'},{label:'gender', value: 'gender'}]
+      discOptions:[{label:'age',value: 'age'},{label:'gender', value: 'gender'}],
+      tabCounter:1,
+      tabs:['patient']
     };
   },
   components: {
@@ -351,6 +382,16 @@ export default {
     },
     getQuery(query){
       this.form.query = query;
+    },
+    newTab() {
+      this.tabs.push(this.tabCounter++)
+    },
+    removeTab(x){
+      for (let i = 0; i < this.tabs.length; i++) {
+        if (this.tabs[i] === x) {
+          this.tabs.splice(i, 1)
+        }
+      }
     }
   },
   watch: {

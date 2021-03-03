@@ -1,5 +1,5 @@
 <template>
-<div class="col-12" ref="queryBuilder" id="builder-basic"></div>
+<div class="col-12" ref="queryBuilder" :id="id"></div>
 </template>
 
 <script>
@@ -19,6 +19,9 @@ export default {
       type: {
         Object
       }
+    },
+    id:{
+      type: String
     }
   },
   data(){
@@ -27,7 +30,7 @@ export default {
     }
   },
   mounted(){
-    $('#builder-basic').queryBuilder({
+    $('#'+this.id).queryBuilder({
 
       filters: [{
         id: 'name',

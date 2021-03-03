@@ -52,6 +52,22 @@ html, body{
       padding: 5px;
       margin: 5px;
     }
+
+    .nav-link{
+      display: flex;
+    }
+
+    .closeBtn{
+      display: none;
+    }
+    .active{
+      .closeBtn{
+        display: block;
+        color: #D9534F;
+        font-weight: bold;
+        margin-left: 10px;
+      }
+    }
   }
 }
 
