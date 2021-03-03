@@ -33,6 +33,11 @@
   "selectResourceAttributeTxt": "Attribut de la resource",
   "selectResourcePatient": "Patient",
 
+  "contTxt": "Continues",
+  "discTxt": "Discrètes",
+  "selectContTxt":"Sélectionnez les mesures continues",
+  "selectDiscTxt": "Sélectionnez des mesures discrètes",
+
   "newSearchTxt": "Nouvelle recherche",
   "summaryTxt": "Résumé",
   "keyVariablesTxt": "Variables-clés",

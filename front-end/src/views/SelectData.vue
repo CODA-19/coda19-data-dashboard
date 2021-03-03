@@ -35,20 +35,45 @@
               <div class="panelTitle">
                 <span>{{ $t("selectMeasuresTxt") }}</span>
               </div>
-              <div class="selectBreakdown selectionPanel">
-                <div>
-                  <b-tabs content-class="mt-3">
-                    <b-tab  :title="$t('continuous')" active>
-                      <p>
-                        <button class="closableButton">mean</button>
-                        <button class="closableButton">count</button>
-                        <button class="closableButton">stdev</button>
-                        <button>{{ $t("addNewMeasure") }}</button>
-                      </p>
-                    </b-tab>
-                    <b-tab  :title="$t('discreet')" ><p>lorem ipsum </p></b-tab>
-                  </b-tabs>
+              <div class="selectionPanel">
+                <div class="subPanel">
+                  <span>{{$t("contTxt")}}</span>
+                  <multiselect v-model="form.measures.cont"
+                               :placeholder="$t('selectContTxt')"
+                               :options="contOptions"
+                               label="label"
+                               track-by="value"
+                               :multiple="true"
+                               :clear-on-select="false"
+                               :close-on-select="false"
+                               :showLabels="false"
+                  >
+                    <template slot="clear" slot-scope="cont">
+                      <div class="multiselect__clear" v-if="form.measures.cont.length" @mousedown.prevent.stop="clearAllCont(cont.search)"></div>
+                    </template><span slot="noResult">No measure found.</span>
+
+                  </multiselect>
                 </div>
+
+                <div class="subPanel">
+                  <span>{{$t("discTxt")}}</span>
+                  <multiselect v-model="form.measures.disc"
+                               :placeholder="$t('selectDiscTxt')"
+                               :options="discOptions"
+                               label="label"
+                               track-by="value"
+                               :multiple="true"
+                               :clear-on-select="false"
+                               :close-on-select="false"
+                               :showLabels="false"
+                  >
+                    <template slot="clear" slot-scope="disc">
+                      <div class="multiselect__clear" v-if="form.measures.disc.length" @mousedown.prevent.stop="clearAllDisc(disc.search)"></div>
+                    </template><span slot="noResult">No measure found.</span>
+
+                  </multiselect>
+                </div>
+
               </div>
             </div>
 
@@ -110,7 +135,6 @@
               </div>
             </div>
         </div>
-
 
 
         <div class="col-lg-6 col-md-4 submit-btn">
@@ -194,7 +218,11 @@ export default {
       indeterminate: false,
       form: {
         query: {},
-        variables: [],
+        variables:{},
+        measures:{
+          cont:[{label:'count', value:'count'},{label:'mean', value:'mean'},{label:'stdev', value:'stdev'},{label:'ci95', value:'ci95'}],
+          disc:[{label:'age',value: 'age'},{label:'gender', value: 'gender'}]
+        },
         sites: [],
         field: []
       },
@@ -202,6 +230,8 @@ export default {
         variables: [],
         sites: []
       },
+
+      //MockData
       sites: [],
       rules: [
         {
@@ -239,7 +269,9 @@ export default {
           }]
         }]
       },
-      fieldOptions:[{label:'age',value: 'age'},{label:'gender', value: 'gender'}]
+      fieldOptions:[{label:'age',value: 'age'},{label:'gender', value: 'gender'}],
+      contOptions:[{label:'count', value:'count'},{label:'mean', value:'mean'},{label:'stdev', value:'stdev'},{label:'ci95', value:'ci95'}],
+      discOptions:[{label:'age',value: 'age'},{label:'gender', value: 'gender'}]
     };
   },
   components: {
@@ -308,6 +340,12 @@ export default {
     },
     clearAllFields (){
       this.form.field = []
+    },
+    clearAllCont (){
+      this.form.measures.cont = []
+    },
+    clearAllDisc (){
+      this.form.measures.disc = []
     },
     getQuery(query){
       this.form.query = query;

@@ -32,6 +32,11 @@
   "selectResourceAttributeTxt": "Resource attribute",
   "selectResourcePatient": "Patient",
 
+  "contTxt": "Continuous",
+  "discTxt": "Discrete",
+  "selectContTxt":"Select continuous measure(s)",
+  "selectDiscTxt": "Select discrete measure(s) ",
+
   "newSearchTxt": "New Search",
   "summaryTxt": "Summary",
   "keyVariablesTxt": "Key Variables",
