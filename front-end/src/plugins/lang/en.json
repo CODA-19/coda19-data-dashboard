@@ -37,6 +37,9 @@
   "selectContTxt":"Select continuous measure(s)",
   "selectDiscTxt": "Select discrete measure(s) ",
 
+  "resultsTxt": "Results",
+  "tableTxt": "Table ",
+
   "newSearchTxt": "New Search",
   "summaryTxt": "Summary",
   "keyVariablesTxt": "Key Variables",

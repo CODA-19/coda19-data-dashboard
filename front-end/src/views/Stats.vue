@@ -10,18 +10,22 @@
 <!--    v-bind:resources="resources"-->
 <!--  />-->
   <div class="mainContainer">
-  <SelectData
-        v-bind:connections="connections"
-        v-bind:resources="resources"
-        v-bind:minimize = "showDash"
-    />
-  <Dashboard v-if="showDash"
-             v-bind:summary="summary"
-             v-bind:sites="sites"
-             v-bind:ageGroups="age_groups"
-             v-bind:lengthOfStay="length_of_stay"
-    />
+    <v-container>
+    <div class="row">
+      <div class="col-lg-6 col-md-6 col-sm-12">
+        <SelectData
+            v-bind:connections="connections"
+            v-bind:resources="resources"
+            v-bind:minimize = "showDash"
+        />
+      </div>
 
+      <div class="col-lg-6 col-md-6 col-sm-12">
+        <Results></Results>
+      </div>
+    </div>
+
+    </v-container>
   </div>
 </template>
 
@@ -33,6 +37,7 @@ import SelectData from "@/views/SelectData";
 import Connections from "@/views/Connections";
 import { bus } from "@/main";
 import SiteApi from '@/api/SiteApi'
+import Results from "./Results";
 
 
 const intersection = (...sets) => sets.reduce((acc, el) => acc.filter({}.hasOwnProperty.bind(el)), Object.keys(sets[0]));
@@ -40,6 +45,7 @@ const getSiteKeys = (resources) => resources.reduce((acc, el) => { acc[`${el.typ
 
 export default {
   components: {
+    Results,
     Connections,
     Dashboard,
     SelectData,

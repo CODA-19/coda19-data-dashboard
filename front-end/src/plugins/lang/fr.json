@@ -38,6 +38,9 @@
   "selectContTxt":"Sélectionnez les mesures continues",
   "selectDiscTxt": "Sélectionnez des mesures discrètes",
 
+  "resultsTxt": "Résultats",
+  "tableTxt": "Tableau ",
+
   "newSearchTxt": "Nouvelle recherche",
   "summaryTxt": "Résumé",
   "keyVariablesTxt": "Variables-clés",

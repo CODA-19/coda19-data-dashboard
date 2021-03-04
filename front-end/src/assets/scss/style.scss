@@ -28,7 +28,8 @@ html, body{
   width:100%;
   margin: 20px auto;
 }
-.selectContainer {
+
+.selectContainer, .resultContainer {
   margin-top: 20px;
   border: 1px solid #e8e8e8;
 
@@ -37,7 +38,7 @@ html, body{
     font-weight: bolder;
   }
 
-  .selectionPanel {
+  .selectionPanel, .resultPanel {
     border-top: 1px solid #e5e5e5;
     padding: 15px;
     border-radius: 5px;
@@ -238,6 +239,16 @@ html, body{
 }
 .options{
   margin: 20px auto;
+}
+
+.tableTitle{
+  font-weight: bold;
+  margin: 10px 0;
+
+  .tableIdx{
+    color:#7c7c7c;
+    margin-right: 10px;
+  }
 }
 
 @media (max-width: 992px){

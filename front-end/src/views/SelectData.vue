@@ -1,8 +1,8 @@
 <template>
   <v-container v-bind:class="[{ 'slim': minimize },'mainContainer']">
 <!--        <h1>{{ $t("titleTxt") }}</h1>-->
-    <div class="row">
-    <div class="col-lg-6 col-md-6">
+
+
       <b-form  v-bind:class="{'inline': minimize}" @submit.prevent="onSubmit" @reset="onReset">
 
           <div class="selectData">
@@ -91,7 +91,7 @@
                     <b-tab v-for="i in tabs" :key="'dyn-tab-' + i" active>
                       <template #title>
                         {{i}}
-                        <a class="closeBtn" @click="removeTab(i)">X</a>
+                        <a class="closeBtn" @click="removeTab(i)"><i class="fas fa-times"></i></a>
                       </template>
 
                       <div class="subPanel">
@@ -172,30 +172,30 @@
                 <b-button type="submit" pill block variant="success" :disabled="dataUpdate">{{$t("selectTxt")}}</b-button>
         </div>
       </b-form>
-    </div>
-    <div class="col-lg-5 col-md-5 ">
 
-                <div class="connectedPanel">
-                  <h3>{{ $t("siteTitleTxt") }}</h3>
-                  <hr />
-                  <div class="row">
-                  <div class="col-log-6 col-md-6 siteList">
-                    <ul v-for="conn in connections.slice(0,5)" v-bind:key="conn.uid">
-                      <li class="ok">{{ conn.name }}</li>
-                    </ul>
-                  </div>
+<!--    <div class="col-lg-5 col-md-5 ">-->
 
-                  <div class="col-log-6 col-md-6 siteList">
-                    <ul v-for="conn in connections.slice(5,10)" v-bind:key="conn.uid">
-                      <li class="ok">{{ conn.name }}</li>
-                    </ul>
-                  </div>
-                  </div>
-                </div>
+<!--                <div class="connectedPanel">-->
+<!--                  <h3>{{ $t("siteTitleTxt") }}</h3>-->
+<!--                  <hr />-->
+<!--                  <div class="row">-->
+<!--                  <div class="col-log-6 col-md-6 siteList">-->
+<!--                    <ul v-for="conn in connections.slice(0,5)" v-bind:key="conn.uid">-->
+<!--                      <li class="ok">{{ conn.name }}</li>-->
+<!--                    </ul>-->
+<!--                  </div>-->
 
-    </div>
+<!--                  <div class="col-log-6 col-md-6 siteList">-->
+<!--                    <ul v-for="conn in connections.slice(5,10)" v-bind:key="conn.uid">-->
+<!--                      <li class="ok">{{ conn.name }}</li>-->
+<!--                    </ul>-->
+<!--                  </div>-->
+<!--                  </div>-->
+<!--                </div>-->
 
-    </div>
+<!--    </div>-->
+
+
   </v-container>
 </template>
 
