@@ -6,7 +6,7 @@
         </div>
         <div class="resultPanel">
           <div class="subPanel" v-for="(table,idx) in tables">
-            <div class="tableTitle"><span class="tableIdx">{{$t('tableTxt')+(idx+1)+"."}}</span><span>{{table.tableName}}</span></div>
+            <div class="tableTitle"><span class="tableIdx">{{$t('tableTxt')+(idx+1)+"."}}</span><span>{{table.name}}</span></div>
             <b-table
                 :striped="false"
                 :bordered="false"
@@ -23,6 +23,11 @@
                 :head-variant="null"
                 :table-variant="'light'"
             ></b-table>
+          </div>
+          <v-divider></v-divider>
+          <div class="subPanel" v-for="(figure, idx) in figures">
+            <div class="tableTitle"><span class="tableIdx">{{$t('figureTxt')+(idx+1)+"."}}</span><span>{{figure.name}}</span></div>
+            <BarChart style="height: 40vh" v-bind:colors="colors"  v-bind:data="figure.data" :labels="siteLabels" autoresize></BarChart>
           </div>
 
         </div>
@@ -75,7 +80,7 @@ export default {
     return {
       colors: Const.colors,
       tables:[
-        {tableName: "Summary Of Patient.age",
+        {name: "Summary Of Patient.age",
             fields: ['site','mean', 'stdev', 'ci95', 'count'],
             items: [
               { site: 'CHUM', mean: 72, stdev: 23, ci95:'20-95', count:1766 },
@@ -84,7 +89,7 @@ export default {
             ]
 
         },
-        {tableName: "Summary Of Patient.gender",
+        {name: "Summary Of Patient.gender",
             fields: ['site','male', 'female', 'total', 'mode'],
             items: [
               { site: 'CHUM', male: 972, female: 923, total:1895, mode:'male' },
@@ -93,7 +98,30 @@ export default {
             ]
 
         }
-      ]
+      ],
+      figures:[
+        {
+          name: 'Summary of Patient.age at each site',
+          data:[
+          ['category','101','102','103'],
+          ['',10, 6, 4]]
+        }
+
+      ],
+      siteLabels:{
+        101:{
+          en:'101',
+          fr:'101'
+        },
+        102:{
+          en:'102',
+          fr:'102'
+        },
+        103:{
+          en:'103',
+          fr:'103'
+        }
+      }
     }
   }
 }
