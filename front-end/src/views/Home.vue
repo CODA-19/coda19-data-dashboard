@@ -2,9 +2,9 @@
   <div class="mainContainer">
     <v-container>
       <div class="row">
-        <Legend class="col-12 row" v-bind:colors="colors" :sites="legendSites" :direction="'horizontal'" :highlight.sync="highlight" :labels="siteLabels"></Legend>
+        <Legend class="col-12 row" v-bind:colors="colors" :sites="category()" :direction="'horizontal'" :highlight.sync="highlight" :labels="siteLabels"></Legend>
         <div v-for="set in sets" class="col-lg-6 col-md-12 col-sm-12">
-          <BarChart style="height: 30vh" v-bind:colors="colors"  v-bind:data="summaries[set]" v-bind:title="set" :highlight="highlight"  :labels="siteLabels" autoresize></BarChart>
+          <BarChart style="height: 30vh" :colors="colors"  :data="getData(set)" :category="category(set)" :title="set" :highlight="highlight"  :labels="siteLabels" autoresize></BarChart>
         </div>
       </div>
     </v-container>
@@ -53,6 +53,13 @@ export default {
         icu:data.icu
       };
       this.legendSites = data.sites;
+    },
+    getData: function(set) {
+      return this.summaries[set] ? this.summaries[set][1] : [];
+    },
+    category: function(set){
+      const key = set ? set : Object.keys(this.summaries)[0];
+      return this.summaries[key] ? this.summaries[key][0] : [];
     }
   },
   async created() {

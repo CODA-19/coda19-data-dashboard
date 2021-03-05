@@ -217,8 +217,8 @@ router.get('/hospitalSummary', async (req, res) => {
 
   for( const k in tempResponse ){
     tempResponse[k] = [];
-    tempResponse[k].push(['category'].concat(Object.keys(data[k])));
-    tempResponse[k].push([''].concat(Object.values(data[k])));
+    tempResponse[k].push(Object.keys(data[k]));
+    tempResponse[k].push(Object.values(data[k]));
   }
 
   tempResponse['sites'] = data.hospitalsProvidingInfo;

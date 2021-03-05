@@ -27,7 +27,7 @@
           <v-divider></v-divider>
           <div class="subPanel" v-for="(figure, idx) in figures">
             <div class="tableTitle"><span class="tableIdx">{{$t('figureTxt')+(idx+1)+"."}}</span><span>{{figure.name}}</span></div>
-            <BarChart style="height: 40vh" v-bind:colors="colors"  v-bind:data="figure.data" :labels="siteLabels" autoresize></BarChart>
+            <BarChart style="height: 40vh" v-bind:colors="colors"  :category="figure.category" :data="figure.data" :group="true" :labels="siteLabels" autoresize></BarChart>
           </div>
 
         </div>
@@ -102,9 +102,8 @@ export default {
       figures:[
         {
           name: 'Summary of Patient.age at each site',
-          data:[
-          ['category','101','102','103'],
-          ['',10, 6, 4]]
+          category: ['101','102','103'],
+          data:[[67,60,58],[72, 76, 80]]
         }
 
       ],
