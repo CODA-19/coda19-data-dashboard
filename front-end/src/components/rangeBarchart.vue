@@ -5,182 +5,148 @@
 <script>
 import * as d3 from 'd3'
 
-var categories = ['','101','102','103'];
+var categories = ['101','102','103'];
 
 var dollars = [
-  [65, 78],
+  [50, 70],
   [63, 76],
   [59, 87]
 ];
 
-var colors = ['#0000b4', '#0082ca', '#0094ff', '#0d4bcf', '#0066AE', '#074285', '#00187B', '#285964', '#405F83', '#416545', '#4D7069', '#6E9985', '#7EBC89', '#0283AF', '#79BCBF', '#99C19E'];
+const margin = {
+  left: 30,
+  top: 20
+}
+
+const size = {
+  height: 300,
+  width: 500
+}
 
 var grid = d3.range(25).map(function(i) {
   return {
     'x1': 0,
     'y1': 0,
     'x2': 0,
-    'y2': 480
+    'y2': size.height
   };
 });
 
+const barWidth = 20;
+
 export default {
   name: "rangeBarchart",
-  prop:{
+  props:{
     data:{
       type: Array
     },
     categories: {
       type: Array
     },
-    color:{
+    colors:{
       type: Array
     }
   },
   mounted(){
-    this.rangeBarchart()
+    this.rangeBarchart();
   },
   methods:{
     rangeBarchart(){
-      var grid = d3.range(25).map(function(i) {
-        return {
-          'x1': 0,
-          'y1': 0,
-          'x2': 0,
-          'y2': 480
-        };
-      });
-
-
-      var yscale = d3.scaleLinear()
-          .domain([10, 250])
-          .range([480, 0]);
-
-      var xscale = d3.scaleLinear()
-          .domain([0, categories.length])
-          .range([0, 722]);
-
-      var colorScale = d3.scaleLinear()
-          .domain([0, categories.length])
-          .range(colors);
+      let _this = this;
 
       var canvas = d3.select('#svg')
           .append('svg')
-          .attr('width', 900)
-          .attr('height', 550);
+          .attr('width', size.width+2*margin.left)
+          .attr('height', size.height+2*margin.top);
 
-      var grids = canvas.append('g')
-          .attr('id', 'grid')
-          .attr('transform', 'translate(150,10)')
-          .selectAll('line')
-          .data(grid)
-          .enter()
-          .append('line')
-          .attr('x1', function(d, i) {
-              return i * 30;
-            })
-          .attr(
-            'y1', function(d) {
-              return d.y1;
-            })
-          .attr(
-            'x2', function(d, i) {
-              return i * 30;
-            })
-          .attr(
-            'y2', function(d) {
-              return d.y2;
-            })
-          .style('stroke', '#adadad')
-          .style('stroke-width', '1px');
+      var yscale = d3.scaleLinear()
+          .domain([10, 100])
+          .range([size.height, 0]);
+
+      var xscale = d3.scaleBand()
+          .domain(categories)
+          .range([0, size.width])
+          .padding(0.2);
 
       var xAxis = d3.axisBottom(xscale)
-          .tickSize(2)
-          .tickFormat(function(d, i) {
-            return categories[i];
-          })
-          .tickValues(d3.range(17));
 
-      var yAxis = d3.axisLeft(yscale)
+      const yAxisGrid = d3.axisLeft(yscale).tickSize(-size.width).tickFormat('').ticks(10);
+
+      var grid = canvas.append('g')
+          .attr('class', 'y axis-grid')
+          .attr('transform', `translate(${margin.left},${margin.top})`)
+          .call(yAxisGrid)
+          .selectAll('line')
+          .style('stroke','#cccccc')
+
+
+      var yAxis = d3.axisLeft(yscale).ticks(10)
 
 
       var y_xis = canvas.append('g')
-          .attr("transform", "translate(150,0)")
+          .attr("transform", `translate(${margin.left},${margin.top})`)
           .attr('id', 'yaxis')
           .call(yAxis);
 
       var x_xis = canvas.append('g')
-          .attr("transform", "translate(150,480)")
+          .attr("transform", `translate(${margin.left},${size.height+margin.top})`)
           .attr('id', 'xaxis')
           .call(xAxis);
 
-      var chart = canvas.append('g')
-          .attr("transform", "translate(150,0)")
-          .attr('id', 'bars')
+      var bars = canvas.append('g')
+          .attr("transform", `translate(${margin.left},${margin.top})`)
           .selectAll('rect')
           .data(dollars)
-          .enter()
-          .append('rect')
-          .attr('width', 19)
+          .enter();
+
+          bars.append('rect')
+          .attr('width', xscale.bandwidth())
           .attr('y', function(d) {
-                return yscale(d[0]);
+                return yscale(d[1]);
               })
           .attr('x', function(d, i) {
-              return xscale(i) + 722/4 - 19/2;
+              return xscale(categories[i])
             }
           )
           .style('fill', function(d, i) {
-            return colorScale(i);
+            return _this.colors[i];
           })
-          .attr('height', function(d) {
-            return  yscale(d[0]);
-          });
-
-
-      var transit = d3.select("svg").selectAll("rect")
-          .data(dollars)
           .transition()
           .duration(1000)
           .attr("height", function(d) {
             return  yscale(d[0]) - yscale(d[1]) ;
-          });
-      //setting the text to the bars
-      var transitext = d3.select('#bars')
-          .selectAll('text')
-          .data(dollars)
-          .enter();
-      //start text
-      transitext.append('text')
-          .attr({
-            'y': function(d) {
-              return yscale(d[0]) - 30;
-            },
-            'x': function(d, i) {
-              return xscale(i) + 35;
-            }
           })
-          .text(function(d) {
-            return d[0] + "$";
-          }).style({
-        'fill': 'black',
-        'font-size': '14px'
-      });
-      //end text
-      transitext.append('text')
-          .attr({
-            'x': function(d) {
-              return xscale(d[1]) + 10;
-            },
-            'y': function(d, i) {
-              return yscale(i) + 35;
-            }
+
+
+      //max text
+     bars.append('text')
+          .text(function(d){
+            return d[0]
           })
+          .attr('y', function(d) {
+              return yscale(d[0]) + 15;
+            })
+            .attr('x', function(d, i) {
+              return xscale(categories[i]) + xscale.bandwidth()/2 ;
+            }
+          )
           .text(function(d) {
-            return d[1] + "$";
-          }).style({
-        'fill': 'black',
-        'font-size': '14px'
-      });
+            return d[0];
+          })
+          .style('font-size', '14px');
+
+      //min text
+      bars.append('text')
+          .attr('x', function(d,i) {
+              return xscale(categories[i]) + xscale.bandwidth()/2;
+            })
+            .attr('y', function(d) {
+              return yscale(d[1]) - 5;
+            })
+          .text(function(d) {
+            return d[1];
+          })
+          .style('font-size', '14px');
     }
   }
 

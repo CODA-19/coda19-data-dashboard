@@ -27,7 +27,7 @@
           <v-divider></v-divider>
           <div class="subPanel" v-for="(figure, idx) in figures">
             <div class="tableTitle"><span class="tableIdx">{{$t('figureTxt')+(idx+1)+"."}}</span><span>{{figure.name}}</span></div>
-            <BarChart style="height: 40vh" v-bind:colors="colors"  :category="figure.category" :data="figure.data" :group="true" :labels="siteLabels" autoresize></BarChart>
+            <rangeBarchart style="height: 40vh" :colors="colors"  :category="figure.category" :data="figure.data" :group="true" :labels="siteLabels" autoresize></rangeBarchart>
           </div>
 
         </div>
@@ -41,10 +41,11 @@
 import BarChart from "@/components/barChart";
 import { bus } from "@/main";
 import Const from "@/const";
+import rangeBarchart from "@/components/rangeBarchart"
 
 export default {
   name: "Results",
-  components: { BarChart},
+  components: { BarChart, rangeBarchart},
   props:{
     summary: {
       type: Object
