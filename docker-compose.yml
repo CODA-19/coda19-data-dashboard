@@ -48,25 +48,25 @@ services:
       - CODA19_HUB_API_KEYCLOAK_SESSION_MEMORY_SECRET=${LOCAL_HUB_API_KEYCLOAK_SESSION_MEMORY_SECRET}
     ports:
       - 8081:8080
-  dash-backend:
-    container_name: dash-backend
-    build: ./back-end
-    ports:
-      - 3000:3000
-    environment:
-      - CODA19_DASHBOARD_BACKEND_HUB_ENDPOINT=http://hub:8080
-      - CODA19_DASHBOARD_BACKEND_KEYCLOAK_CLIENT_SECRET=${LOCAL_DASHBOARD_BACKEND_KEYCLOAK_CLIENT_SECRET}
-      - CODA19_DASHBOARD_BACKEND_KEYCLOAK_SESSION_MEMORY_SECRET=${LOCAL_DASHBOARD_BACKEND_KEYCLOAK_SESSION_MEMORY_SECRET}
-    depends_on:
-      - hub
-  dash-frontend:
-    container_name: dash-frontend
-    build:
-      context: ./front-end
-      args:
-        - BUILD_ENV=local
-    ports:
-      - 8000:8080
-    depends_on:
-      - dash-backend
-    command: http-server --port 8080 -S -C cert.pem dist # Do not modify docker file for this. Docker command is for production envrionnement.
+  # dash-backend:
+  #   container_name: dash-backend
+  #   build: ./back-end
+  #   ports:
+  #     - 3000:3000
+  #   environment:
+  #     - CODA19_DASHBOARD_BACKEND_HUB_ENDPOINT=http://hub:8080
+  #     - CODA19_DASHBOARD_BACKEND_KEYCLOAK_CLIENT_SECRET=${LOCAL_DASHBOARD_BACKEND_KEYCLOAK_CLIENT_SECRET}
+  #     - CODA19_DASHBOARD_BACKEND_KEYCLOAK_SESSION_MEMORY_SECRET=${LOCAL_DASHBOARD_BACKEND_KEYCLOAK_SESSION_MEMORY_SECRET}
+  #   depends_on:
+  #     - hub
+  # dash-frontend:
+  #   container_name: dash-frontend
+  #   build:
+  #     context: ./front-end
+  #     args:
+  #       - BUILD_ENV=local
+  #   ports:
+  #     - 8000:8080
+  #   depends_on:
+  #     - dash-backend
+  #   command: http-server --port 8080 -S -C cert.pem dist # Do not modify docker file for this. Docker command is for production envrionnement.

@@ -10,11 +10,11 @@ As part of a microservice environment, the dashboard will communicate with:
 
 ![Dashboard Diagram](/assets/diagram.png?raw=true "DiagramIO Dashboard Overview")
 
-## Running Development Server
+## Development
 
-The development server needs to launch two instaces, the back and front end. This is done by running `yarn start` which opens the backend `localhost:3000` and front-end `localhost:8000`.
+In order to develop on the data dashboard, you must choose what infrastructure to use. You can use a fake standalone infrastructure with `docker-compose` or connect to the `deployed public hub`. These instructions will be for the standalone version.
 
-As this application is part of a larger insfrastructure, this application alone will have limited functionalities. To launch a test infrastructure, you can use `docker-compose up` at the root of this repo. It will require a local copy of the other repo in the parent folder. Meaning:
+First, the folder structure must look like this with up-to-date repository (and this repo at the dev. branch)
 
 ```
 ROOT
@@ -24,6 +24,10 @@ ROOT
  |-> coda19-site-api
  |-> coda19-stats-api
 ```
+
+Then, make sure you have a `.env` file both in the `coda19-data-dashboard` root folder, but also in the `front-end/` folder. Contact a team member to know the content of these files. Then, you must launch the backend infrastructure with `docker-compose -f .\docker-compose.no-dash.yml up`. After that, you can start the back-end, by going to this folder and running `yarn start`. Finally, the front-end can be launched by going to its folder and running `npm run start`. Imp. the front-end doesn't support `yarn` at the moment.
+
+Note. Yarn is configured as a ZeroInstall using v2. So, you shouldn't have to run yarn install.
 
 ## Dependencies
 

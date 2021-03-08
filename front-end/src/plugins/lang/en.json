@@ -1,5 +1,4 @@
 {
-
   "covid_cases":  "Number of covid cases",
   "death": "Number of death",
   "ventilator":  "Number of patient on ventilator",
@@ -71,5 +70,13 @@
   "startLearning": "Start a machine learning process",
 
   "requestAccessDescriptionTxt": " To get access to CODA-19, contact this person",
-  "mailRequestAccessTxt": "mailto:address_a_determiner@coda19.ca?subject=Request access"
+  "mailRequestAccessTxt": "mailto:address_a_determiner@coda19.ca?subject=Request access",
+
+  "QB_name": "name",
+  "QB_category": "category",
+  "QB_in_stock": "in stock",
+  "QB_yes": "yes",
+  "QB_no": "no",
+  "QB_price": "price",
+  "QB_identifier": "identifier"
 }

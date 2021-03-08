@@ -70,6 +70,14 @@
   "requestAccessTxt": "Demande d'accès",
 
   "requestAccessDescriptionTxt": " Pour obtenir accès aux données de CODA-19, contactez",
-  "mailRequestAccessTxt": "mailto:address_a_determiner@coda19.ca?subject=Demande d'accès"
+  "mailRequestAccessTxt": "mailto:address_a_determiner@coda19.ca?subject=Demande d'accès",
+
+  "QB_name": "nom",
+  "QB_category": "catégorie",
+  "QB_in_stock": "en stock",
+  "QB_yes": "oui",
+  "QB_no": "non",
+  "QB_price": "prix",
+  "QB_identifier": "identifiant"
 
 }
