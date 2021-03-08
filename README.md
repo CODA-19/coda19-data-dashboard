@@ -25,7 +25,7 @@ ROOT
  |-> coda19-stats-api
 ```
 
-Then, make sure you have a `.env` file both in the `coda19-data-dashboard` root folder, but also in the `front-end/` folder. Contact a team member to know the content of these files. Then, you must launch the backend infrastructure with `docker-compose up`. After that, you can start the back-end, by going to this folder and running `yarn start`. Finally, the front-end can be launched by going to its folder and running `npm run start`. Imp. the front-end doesn't support `yarn` at the moment.
+Then, make sure you have a `.env` file both in the `coda19-data-dashboard` root folder, but also in the `front-end/` folder. Contact a team member to know the content of these files. Then, you must launch the backend infrastructure with `docker-compose -f .\docker-compose.no-dash.yml up`. After that, you can start the back-end, by going to this folder and running `yarn start`. Finally, the front-end can be launched by going to its folder and running `npm run start`. Imp. the front-end doesn't support `yarn` at the moment.
 
 ## Dependencies
 

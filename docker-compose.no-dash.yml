@@ -1,0 +1,50 @@
+version: "3.3"
+services:
+  api_111:
+    container_name: api_111
+    build: ../coda19-stats-api
+    environment:
+      - CODA19_STATS_API_FAKE_AIDBOX=true
+      - CODA19_STATS_API_PORT=8082
+    ports:
+      - 8082:8082 # For debugging at least one of them
+  spoke_111:
+    container_name: spoke_111
+    build: ../coda19-site-api
+    environment:
+      - CODA19_SITE_API_HUB_API_URL=http://hub:8080/
+      - CODA19_SITE_API_HOSPITAL_CODE=111
+      - CODA19_SITE_API_SERVER_PORT=5418
+      - CODA19_SITE_API_STATS_API_ENDPOINT=http://api_111:8082
+      - CODA19_SITE_API_KEYCLOAK_APP_PASSWORD=${LOCAL_SITE_API_KEYCLOAK_APP_PASSWORD}
+    depends_on:
+      - hub
+      - api_111
+  api_112:
+    container_name: api_112
+    build: ../coda19-stats-api
+    environment:
+      - CODA19_STATS_API_FAKE_AIDBOX=true
+      - CODA19_STATS_API_PORT=8083
+    ports:
+      - 8083:8083
+  spoke_112:
+    container_name: spoke_112
+    build: ../coda19-site-api
+    environment:
+      - CODA19_SITE_API_HUB_API_URL=http://hub:8080/
+      - CODA19_SITE_API_HOSPITAL_CODE=112
+      - CODA19_SITE_API_SERVER_PORT=5419
+      - CODA19_SITE_API_STATS_API_ENDPOINT=http://api_112:8083
+      - CODA19_SITE_API_KEYCLOAK_APP_PASSWORD=${LOCAL_SITE_API_KEYCLOAK_APP_PASSWORD}
+    depends_on:
+      - hub
+  hub:
+    container_name: hub
+    build: ../coda19-hub-api
+    environment:
+      - CODA19_HUB_API_SERVER_PORT=8080
+      - CODA19_HUB_API_KEYCLOAK_CLIENT_SECRET=${LOCAL_HUB_API_KEYCLOAK_CLIENT_SECRET}
+      - CODA19_HUB_API_KEYCLOAK_SESSION_MEMORY_SECRET=${LOCAL_HUB_API_KEYCLOAK_SESSION_MEMORY_SECRET}
+    ports:
+      - 8081:8080
