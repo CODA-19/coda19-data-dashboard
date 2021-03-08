@@ -93,14 +93,13 @@ export default {
                 "NOT": "NON"
             }
         },
-        // this.$t("length_of_stay") 
       filters: [{
         id: 'name',
-        label: 'Name',
+        label: this.$t("QB_name"),
         type: 'string'
       }, {
         id: 'category',
-        label: 'Category',
+        label: this.$t("QB_category"),
         type: 'integer',
         input: 'select',
         values: {
@@ -114,17 +113,17 @@ export default {
         operators: ['equal', 'not_equal', 'in', 'not_in', 'is_null', 'is_not_null']
       }, {
         id: 'in_stock',
-        label: 'In stock',
+        label:   this.$t("QB_in_stock") ,
         type: 'integer',
         input: 'radio',
         values: {
-          1: 'Yes',
-          0: 'No'
+          1: this.$t("QB_yes"),
+          0: this.$t("QB_no")
         },
         operators: ['equal']
       }, {
         id: 'price',
-        label: 'Price',
+        label:  this.$t("QB_price"),
         type: 'double',
         validation: {
           min: 0,
@@ -132,7 +131,7 @@ export default {
         }
       }, {
         id: 'id',
-        label: 'Identifier',
+        label:  this.$t("QB_identifier"),
         type: 'string',
         placeholder: '____-____-____',
         operators: ['equal', 'not_equal'],
