@@ -27,9 +27,8 @@ export default {
   components: {BarChart, Legend},
   methods:{
     getSummary: async function(){
-      await GeneralApi.summary()
-        .then(res => res.data)
-        .then(data => { this.loadData(data)});
+      let res = await GeneralApi.summary();
+      this.loadData(res.data);
     },
     loadConn: function(connections) {
       // Loading active connections
@@ -63,11 +62,10 @@ export default {
     }
   },
   async created() {
-    await SiteApi.get().then(res => res.data)
-        .then(json => json.connections)
-        .then(conn => this.loadConn(conn));
+    let res = await SiteApi.get()
+        this.loadConn(res.data.connections);
 
-    await this.getSummary();
+    this.getSummary();
     },
   data() {
     return {
