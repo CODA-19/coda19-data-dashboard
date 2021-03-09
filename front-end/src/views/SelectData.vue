@@ -166,15 +166,15 @@
                 <div class="row">
                     <div class="col-lg-3 col-md-3">
                         <span>Start</span>
-                        <input class="form-control" type="number" id="start_breakdown"></input>
+                        <input class="form-control" type="date" id="start_breakdown"></input>
                     </div>
                     <div class="col-lg-3 col-md-3">
                         <span>End</span>
-                        <input class="form-control" type="number" id="end_breakdown"></input>
+                        <input class="form-control" type="date" id="end_breakdown"></input>
                     </div>
                     <div class="col-lg-3 col-md-3">
                         <span>Step</span>
-                        <input class="form-control" type="number" id="step_breakdown"></input>
+                        <input class="form-control" type="number" placeholder="days" id="step_breakdown"></input>
                     </div>
                 </div>
             </div>
