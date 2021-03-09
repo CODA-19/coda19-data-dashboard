@@ -165,17 +165,17 @@
                   </div>
                 </div>
                 <div class="row">
-                    <div class="col-lg-3 col-md-3">
-                        <span>Start</span>
+                    <div class="col-lg-4 col-md-4">
+                        <span>{{ $t("breakdownStart") }}</span>
                         <input class="form-control" type="date" id="start_breakdown"></input>
                     </div>
-                    <div class="col-lg-3 col-md-3">
-                        <span>End</span>
+                    <div class="col-lg-4 col-md-4">
+                        <span>{{ $t("breakdownEnd") }}</span>
                         <input class="form-control" type="date" id="end_breakdown"></input>
                     </div>
-                    <div class="col-lg-3 col-md-3">
-                        <span>Step</span>
-                        <input class="form-control" type="number" placeholder="days" id="step_breakdown"></input>
+                    <div class="col-lg-4 col-md-4">
+                        <span>{{ $t("breakdownStep") }}</span>
+                        <input class="form-control" type="number"  :placeholder="$t('breakdownDays')" id="step_breakdown"></input>
                     </div>
                 </div>
             </div>
