@@ -85,6 +85,7 @@ export default {
           })
         })
         option.series = seriesOpt;
+        option.legend = {data : this.group, bottom: 10};
       }
 
       else{
