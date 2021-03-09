@@ -7,7 +7,7 @@ const path = require('path')
 const cookieParser = require('cookie-parser')
 const logger = require('morgan')
 
-const KeycloakFactory = require('./keycloak-factory');
+const KeycloakFactory = require('./src/auth/keycloak-factory');
 
 const indexRouter = require('./src/routes/index')
 const apiRouter = require('./src/routes/api')
