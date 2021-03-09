@@ -33,6 +33,11 @@
   "selectResourceAttributeTxt": "Attribut de la resource",
   "selectResourcePatient": "Patient",
 
+  "breakdownStart": "début",
+  "breakdownEnd": "fin",
+  "breakdownStep": "durée",
+  "breakdownDays": "jours",
+
   "contTxt": "Continues",
   "discTxt": "Discrètes",
   "selectContTxt":"Sélectionnez les mesures continues",
