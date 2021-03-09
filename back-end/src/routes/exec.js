@@ -2,7 +2,7 @@ const express = require('express');
 const Joi = require('joi');
 const router = express.Router();
 const { _ } = require('underscore');
-const { response } = require('../app');
+const { response } = require('../../app');
 const axios = require('axios').default;
 
 // Schema for base request

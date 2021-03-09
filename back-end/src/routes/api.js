@@ -7,8 +7,8 @@ const router = express.Router()
 const { _ } = require('underscore')
 const moment = require('moment')
 
-const axiosInstance = require('../api/axios-instance');
-const getCredentialsHeader = require('../api/credentials-helper');
+const axiosInstance = require('../../api/axios-instance');
+const getCredentialsHeader = require('../../api/credentials-helper');
 
 router.get('/data', function (req, res, next) {
 
