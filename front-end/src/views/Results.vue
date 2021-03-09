@@ -27,7 +27,8 @@
           <v-divider></v-divider>
           <div class="subPanel" v-for="(figure, idx) in figures">
             <div class="tableTitle"><span class="tableIdx">{{$t('figureTxt')+(idx+1)+"."}}</span><span>{{figure.name}}</span></div>
-            <rangeBarchart style="height: 40vh" :colors="colors"  :category="figure.category" :data="figure.data" :group="true" :labels="siteLabels" autoresize></rangeBarchart>
+            <rangeBarchart v-if="figure.type === 'group'" style="height: 40vh" :colors="colors"  :category="figure.category" :data="figure.data" :group="true" :labels="siteLabels" autoresize></rangeBarchart>
+            <BarChart v-if="figure.type === 'bar'" :category="figure.category[0]" :colors="colors"  :data="figure.data" :group="figure.category[1]" :labels="siteLabels"></BarChart>
           </div>
 
         </div>
@@ -42,10 +43,11 @@ import BarChart from "@/components/barChart";
 import { bus } from "@/main";
 import Const from "@/const";
 import rangeBarchart from "@/components/rangeBarchart"
+import lineChart from "@/components/lineChart"
 
 export default {
   name: "Results",
-  components: { BarChart, rangeBarchart},
+  components: { BarChart, rangeBarchart, lineChart},
   props:{
     summary: {
       type: Object
@@ -104,6 +106,13 @@ export default {
         {
           name: 'Summary of Patient.age at each site',
           category: ['101','102','103'],
+          type: 'group',
+          data:[[67,60,58],[72, 76, 80]]
+        },
+        {
+          name: 'Summary of Patient.gender at each site',
+          category: [['101','102','103'],['male','female']],
+          type: 'bar',
           data:[[67,60,58],[72, 76, 80]]
         }
 

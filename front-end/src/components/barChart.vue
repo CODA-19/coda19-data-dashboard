@@ -22,27 +22,13 @@ export default {
     'v-chart': ECharts
   },
   props:{
-    colors:{
-      type:Array
-    },
-    data:{
-      type: Array
-    },
-    category:{
-      type: Array
-    },
-    title:{
-      type: String
-    },
-    highlight:{
-      type: String
-    },
-    labels: {
-      type: Object
-    },
-    group: {
-      type: Boolean
-    }
+    colors: Array,
+    data: Array,
+    category: Array,
+    title: String,
+    highlight: String,
+    labels: Object,
+    group: Array
   },
   computed:{
     option(){
@@ -90,7 +76,7 @@ export default {
           seriesOpt.push({
             type: 'bar',
             data:serie,
-            name:idx,
+            name:this.group[idx],
             itemStyle: {
               color: (param) => {
                 return this.colors[idx]

@@ -109,6 +109,7 @@
                                      :clear-on-select="false"
                                      :close-on-select="false"
                                      :showLabels="false"
+                                     openDirection="below"
                         >
                           <template slot="clear" slot-scope="fields">
                             <div class="multiselect__clear" v-if="form.field.length" @mousedown.prevent.stop="clearAllFields(fields.search)"></div>
@@ -278,23 +279,6 @@ export default {
 
       //MockData
       sites: [],
-      rules: [
-        {
-          type: "text",
-          id: "vegetable",
-          label: "Vegetable"
-        },
-        {
-          type: "radio",
-          id: "fruit",
-          label: "Fruit",
-          choices: [
-            { label: "Apple", value: "apple" },
-            { label: "Banana", value: "banana" }
-          ]
-        }
-      ],
-
       query: {
         condition: 'AND',
         rules: [{
