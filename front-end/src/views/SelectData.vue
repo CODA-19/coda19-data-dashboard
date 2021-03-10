@@ -164,7 +164,7 @@
                     </div>
                   </div>
                 </div>
-                <div class="row">
+                <div v-if="form.measures.cont.length" class="row">
                     <div class="col-lg-4 col-md-4">
                         <span>{{ $t("breakdownStart") }}</span>
                         <input class="form-control" type="date" id="start_breakdown"></input>
