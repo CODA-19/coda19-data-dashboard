@@ -2,6 +2,17 @@
   <div class="mainContainer home">
     <v-container>
       <div class="row">
+        <div class="col-lg-4 col-md-4">
+          <HomeTextTile :txTitle="'Patiens'" :txBottom="'Moy'" :data="800000" > </HomeTextTile>
+        </div>
+        <div class="col-lg-4 col-md-4">
+           <HomeTextTile :txTitle="'nouveau cas'" :txBottom="'Moy'" :data="550" > </HomeTextTile>
+        </div>
+        <div class="col-lg-4 col-md-4">
+            <HomeTextTile :txTitle="'d�c�s'" :txBottom="'Moy'" :data="18" > </HomeTextTile>
+        </div>
+      </div>
+      <div class="row">
         <Legend class="col-12 row" v-bind:colors="colors" :sites="category()" :direction="'horizontal'" :highlight.sync="highlight" :labels="siteLabels"></Legend>
         <div v-for="set in sets" class="col-lg-6 col-md-12 col-sm-12">
           <BarChart style="width:100%" :colors="colors"  :data="getData(set)" :category="category(set)" :title="set" :highlight="highlight"  :labels="siteLabels" autoresize></BarChart>
@@ -19,6 +30,7 @@
 
 <script>
 import BarChart from "@/components/barChart";
+import HomeTextTile from "@/components/HomeTextTile";
 import Const from "@/const";
 import Legend from "@/components/legend";
 import GeneralApi from "@/api/GeneralApi";
@@ -31,7 +43,7 @@ const mockData = [
 
 export default {
   name: "Home",
-  components: {BarChart, Legend, Gauge},
+  components: {BarChart, Legend, Gauge, HomeTextTile},
   methods:{
     getSummary: async function(){
       let res = await GeneralApi.summary();
