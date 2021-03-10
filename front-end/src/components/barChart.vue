@@ -28,7 +28,8 @@ export default {
     title: String,
     highlight: String,
     labels: Object,
-    group: Array
+    group: Array,
+    horizontal: Boolean
   },
   computed:{
     option(){
@@ -50,6 +51,7 @@ export default {
           }
         },
         color: this.colors,
+        grid: {containLabel: true},
         xAxis: {type: 'category'},
         yAxis: {type: 'value',
           axisLine: {
@@ -65,10 +67,23 @@ export default {
       var categories = this.category.map(cat=>{
         return this.labels[cat]?this.labels[cat][this.$i18n.locale] : cat
       })
-      option.xAxis=[{
-        type:'category',
-        data:categories
-      }];
+      if(this.horizontal){
+        option.yAxis=[{
+          type:'category',
+          data:categories,
+          inverse: true
+        }];
+
+        option.xAxis= {type: 'value'}
+      }
+      else{
+        option.xAxis=[{
+          type:'category',
+          data:categories
+        }];
+
+      }
+
 
       const seriesOpt = []
       if(this.group){

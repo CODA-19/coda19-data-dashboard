@@ -21,6 +21,11 @@
         </div>
       </div>
       <div class="row">
+        <div v-for="set in sets2" class="col-lg-4 col-md-12 col-sm-12 cardContainer">
+          <v-card>
+            <BarChart style="width:100%" :colors="colors" :horizontal="true" :data="getData(set)" :category="category(set)" :title="set" :highlight="highlight"  :labels="siteLabels" autoresize></BarChart>
+          </v-card>
+        </div>
         <div  class="col-lg-4 col-md-12 col-sm-12 cardContainer">
           <v-card>
           <Gauge style="width: 100%"></Gauge>
@@ -30,7 +35,7 @@
       </div>
       <div class="row">
 <!--        <Legend class="col-12 row" v-bind:colors="colors" :sites="category()" :direction="'horizontal'" :highlight.sync="highlight" :labels="siteLabels"></Legend>-->
-        <div v-for="set in sets" class="col-lg-4 col-md-12 col-sm-12 cardContainer">
+        <div v-for="set in sets1" class="col-lg-4 col-md-12 col-sm-12 cardContainer">
           <v-card>
           <BarChart style="width:100%" :colors="colors"  :data="getData(set)" :category="category(set)" :title="set" :highlight="highlight"  :labels="siteLabels" autoresize></BarChart>
           </v-card>
@@ -101,7 +106,8 @@ export default {
     },
   data() {
     return {
-      sets:['covid_cases','death','ventilator','icu'],
+      sets1:['covid_cases','death','ventilator'],
+      sets2:['death','icu'],
       lineCharts: [{title: 'Positive rate per site'},{title:'New cases per site'},{title:'Hospitalization rate'}],
       colors: Const.colors,
       summaries: {},
