@@ -1,25 +1,26 @@
 <template>
-  <div id="svg"></div>
+  <div :id=id></div>
 </template>
 
 <script>
 import * as d3 from 'd3'
+import _ from 'underscore'
 
-var categories = ['101','102','103'];
-
-var subCategory = ['male','female'];
-
-var data = [
-  [50, 70],
-  [63, 76],
-  [59, 87]
-];
-
-var groupData = [
-  [[50, 70], [63, 76]],
-  [ [59, 87], [53, 72]],
-  [ [60, 78], [62, 89]]
-];
+// var categories = ['101','102','103'];
+//
+// var subCategory = ['male','female'];
+//
+// var data = [
+//   [50, 70],
+//   [63, 76],
+//   [59, 87]
+// ];
+//
+// var groupData = [
+//   [[50, 70], [63, 76]],
+//   [ [59, 87], [53, 72]],
+//   [ [60, 78], [62, 89]]
+// ];
 
 const margin = {
   left: 30,
@@ -37,25 +38,28 @@ const barWidth = 20;
 export default {
   name: "rangeBarchart",
   props:{
-    data:{
-      type: Array
-    },
-    categories: {
-      type: Array
-    },
-    colors:{
-      type: Array
-    }
+    data: Array,
+    categories: Array,
+    colors: Array,
+    breakdown: Boolean,
+    id:String
   },
   mounted(){
-    this.rangeBarchart();
-    // this.rangeBarchartBreakdown();
+    if(this.breakdown){
+       this.rangeBarchartBreakdown();
+    }
+    else
+      this.rangeBarchart();
+
   },
   methods:{
     rangeBarchart(){
-      let _this = this;
 
-      var canvas = d3.select('#svg')
+      let _this = this,
+          categories = _this.data.map(d=>d.site),
+          data = _this.data.map(p=>{return [p.min,p.max]});
+
+      var canvas = d3.select(`#${_this.id}`)
           .append('svg')
           .attr('width', size.width+2*margin.left)
           .attr('height', size.height+margin.top+margin.bottom);
@@ -191,9 +195,12 @@ export default {
     },
 
     rangeBarchartBreakdown(){
-      let _this = this;
+      let _this = this,
+          categories = _this.data.map(d=>d.site),
+          subCategory = _.keys(_this.data[0].data),
+          groupData = _.values(_this.data).map((site)=>{return site.data}).map(sub=>{return _.values(sub).map(ci=>{return [ci.min,ci.max]})});
 
-      var canvas = d3.select('#svg')
+      var canvas = d3.select(`#${_this.id}`)
           .append('svg')
           .attr('width', size.width+2*margin.left)
           .attr('height', size.height+margin.top+margin.bottom);
