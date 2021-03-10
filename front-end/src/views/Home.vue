@@ -13,16 +13,28 @@
         </div>
       </div>
       <div class="row">
-        <Legend class="col-12 row" v-bind:colors="colors" :sites="category()" :direction="'horizontal'" :highlight.sync="highlight" :labels="siteLabels"></Legend>
-        <div v-for="set in sets" class="col-lg-6 col-md-12 col-sm-12">
-          <BarChart style="width:100%" :colors="colors"  :data="getData(set)" :category="category(set)" :title="set" :highlight="highlight"  :labels="siteLabels" autoresize></BarChart>
+        <div v-for="chart in lineCharts" class="col-lg-4 col-md-6 col-sm-12 cardContainer">
+        <v-card>
+          <LineChart style="width: 100%"></LineChart>
+          <div class="title"><span>{{chart.title}}</span></div>
+        </v-card>
         </div>
       </div>
       <div class="row">
-        <v-card class="col-lg-4 col-md-12 col-sm-12">
+        <div  class="col-lg-4 col-md-12 col-sm-12 cardContainer">
+          <v-card>
           <Gauge style="width: 100%"></Gauge>
           <div class="title"><span>Total Occupation</span></div>
-        </v-card>
+          </v-card>
+        </div>
+      </div>
+      <div class="row">
+<!--        <Legend class="col-12 row" v-bind:colors="colors" :sites="category()" :direction="'horizontal'" :highlight.sync="highlight" :labels="siteLabels"></Legend>-->
+        <div v-for="set in sets" class="col-lg-4 col-md-12 col-sm-12 cardContainer">
+          <v-card>
+          <BarChart style="width:100%" :colors="colors"  :data="getData(set)" :category="category(set)" :title="set" :highlight="highlight"  :labels="siteLabels" autoresize></BarChart>
+          </v-card>
+        </div>
       </div>
     </v-container>
   </div>
@@ -36,6 +48,7 @@ import Legend from "@/components/legend";
 import GeneralApi from "@/api/GeneralApi";
 import SiteApi from '@/api/SiteApi';
 import Gauge from "@/components/Gauge";
+import LineChart from "../components/lineChart";
 
 const mockData = [
   ['category','101','102','103','104','105','106', 'total'],
@@ -43,7 +56,7 @@ const mockData = [
 
 export default {
   name: "Home",
-  components: {BarChart, Legend, Gauge, HomeTextTile},
+  components: {LineChart, BarChart, Legend, Gauge, HomeTextTile},
   methods:{
     getSummary: async function(){
       let res = await GeneralApi.summary();
@@ -89,6 +102,7 @@ export default {
   data() {
     return {
       sets:['covid_cases','death','ventilator','icu'],
+      lineCharts: [{title: 'Positive rate per site'},{title:'New cases per site'},{title:'Hospitalization rate'}],
       colors: Const.colors,
       summaries: {},
       legendSites: [],
