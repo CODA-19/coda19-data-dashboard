@@ -30,6 +30,7 @@
   "selectResourceTypeTxt": "Resource type",
   "selectResourceAttributeTxt": "Resource attribute",
   "selectResourcePatient": "Patient",
+  "selectResourceAttributeAge": "Age",
 
   "breakdownStart": "start",
   "breakdownEnd": "end",

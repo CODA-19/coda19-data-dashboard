@@ -159,7 +159,7 @@
                     <div>{{ $t("selectResourceAttributeTxt") }}</div>
                     <div>
                       <select>
-                        <option :value="age">age</option>
+                        <option :value="age">{{ $t("selectResourceAttributeAge")}}</option>
                       </select>
                     </div>
                   </div>
