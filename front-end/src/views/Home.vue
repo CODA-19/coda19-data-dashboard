@@ -1,11 +1,17 @@
 <template>
-  <div class="mainContainer">
+  <div class="mainContainer home">
     <v-container>
       <div class="row">
         <Legend class="col-12 row" v-bind:colors="colors" :sites="category()" :direction="'horizontal'" :highlight.sync="highlight" :labels="siteLabels"></Legend>
         <div v-for="set in sets" class="col-lg-6 col-md-12 col-sm-12">
-          <BarChart style="height: 30vh" :colors="colors"  :data="getData(set)" :category="category(set)" :title="set" :highlight="highlight"  :labels="siteLabels" autoresize></BarChart>
+          <BarChart style="width:100%" :colors="colors"  :data="getData(set)" :category="category(set)" :title="set" :highlight="highlight"  :labels="siteLabels" autoresize></BarChart>
         </div>
+      </div>
+      <div class="row">
+        <v-card class="col-lg-4 col-md-12 col-sm-12">
+          <Gauge style="width: 100%"></Gauge>
+          <div class="title"><span>Total Occupation</span></div>
+        </v-card>
       </div>
     </v-container>
   </div>
@@ -17,6 +23,7 @@ import Const from "@/const";
 import Legend from "@/components/legend";
 import GeneralApi from "@/api/GeneralApi";
 import SiteApi from '@/api/SiteApi';
+import Gauge from "@/components/Gauge";
 
 const mockData = [
   ['category','101','102','103','104','105','106', 'total'],
@@ -24,7 +31,7 @@ const mockData = [
 
 export default {
   name: "Home",
-  components: {BarChart, Legend},
+  components: {BarChart, Legend, Gauge},
   methods:{
     getSummary: async function(){
       let res = await GeneralApi.summary();

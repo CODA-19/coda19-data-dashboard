@@ -24,6 +24,14 @@ html, body{
   flex-direction: column;
 }
 
+.home{
+  .title{
+    color: #464646;
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+  }
+}
 .selectData{
   width:100%;
   margin: 20px auto;
