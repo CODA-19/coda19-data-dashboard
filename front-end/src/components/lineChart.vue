@@ -25,6 +25,12 @@ export default {
   props:{
     title: String
   },
+  created() {
+    window.addEventListener("resize", ()=>{
+      const lineChart = this.$refs.lineChart;
+      lineChart.resize();
+    });
+  },
   computed:{
     option() {
       var option = {

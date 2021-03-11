@@ -28,8 +28,8 @@
           <div class="subPanel" v-for="(figure, idx) in figures">
             <div class="tableTitle"><span class="tableIdx">{{$t('figureTxt')+(idx+1)+"."}}</span><span>{{figure.name}}</span></div>
             <rangeBarchart v-if="figure.type === 'range'" :id="'svg-'+idx" style="height: 40vh" :colors="colors" :breakdown="figure.breakdown" :category="figure.category" :data="figure.data" :group="true" :labels="siteLabels" autoresize></rangeBarchart>
-            <BarChart v-if="figure.type === 'bar'" :id="'svg-'+idx"  :category="figure.category[0]" :colors="colors"  :data="figure.data" :group="figure.category[1]" :labels="siteLabels"></BarChart>
-            <LineChart v-if="figure.type==='line'"></LineChart>
+            <BarChart v-if="figure.type === 'bar'" :id="'svg-'+idx" style="width:100%"  :category="figure.category[0]" :colors="colors"  :data="figure.data" :group="figure.category[1]" :labels="siteLabels"></BarChart>
+            <LineChart v-if="figure.type==='line'" style="width:100%" ></LineChart>
           </div>
 
         </div>
