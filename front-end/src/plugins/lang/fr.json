@@ -1,4 +1,10 @@
 {
+  "home_new_case": "Nouveaux cas ce jour",
+  "home_new_patient": "Nombre de patient dans la cohorte",
+  "home_daily_death": "Nouveaux décès",
+  "home_positivity": "Taux de positivité total:",
+  "home_average_rt": "Moy. mob.",
+  "home_rt_rate": "Taux Rt.",
 
   "covid_cases": "Nombre de cas de covid",
   "death": "Nombre de décès",

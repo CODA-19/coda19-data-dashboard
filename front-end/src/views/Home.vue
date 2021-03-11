@@ -3,13 +3,13 @@
     <v-container>
       <div class="row">
         <div class="col-lg-4 col-md-4">
-          <HomeTextTile :txTitle="'Patiens'" :txBottom="'Moy'" :data="800000" > </HomeTextTile>
+          <HomeTextTile :txTitle="$t('home_new_patient')" :txBottom="$t('home_positivity')" :data="800000" > </HomeTextTile>
         </div>
         <div class="col-lg-4 col-md-4">
-           <HomeTextTile :txTitle="'nouveau cas'" :txBottom="'Moy'" :data="550" > </HomeTextTile>
+           <HomeTextTile :txTitle="$t('home_new_case')" :txBottom="$t('home_average_rt')" :data="550" > </HomeTextTile>
         </div>
         <div class="col-lg-4 col-md-4">
-            <HomeTextTile :txTitle="'décès'" :txBottom="'Moy'" :data="18" > </HomeTextTile>
+            <HomeTextTile :txTitle="$t('home_daily_death')" :txBottom="$t('home_rt_rate')" :data="18" > </HomeTextTile>
         </div>
       </div>
       <div class="row">
