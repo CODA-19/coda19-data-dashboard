@@ -82,7 +82,20 @@ html, body{
     }
   }
 }
-
+.roundBorderPanel.v-card.v-sheet.theme--light{
+  border-radius: 30px;
+}
+.txTile {
+  text-align: center;
+  padding:20px ;
+  .dataTileContent {
+    font-size: 50px;
+    margin: 10px  0px 20px 0px;
+  }
+  .tileTitle{
+    font-size:14px;
+  }
+}
 .selectionPanel select{
     border:1px solid #efefef;
     padding: 3px;
