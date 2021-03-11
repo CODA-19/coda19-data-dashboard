@@ -13,7 +13,7 @@ export default {
     'v-chart': ECharts
   },
   props: {
-
+    value: Number
   },
   computed: {
     option(){
@@ -64,7 +64,7 @@ export default {
             }
           },
           title: {
-            show: true
+            show: false
           },
           detail: {
             valueAnimation: true,
@@ -73,7 +73,7 @@ export default {
             formatter: "{value}%"
           },
           data: [{
-            value: 70
+            value: this.value
           }]
         }]
       };

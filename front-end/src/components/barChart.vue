@@ -35,6 +35,7 @@ export default {
     option(){
       var option = {
         title:{
+          show:false,
           text: '',
           left: 'center',
           bottom: '0'
@@ -51,7 +52,11 @@ export default {
           }
         },
         color: this.colors,
-        grid: {containLabel: true},
+        grid: {
+          containLabel: true,
+          left:10,
+          bottom:20
+        },
         xAxis: {type: 'category'},
         yAxis: {type: 'value',
           axisLine: {
@@ -93,7 +98,7 @@ export default {
             data:serie,
             name:this.group[idx],
             itemStyle: {
-              color: (param) => {
+              color: () => {
                 return this.colors[idx]
               }
             }
@@ -122,7 +127,11 @@ export default {
         }];
       }
 
-      option.title.text = this.$t(this.title);
+      if(this.title){
+        option.title.text = this.$t(this.title);
+        option.title.show = true;
+      }
+
 
       return option;
     }
