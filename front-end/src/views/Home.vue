@@ -12,32 +12,37 @@
             <HomeTextTile :txTitle="$t('home_daily_death')" :txBottom="$t('home_rt_rate')" :data="18" > </HomeTextTile>
         </div>
       </div>
+
       <div class="row">
         <div v-for="chart in lineCharts" class="col-lg-4 col-md-6 col-sm-12 cardContainer">
+          <div class="title"><span>{{chart.title}}</span></div>
         <v-card>
           <LineChart style="width: 100%"></LineChart>
-          <div class="title"><span>{{chart.title}}</span></div>
         </v-card>
         </div>
       </div>
+
       <div class="row">
         <div v-for="set in sets2" class="col-lg-4 col-md-12 col-sm-12 cardContainer">
+          <div class="title"><span>{{$t(set)}}</span></div>
           <v-card>
-            <BarChart style="width:100%" :colors="colors" :horizontal="true" :data="getData(set)" :category="category(set)" :title="set" :highlight="highlight"  :labels="siteLabels" autoresize></BarChart>
+            <BarChart style="width:100%" :colors="colors" :horizontal="true" :data="getData(set)" :category="category(set)" :highlight="highlight"  :labels="siteLabels" autoresize></BarChart>
           </v-card>
         </div>
         <div  class="col-lg-4 col-md-12 col-sm-12 cardContainer">
-          <v-card>
-          <Gauge style="width: 100%"></Gauge>
           <div class="title"><span>Total Occupation</span></div>
+          <v-card>
+          <Gauge style="width: 100%" :value="60"></Gauge>
           </v-card>
         </div>
       </div>
+
       <div class="row">
 <!--        <Legend class="col-12 row" v-bind:colors="colors" :sites="category()" :direction="'horizontal'" :highlight.sync="highlight" :labels="siteLabels"></Legend>-->
         <div v-for="set in sets1" class="col-lg-4 col-md-12 col-sm-12 cardContainer">
+          <div class="title"><span>{{$t(set)}}</span></div>
           <v-card>
-          <BarChart style="width:100%" :colors="colors"  :data="getData(set)" :category="category(set)" :title="set" :highlight="highlight"  :labels="siteLabels" autoresize></BarChart>
+          <BarChart style="width:100%" :colors="colors"  :data="getData(set)" :category="category(set)" :highlight="highlight"  :labels="siteLabels" autoresize></BarChart>
           </v-card>
         </div>
       </div>
