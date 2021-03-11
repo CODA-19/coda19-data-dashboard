@@ -9,7 +9,7 @@
            <HomeTextTile :txTitle="'nouveau cas'" :txBottom="'Moy'" :data="550" > </HomeTextTile>
         </div>
         <div class="col-lg-4 col-md-4">
-            <HomeTextTile :txTitle="'d�c�s'" :txBottom="'Moy'" :data="18" > </HomeTextTile>
+            <HomeTextTile :txTitle="'décès'" :txBottom="'Moy'" :data="18" > </HomeTextTile>
         </div>
       </div>
       <div class="row">
