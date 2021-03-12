@@ -31,6 +31,12 @@ export default {
     group: Array,
     horizontal: Boolean
   },
+  created() {
+    window.addEventListener("resize", ()=>{
+      const barChart = this.$refs.barChart;
+      barChart.resize();
+    });
+  },
   computed:{
     option(){
       var option = {
@@ -86,9 +92,7 @@ export default {
           type:'category',
           data:categories
         }];
-
       }
-
 
       const seriesOpt = []
       if(this.group){
@@ -105,7 +109,7 @@ export default {
           })
         })
         option.series = seriesOpt;
-        option.legend = {data : this.group, bottom: 10};
+        option.legend = {data : this.group, bottom: 0};
       }
 
       else{

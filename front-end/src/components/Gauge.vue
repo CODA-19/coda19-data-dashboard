@@ -15,6 +15,12 @@ export default {
   props: {
     value: Number
   },
+  created() {
+    window.addEventListener("resize", ()=>{
+      const gauge = this.$refs.gauge;
+      gauge.resize();
+    });
+  },
   computed: {
     option(){
       const option = {

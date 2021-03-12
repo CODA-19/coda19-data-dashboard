@@ -104,8 +104,8 @@ export default {
     }
   },
   async created() {
-    let res = await SiteApi.get()
-        this.loadConn(res.data.connections);
+    let res = await SiteApi.get();
+    this.loadConn(res.data.connections);
 
     this.getSummary();
     },
