@@ -1,10 +1,10 @@
 {
-  "home_new_case": "New cases today",
+  "home_new_case": " New cases today",
   "home_new_patient": "Number of patient in this group",
   "home_daily_death": "New death",
-  "home_positivity": "Positivity Rate:",
-  "home_average_rt": "Avg. float.",
-  "home_rt_rate": "Rate Rt.",
+  "home_positivity": " Positivity Rate:{positivity} %",
+  "home_average": "Avg. float. {average}",
+  "home_rt": " Rate Rt. {rate}",
 
   "covid_cases":  "Number of covid cases",
   "death": "Number of death",

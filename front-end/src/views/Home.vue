@@ -3,13 +3,13 @@
     <v-container>
       <div class="row">
         <div class="col-lg-4 col-md-4">
-          <HomeTextTile :txTitle="$t('home_new_patient')" :txBottom="$t('home_positivity')" :data="800000" > </HomeTextTile>
+          <HomeTextTile :txTitle="$t('home_new_patient')" :txBottom="$t('home_positivity',{positivity: getPositiveRate()})" :data="getPatientGroupNumber()" > </HomeTextTile>
         </div>
         <div class="col-lg-4 col-md-4">
-           <HomeTextTile :txTitle="$t('home_new_case')" :txBottom="$t('home_average_rt')" :data="550" > </HomeTextTile>
+           <HomeTextTile :txTitle="$t('home_new_case')" :txBottom="$t('home_average',{average: getDailyCasesMoy()})  +  $t('home_rt',{rate: getDailyCasesRt()})" :data="getDailyCases()" > </HomeTextTile>
         </div>
         <div class="col-lg-4 col-md-4">
-            <HomeTextTile :txTitle="$t('home_daily_death')" :txBottom="$t('home_rt_rate')" :data="18" > </HomeTextTile>
+            <HomeTextTile :txTitle="$t('home_daily_death')" :txBottom="$t('home_average',{average: getDailyDeathMoy()})  + $t('home_rt',{rate: getDailyDeathRt()})" :data="getDailyDeath()" > </HomeTextTile>
         </div>
       </div>
 
@@ -98,6 +98,15 @@ export default {
     getData: function(set) {
       return this.summaries[set] ? this.summaries[set][1] : [];
     },
+    getPositiveRate: function(){ return 10;},
+    getDailyDeath: function(){ return 9;},
+    getDailyDeathRt: function(){ return 0.4;},
+    getDailyDeathMoy: function(){ return 12;},
+    getDailyCases: function(){ return 142;},
+    getDailyCasesRt: function(){ return 0.92;},
+    getDailyCasesMoy: function(){ return 134;},
+    getPatientGroupNumber: function(){ return 452000;},
+    getPositiveRate: function(){ return 10;},
     category: function(set){
       const key = set ? set : Object.keys(this.summaries)[0];
       return this.summaries[key] ? this.summaries[key][0] : [];
