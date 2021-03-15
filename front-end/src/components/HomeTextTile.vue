@@ -14,7 +14,7 @@ export default {
   props:{
     txTitle: String,
     txBottom: String,
-    data: String,
+    data: Number,
   }
 }
 </script>
