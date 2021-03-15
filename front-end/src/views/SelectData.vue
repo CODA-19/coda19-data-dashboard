@@ -109,6 +109,7 @@
                                      :clear-on-select="false"
                                      :close-on-select="false"
                                      :showLabels="false"
+                                     openDirection="below"
                         >
                           <template slot="clear" slot-scope="fields">
                             <div class="multiselect__clear" v-if="form.field.length" @mousedown.prevent.stop="clearAllFields(fields.search)"></div>
@@ -158,14 +159,28 @@
                     <div>{{ $t("selectResourceAttributeTxt") }}</div>
                     <div>
                       <select>
-                        <option :value="age">age</option>
+                        <option :value="age">{{ $t("selectResourceAttributeAge")}}</option>
                       </select>
                     </div>
                   </div>
                 </div>
-              </div>
-            </v-card>
-        </div>
+                <div v-if="form.measures.cont.length" class="row">
+                    <div class="col-lg-4 col-md-4">
+                        <span>{{ $t("breakdownStart") }}</span>
+                        <input class="form-control" type="date" id="start_breakdown"></input>
+                    </div>
+                    <div class="col-lg-4 col-md-4">
+                        <span>{{ $t("breakdownEnd") }}</span>
+                        <input class="form-control" type="date" id="end_breakdown"></input>
+                    </div>
+                    <div class="col-lg-4 col-md-4">
+                        <span>{{ $t("breakdownStep") }}</span>
+                        <input class="form-control" type="number"  :placeholder="$t('breakdownDays')" id="step_breakdown"></input>
+                    </div>
+                </div>
+            </div>
+        </v-card>
+    </div>
 
 
         <div class="col-lg-6 col-md-4 submit-btn">
@@ -264,23 +279,6 @@ export default {
 
       //MockData
       sites: [],
-      rules: [
-        {
-          type: "text",
-          id: "vegetable",
-          label: "Vegetable"
-        },
-        {
-          type: "radio",
-          id: "fruit",
-          label: "Fruit",
-          choices: [
-            { label: "Apple", value: "apple" },
-            { label: "Banana", value: "banana" }
-          ]
-        }
-      ],
-
       query: {
         condition: 'AND',
         rules: [{

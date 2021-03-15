@@ -1,29 +1,31 @@
 <template>
-  <div id="svg"></div>
+  <div :id=id></div>
 </template>
 
 <script>
 import * as d3 from 'd3'
+import _ from 'underscore'
 
-var categories = ['101','102','103'];
-
-var subCategory = ['male','female'];
-
-var dollars = [
-  [50, 70],
-  [63, 76],
-  [59, 87]
-];
-
-var dollarsSub = [
-  [[50, 70], [63, 76]],
-  [ [59, 87], [53, 72]],
-  [ [60, 78], [62, 89]]
-];
+// var categories = ['101','102','103'];
+//
+// var subCategory = ['male','female'];
+//
+// var data = [
+//   [50, 70],
+//   [63, 76],
+//   [59, 87]
+// ];
+//
+// var groupData = [
+//   [[50, 70], [63, 76]],
+//   [ [59, 87], [53, 72]],
+//   [ [60, 78], [62, 89]]
+// ];
 
 const margin = {
   left: 30,
-  top: 20
+  top: 20,
+  bottom:40
 }
 
 const size = {
@@ -36,28 +38,31 @@ const barWidth = 20;
 export default {
   name: "rangeBarchart",
   props:{
-    data:{
-      type: Array
-    },
-    categories: {
-      type: Array
-    },
-    colors:{
-      type: Array
-    }
+    data: Array,
+    categories: Array,
+    colors: Array,
+    breakdown: Boolean,
+    id:String
   },
   mounted(){
-    // this.rangeBarchart();
-    this.rangeBarchartBreakdown();
+    if(this.breakdown){
+       this.rangeBarchartBreakdown();
+    }
+    else
+      this.rangeBarchart();
+
   },
   methods:{
     rangeBarchart(){
-      let _this = this;
 
-      var canvas = d3.select('#svg')
+      let _this = this,
+          categories = _this.data.map(d=>d.site),
+          data = _this.data.map(p=>{return [p.min,p.max]});
+
+      var canvas = d3.select(`#${_this.id}`)
           .append('svg')
           .attr('width', size.width+2*margin.left)
-          .attr('height', size.height+2*margin.top);
+          .attr('height', size.height+margin.top+margin.bottom);
 
       var yscale = d3.scaleLinear()
           .domain([10, 100])
@@ -96,7 +101,7 @@ export default {
       var bars = canvas.append('g')
           .attr("transform", `translate(${margin.left},${margin.top})`)
           .selectAll('rect')
-          .data(dollars)
+          .data(data)
           .enter();
 
           bars.append('rect')
@@ -147,15 +152,58 @@ export default {
             return d[1];
           })
           .style('font-size', '14px');
+
+      //Legend
+      var legend = canvas.append("g")
+          .attr("class", "legend")
+          .attr('transform','translate(0,0)')
+          .style("opacity","0");
+
+      var lg = legend.selectAll("g")
+          .data(categories)
+          .enter()
+          .append("g")
+          .attr("transform", function(d,i) { return `translate(${i * 100},${size.height + 15})`});
+
+      lg.append("rect")
+          .attr("x", 0)
+          .attr("y", 0)
+          .attr("width", 15)
+          .attr("height", 15)
+          .style("fill", function(d,i) { return _this.colors[i]; });
+
+      lg.append("text")
+          .attr("x", 18)
+          .attr("y", 12)
+          .style('font-size', '13px')
+          .text(function(d) {return d; });
+
+      var nodeWidth = (d) => d.getBBox().width;
+
+      let offset = 0;
+      lg.attr('transform', function(d, i) {
+        let x = offset;
+        offset += nodeWidth(this) + 10;
+        return `translate(${x},${size.height + margin.top})`;
+      });
+
+      legend.attr('transform', function() {
+        return `translate(${(size.width - nodeWidth(this)) / 2},${margin.top})`
+      });
+
+      legend.transition().duration(500).delay(function(d,i){ return 1300 + 100 * i; }).style("opacity","1");
     },
 
     rangeBarchartBreakdown(){
-      let _this = this;
+      let _this = this,
+          categories = _this.data.map(d=>d.site),
+          subCategory = _.keys(_this.data[0].data),
+          groupData = _.values(_this.data).map((site)=>{return site.data}).map(sub=>{return _.values(sub).map(ci=>{return [ci.min,ci.max]})});
 
-      var canvas = d3.select('#svg')
+      var canvas = d3.select(`#${_this.id}`)
           .append('svg')
           .attr('width', size.width+2*margin.left)
-          .attr('height', size.height+2*margin.top);
+          .attr('height', size.height+margin.top+margin.bottom);
 
       var yscale = d3.scaleLinear()
           .domain([10, 100])
@@ -199,7 +247,7 @@ export default {
       var bars = canvas.append('g')
           .attr("transform", `translate(${margin.left},${margin.top})`)
           .selectAll('rect')
-          .data(dollarsSub)
+          .data(groupData)
           .enter();
 
 
@@ -247,6 +295,46 @@ export default {
             return d.value[1];
           })
           .style('font-size', '12px');
+
+      //Legend
+      var legend = canvas.append("g")
+          .attr("class", "legend")
+          .attr('transform','translate(0,0)')
+          .style("opacity","0");
+
+      var lg = legend.selectAll("g")
+          .data(subCategory)
+          .enter()
+          .append("g")
+          .attr("transform", function(d,i) { return `translate(${i * 100},${size.height + 15})`});
+
+      lg.append("rect")
+          .attr("x", 0)
+          .attr("y", 0)
+          .attr("width", 15)
+          .attr("height", 15)
+          .style("fill", function(d,i) { return _this.colors[i]; });
+
+      lg.append("text")
+          .attr("x", 18)
+          .attr("y", 12)
+          .style('font-size', '13px')
+          .text(function(d) {return d; });
+
+      var nodeWidth = (d) => d.getBBox().width;
+
+      let offset = 0;
+      lg.attr('transform', function(d, i) {
+        let x = offset;
+        offset += nodeWidth(this) + 10;
+        return `translate(${x},${size.height + margin.top})`;
+      });
+
+      legend.attr('transform', function() {
+        return `translate(${(size.width - nodeWidth(this)) / 2},${margin.top})`
+      });
+
+      legend.transition().duration(500).delay(function(d,i){ return 1300 + 100 * i; }).style("opacity","1");
     }
 
   }

@@ -27,7 +27,9 @@
           <v-divider></v-divider>
           <div class="subPanel" v-for="(figure, idx) in figures">
             <div class="tableTitle"><span class="tableIdx">{{$t('figureTxt')+(idx+1)+"."}}</span><span>{{figure.name}}</span></div>
-            <rangeBarchart style="height: 40vh" :colors="colors"  :category="figure.category" :data="figure.data" :group="true" :labels="siteLabels" autoresize></rangeBarchart>
+            <rangeBarchart v-if="figure.type === 'range'" :id="'svg-'+idx" style="height: 40vh" :colors="colors" :breakdown="figure.breakdown" :category="figure.category" :data="figure.data" :group="true" :labels="siteLabels" autoresize></rangeBarchart>
+            <BarChart v-if="figure.type === 'bar'" :id="'svg-'+idx" style="width:100%"  :category="figure.category[0]" :colors="colors"  :data="figure.data" :group="figure.category[1]" :labels="siteLabels"></BarChart>
+            <LineChart v-if="figure.type==='line'" style="width:100%" ></LineChart>
           </div>
 
         </div>
@@ -42,10 +44,11 @@ import BarChart from "@/components/barChart";
 import { bus } from "@/main";
 import Const from "@/const";
 import rangeBarchart from "@/components/rangeBarchart"
+import LineChart from "@/components/lineChart"
 
 export default {
   name: "Results",
-  components: { BarChart, rangeBarchart},
+  components: { BarChart, rangeBarchart, LineChart},
   props:{
     summary: {
       type: Object
@@ -102,12 +105,38 @@ export default {
       ],
       figures:[
         {
-          name: 'Summary of Patient.age at each site',
-          category: ['101','102','103'],
+          name: 'Summary of Patient.age at each site, broken down by Patient.gender',
+          type: 'range',
+          breakdown: true,
+          data: [
+            {site:'101', data:{ female:{ min: 62, max: 82}, male:{ min: 58, max: 82}}},
+            {site:'102', data:{ female:{ min: 60, max: 76}, male:{ min: 62, max: 75}}},
+            {site:'103', data:{ female:{ min: 58, max: 80}, male:{ min: 63, max: 79}}}
+          ]
+        },
+        {
+          name: 'Summary of Patient.gender at each site',
+          category: [['101','102','103'],['male','female']],
+          type: 'bar',
+          breakdown:false,
           data:[[67,60,58],[72, 76, 80]]
+        },
+        {
+          name: 'Summary of Patient.age at each site',
+          type: 'range',
+          breakdown: false,
+          data: [
+              {site: '101', min: 62, max: 82},
+              {site:'102', min: 60, max: 76},
+              {site:'103', min: 58, max: 80}
+          ]
+        },
+        {
+          name: 'Patient.deceased.value, broken down by Patient.deathDate in bins of 14 days',
+          type: 'line',
+          data:[]
         }
-
-      ],
+        ],
       siteLabels:{
         101:{
           en:'101',

@@ -22,32 +22,26 @@ export default {
     'v-chart': ECharts
   },
   props:{
-    colors:{
-      type:Array
-    },
-    data:{
-      type: Array
-    },
-    category:{
-      type: Array
-    },
-    title:{
-      type: String
-    },
-    highlight:{
-      type: String
-    },
-    labels: {
-      type: Object
-    },
-    group: {
-      type: Boolean
-    }
+    colors: Array,
+    data: Array,
+    category: Array,
+    title: String,
+    highlight: String,
+    labels: Object,
+    group: Array,
+    horizontal: Boolean
+  },
+  created() {
+    window.addEventListener("resize", ()=>{
+      const barChart = this.$refs.barChart;
+      barChart.resize();
+    });
   },
   computed:{
     option(){
       var option = {
         title:{
+          show:false,
           text: '',
           left: 'center',
           bottom: '0'
@@ -64,6 +58,11 @@ export default {
           }
         },
         color: this.colors,
+        grid: {
+          containLabel: true,
+          left:10,
+          bottom:20
+        },
         xAxis: {type: 'category'},
         yAxis: {type: 'value',
           axisLine: {
@@ -79,10 +78,21 @@ export default {
       var categories = this.category.map(cat=>{
         return this.labels[cat]?this.labels[cat][this.$i18n.locale] : cat
       })
-      option.xAxis=[{
-        type:'category',
-        data:categories
-      }];
+      if(this.horizontal){
+        option.yAxis=[{
+          type:'category',
+          data:categories,
+          inverse: true
+        }];
+
+        option.xAxis= {type: 'value'}
+      }
+      else{
+        option.xAxis=[{
+          type:'category',
+          data:categories
+        }];
+      }
 
       const seriesOpt = []
       if(this.group){
@@ -90,15 +100,16 @@ export default {
           seriesOpt.push({
             type: 'bar',
             data:serie,
-            name:idx,
+            name:this.group[idx],
             itemStyle: {
-              color: (param) => {
+              color: () => {
                 return this.colors[idx]
               }
             }
           })
         })
         option.series = seriesOpt;
+        option.legend = {data : this.group, bottom: 0};
       }
 
       else{
@@ -120,7 +131,11 @@ export default {
         }];
       }
 
-      option.title.text = this.$t(this.title);
+      if(this.title){
+        option.title.text = this.$t(this.title);
+        option.title.show = true;
+      }
+
 
       return option;
     }

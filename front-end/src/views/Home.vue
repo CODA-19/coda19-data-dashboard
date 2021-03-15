@@ -1,10 +1,49 @@
 <template>
-  <div class="mainContainer">
+  <div class="mainContainer home">
     <v-container>
       <div class="row">
-        <Legend class="col-12 row" v-bind:colors="colors" :sites="category()" :direction="'horizontal'" :highlight.sync="highlight" :labels="siteLabels"></Legend>
-        <div v-for="set in sets" class="col-lg-6 col-md-12 col-sm-12">
-          <BarChart style="height: 30vh" :colors="colors"  :data="getData(set)" :category="category(set)" :title="set" :highlight="highlight"  :labels="siteLabels" autoresize></BarChart>
+        <div class="col-lg-4 col-md-4">
+          <HomeTextTile :txTitle="$t('home_new_patient')" :txBottom="$t('home_positivity',{positivity: getPositiveRate()})" :data="getPatientGroupNumber()" > </HomeTextTile>
+        </div>
+        <div class="col-lg-4 col-md-4">
+           <HomeTextTile :txTitle="$t('home_new_case')" :txBottom="$t('home_average',{average: getDailyCasesMoy()})  +  $t('home_rt',{rate: getDailyCasesRt()})" :data="getDailyCases()" > </HomeTextTile>
+        </div>
+        <div class="col-lg-4 col-md-4">
+            <HomeTextTile :txTitle="$t('home_daily_death')" :txBottom="$t('home_average',{average: getDailyDeathMoy()})  + $t('home_rt',{rate: getDailyDeathRt()})" :data="getDailyDeath()" > </HomeTextTile>
+        </div>
+      </div>
+
+      <div class="row">
+        <div v-for="chart in lineCharts" class="col-lg-4 col-md-6 col-sm-12 cardContainer">
+          <div class="title"><span>{{chart.title}}</span></div>
+        <v-card>
+          <LineChart style="width: 100%"></LineChart>
+        </v-card>
+        </div>
+      </div>
+
+      <div class="row">
+        <div v-for="set in sets2" class="col-lg-4 col-md-12 col-sm-12 cardContainer">
+          <div class="title"><span>{{$t(set)}}</span></div>
+          <v-card>
+            <BarChart style="width:100%" :colors="colors" :horizontal="true" :data="getData(set)" :category="category(set)" :highlight="highlight"  :labels="siteLabels" autoresize></BarChart>
+          </v-card>
+        </div>
+        <div  class="col-lg-4 col-md-12 col-sm-12 cardContainer">
+          <div class="title"><span>Total Occupation</span></div>
+          <v-card>
+          <Gauge style="width: 100%" :value="60"></Gauge>
+          </v-card>
+        </div>
+      </div>
+
+      <div class="row">
+<!--        <Legend class="col-12 row" v-bind:colors="colors" :sites="category()" :direction="'horizontal'" :highlight.sync="highlight" :labels="siteLabels"></Legend>-->
+        <div v-for="set in sets1" class="col-lg-4 col-md-12 col-sm-12 cardContainer">
+          <div class="title"><span>{{$t(set)}}</span></div>
+          <v-card>
+          <BarChart style="width:100%" :colors="colors"  :data="getData(set)" :category="category(set)" :highlight="highlight"  :labels="siteLabels" autoresize></BarChart>
+          </v-card>
         </div>
       </div>
     </v-container>
@@ -13,10 +52,13 @@
 
 <script>
 import BarChart from "@/components/barChart";
+import HomeTextTile from "@/components/HomeTextTile";
 import Const from "@/const";
 import Legend from "@/components/legend";
 import GeneralApi from "@/api/GeneralApi";
 import SiteApi from '@/api/SiteApi';
+import Gauge from "@/components/Gauge";
+import LineChart from "../components/lineChart";
 
 const mockData = [
   ['category','101','102','103','104','105','106', 'total'],
@@ -24,12 +66,11 @@ const mockData = [
 
 export default {
   name: "Home",
-  components: {BarChart, Legend},
+  components: {LineChart, BarChart, Legend, Gauge, HomeTextTile},
   methods:{
     getSummary: async function(){
-      await GeneralApi.summary()
-        .then(res => res.data)
-        .then(data => { this.loadData(data)});
+      let res = await GeneralApi.summary();
+      this.loadData(res.data);
     },
     loadConn: function(connections) {
       // Loading active connections
@@ -57,21 +98,31 @@ export default {
     getData: function(set) {
       return this.summaries[set] ? this.summaries[set][1] : [];
     },
+    getPositiveRate: function(){ return 10;},
+    getDailyDeath: function(){ return 9;},
+    getDailyDeathRt: function(){ return 0.4;},
+    getDailyDeathMoy: function(){ return 12;},
+    getDailyCases: function(){ return 142;},
+    getDailyCasesRt: function(){ return 0.92;},
+    getDailyCasesMoy: function(){ return 134;},
+    getPatientGroupNumber: function(){ return 452000;},
+    getPositiveRate: function(){ return 10;},
     category: function(set){
       const key = set ? set : Object.keys(this.summaries)[0];
       return this.summaries[key] ? this.summaries[key][0] : [];
     }
   },
   async created() {
-    await SiteApi.get().then(res => res.data)
-        .then(json => json.connections)
-        .then(conn => this.loadConn(conn));
+    let res = await SiteApi.get();
+    this.loadConn(res.data.connections);
 
-    await this.getSummary();
+    this.getSummary();
     },
   data() {
     return {
-      sets:['covid_cases','death','ventilator','icu'],
+      sets1:['covid_cases','death','ventilator'],
+      sets2:['death','icu'],
+      lineCharts: [{title: 'Positive rate per site'},{title:'New cases per site'},{title:'Hospitalization rate'}],
       colors: Const.colors,
       summaries: {},
       legendSites: [],

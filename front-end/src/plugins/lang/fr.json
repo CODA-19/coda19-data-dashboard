@@ -1,5 +1,11 @@
 {
-
+  "home_new_case": " Nouveaux cas ce jour",
+  "home_new_patient": " Nombre de patient dans la cohorte",
+  "home_daily_death": " Nouveaux décès",
+  "home_positivity": " Taux de positivité total: {positivity} %",
+  "home_average": " Moy. mob.{average}",
+  "home_rt": " Taux Rt. {rate}",
+ 
   "covid_cases": "Nombre de cas de covid",
   "death": "Nombre de décès",
   "ventilator": "Nombre de patients sous respirateur",
@@ -32,6 +38,12 @@
   "selectResourceTypeTxt": "Type de resources",
   "selectResourceAttributeTxt": "Attribut de la resource",
   "selectResourcePatient": "Patient",
+  "selectResourceAttributeAge": "Age",
+
+  "breakdownStart": "début",
+  "breakdownEnd": "fin",
+  "breakdownStep": "durée",
+  "breakdownDays": "jours",
 
   "contTxt": "Continues",
   "discTxt": "Discrètes",
