@@ -31,10 +31,12 @@ app.use(express.static(path.join(__dirname, 'public')))
 const keycloak = KeycloakFactory.get(app);
 app.use(keycloak.middleware());
 
-app.use('/', indexRouter)
+app.use('/', indexRouter) // Check for server availability
+app.use('/sites', keycloak.protect(), sitesRouter) // Sites availability
+
 app.use('/api', keycloak.protect(), apiRouter)
 app.use('/auth', keycloak.protect(), authRouter)
-app.use('/sites', keycloak.protect(), sitesRouter)
+
 app.use('/exec', keycloak.protect(), execRouter)
 app.use('/explorer', keycloak.protect(), explorerRouter)
 
