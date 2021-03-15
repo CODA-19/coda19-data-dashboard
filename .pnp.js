@@ -114,6 +114,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD",
         }]
       ]],
+      ["@fortawesome/fontawesome-free", [
+        ["npm:5.15.2", {
+          "packageLocation": "./.yarn/unplugged/@fortawesome-fontawesome-free-npm-5.15.2-3ce4ec3c9f/node_modules/@fortawesome/fontawesome-free/",
+          "packageDependencies": [
+            ["@fortawesome/fontawesome-free", "npm:5.15.2"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
       ["@fortawesome/fontawesome-svg-core", [
         ["npm:1.2.34", {
           "packageLocation": "./.yarn/unplugged/@fortawesome-fontawesome-svg-core-npm-1.2.34-3078bdc3cc/node_modules/@fortawesome/fontawesome-svg-core/",
@@ -1677,6 +1686,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["express-session", "npm:1.17.1"],
             ["http-errors", "npm:1.6.3"],
             ["joi", "npm:17.3.0"],
+            ["json5", "npm:2.2.0"],
             ["jsonwebtoken", "npm:8.5.1"],
             ["keycloak-connect", "npm:11.0.3"],
             ["moment", "npm:2.29.1"],
@@ -5429,6 +5439,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./front-end/",
           "packageDependencies": [
             ["front-end", "workspace:front-end"],
+            ["@fortawesome/fontawesome-free", "npm:5.15.2"],
             ["@fortawesome/fontawesome-svg-core", "npm:1.2.34"],
             ["@fortawesome/free-solid-svg-icons", "npm:5.15.2"],
             ["@fortawesome/vue-fontawesome", "virtual:9106c4d3d0f1a4c79016dce63bed6e7389b05e3c00906054c9ac97a4a47bf12616203111b5e9a0db3f1c9b2893d81470ab4a876897e418394d4cda2509846179#npm:2.0.2"],
@@ -7337,6 +7348,14 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/json5-npm-2.1.3-b71ec6bcca-957e493710.zip/node_modules/json5/",
           "packageDependencies": [
             ["json5", "npm:2.1.3"],
+            ["minimist", "npm:1.2.5"]
+          ],
+          "linkType": "HARD",
+        }],
+        ["npm:2.2.0", {
+          "packageLocation": "./.yarn/cache/json5-npm-2.2.0-da49dc7cb5-07b1f90c28.zip/node_modules/json5/",
+          "packageDependencies": [
+            ["json5", "npm:2.2.0"],
             ["minimist", "npm:1.2.5"]
           ],
           "linkType": "HARD",

@@ -1,0 +1,101 @@
+{
+  // First Row
+  "p1": {
+    "total_count": 800000, // Total number of "participants" in our cohort
+    "prevalence": 0.04 // fraction of the cohort that is COVID-19 positive
+  },
+  "p2": {
+    "date": "2021-03-15", // Latest day for which we have available case data
+    "new_cases": 669, // Number of new members of this cohort that were COVID-19 positive
+    "sma_7d": 943, // 7d moving average over the day prior to "date"
+    "exp_rate_7d": 0.92 // Instantaneous Exponential Rate based on the last 7 day.
+  },
+  "p3": {
+    "date": "2021-03-15", // Latest day for which we have available death data
+    "new_cases": 7, // Number of new members of this cohort that were COVID-19 positive and died
+    "sma_7d": 11, // 7d moving average over the day prior to "date"
+    "exp_rate_7d": 0.86 // Instantaneous Exponential Rate based on the last 7 day.
+  },
+  // Second Row
+  "p4": {
+    // Results are in the same exact order as the dates.
+    "dates": ["2021-03-01", "2021-03-02", "2021-03-03"],
+    "sites": { // Lists sites by code more probably. Does the client have access to a code2name mapping?
+      "JGH": { // leave space for upper and lower confidence interval or other info.
+        "est": [0.4, 0.45, 0.56] // Prop. COVID+ cases each day?
+      },
+      "CHUM": { // Also these have no units, they are pure numbers, but should be represented as %
+        "est": [0.4, 0.45, 0.56]
+      }
+    }
+  },
+  "p5": {
+    // From this date inclusively, they are predictions.
+    "start_of_predictions": "2021-03-04",
+    // In order again
+    "dates": ["2021-03-01", "2021-03-02", "2021-03-03", "2021-03-04"],
+    "sites": {
+      "JGH": {
+        "est": [14, 15, 16, 17] // New daily cases per-day
+      },
+      "CHUM": {
+        "est": [23, 24, 25, 26]
+      }
+    }
+  },
+  "p6": {
+    // In order again
+    "dates": ["2021-03-01", "2021-03-02", "2021-03-03"],
+    "types": {
+      "WARD": {
+        "est": [121, 132, 142] // Census of beds used, how many occupying beds.
+      },
+      "ICU": {
+        "est": [123, 142, 123]
+      }
+    }
+  },
+  // Third Row
+  "p7": {
+    "sites" : { // ICU beds occupancy (prop. of available beds)
+      "JGH": 1.0,
+      "CHUM": 0.6,
+      "CISSCA": 0.25,
+      "CHUQ": 0.4
+    }
+  },
+  "p8": {
+    "sites" : { // Ward beds occupancy (prop. of available beds)
+      "JGH": 0.9,
+      "CHUM": 1.0,
+      "CISSCA": 0.6,
+      "CHUQ": 0.75
+    }
+  },
+  "p9": {
+    "occupancy": 0.80
+  },
+  // Forth Row
+  "p10": {
+    "categories": ["0-2j", "2-7j", ">7j"], // Buckets for number of days in stay
+    "sites": {
+      "JGH": [5, 6, 9], // Number of patients within this length of stay bucket
+      "CHUM": [7, 5, 9]
+    }
+  },
+  "p11": {
+    "categories": ["0-30", "30-60", ">60"], // Buckets for age-groups
+    "sites": {
+      "JGH": [5, 45, 114], // Number of patients within this age-group
+      "CHUM": [7, 50, 140]
+    }
+  },
+  "p12": {
+    // This won't make the graph they are showing in the prototype.
+    "categories": ["COVID+", "COVID-"],
+    "sites": {
+      "JGH": [0.3, 0.45], // Fraction of group that have heart failure? I'm not sure.
+      "CHUM": [0.4, 0.55]
+    }
+  }
+}
