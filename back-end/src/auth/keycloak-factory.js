@@ -7,7 +7,7 @@ let keycloak;
 function get(app) {
   if (keycloak) return keycloak;
 
-  var memoryStore = new session.MemoryStore();
+  let memoryStore = new session.MemoryStore();
 
   const sessionSecret = process.env.CODA19_DASHBOARD_BACKEND_KEYCLOAK_SESSION_MEMORY_SECRET
     ? process.env.CODA19_DASHBOARD_BACKEND_KEYCLOAK_SESSION_MEMORY_SECRET

@@ -1,8 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const { _ } = require('underscore');
-const { response } = require('../app');
-const axios = require('axios').default;
+const { response } = require('../../app');
+const axios = require('../helpers/axios');
+const passAuth = require('../auth/auth');
 
 const queries = [
     { 'label': 'Active Connections', 'path': 'sites', 'param': '' },
@@ -16,7 +17,7 @@ router.get('/', async function(req, res) {
 
   const pathname = decodeURIComponent(req.query.pathname);
   const query = queries.find(q => `${q.path}${q.param}` === pathname);
-  const content = query ? (await axios.get(`http://localhost:${process.env.PORT}/${pathname}`)).data : undefined;
+  const content = query ? (await axios.get(`http://localhost:${process.env.PORT}/${pathname}`, passAuth(req))).data : undefined;
 
   res.render('explorer', { title: 'CODA-19', queries: queries, content: content, active: query })
 

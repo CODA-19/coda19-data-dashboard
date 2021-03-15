@@ -7,14 +7,14 @@ const path = require('path')
 const cookieParser = require('cookie-parser')
 const logger = require('morgan')
 
-const KeycloakFactory = require('./keycloak-factory');
+const KeycloakFactory = require('./src/auth/keycloak-factory');
 
-const indexRouter = require('./routes/index')
-const apiRouter = require('./routes/api')
-const authRouter = require('./routes/auth')
-const sitesRouter = require('./routes/sites')
-const execRouter = require('./routes/exec')
-const explorerRouter = require('./routes/explorer');
+const indexRouter = require('./src/routes/index')
+const apiRouter = require('./src/routes/api')
+const authRouter = require('./src/routes/auth')
+const sitesRouter = require('./src/routes/sites')
+const execRouter = require('./src/routes/exec')
+const explorerRouter = require('./src/routes/explorer');
 
 const cors = require('cors'); //temp, for local test purpose
 const app = express()

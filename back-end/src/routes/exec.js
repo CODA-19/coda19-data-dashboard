@@ -2,8 +2,11 @@ const express = require('express');
 const Joi = require('joi');
 const router = express.Router();
 const { _ } = require('underscore');
-const { response } = require('../app');
-const axios = require('axios').default;
+const { response } = require('../../app');
+const axios = require('../helpers/axios');
+const passAuth = require('../auth/auth');
+
+// Note(malavv): This file is almost certainly broken, should see if its still in use.
 
 // Schema for base request
 const schema = Joi.object({
@@ -26,8 +29,7 @@ router.get('/', async function(req, res, next) {
     resAttribute: value.resourceAttribute.toLowerCase() 
   };
 
-  const exec = await axios.get(`${process.env.CODA19_DASHBOARD_BACKEND_HUB_ENDPOINT}/exec?cmd=${query.command}&resourceType=${query.resType}&resourceAttribute=${query.resAttribute}`,
-  { headers: req.headers }).then(res => res.data);
+  const exec = await axios.get(`${process.env.CODA19_DASHBOARD_BACKEND_HUB_ENDPOINT}/exec?cmd=${query.command}&resourceType=${query.resType}&resourceAttribute=${query.resAttribute}`, passAuth(req)).then(res => res.data);
   
   res.status(200).send(exec);
 })
