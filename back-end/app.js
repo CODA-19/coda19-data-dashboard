@@ -9,12 +9,9 @@ const logger = require('morgan')
 
 const KeycloakFactory = require('./src/auth/keycloak-factory');
 
-const indexRouter = require('./src/routes/index')
-const apiRouter = require('./src/routes/api')
-const authRouter = require('./src/routes/auth')
-const sitesRouter = require('./src/routes/sites')
-const execRouter = require('./src/routes/exec')
-const explorerRouter = require('./src/routes/explorer');
+const indexRouter = require('./src/routes/index');
+const apiRouter = require('./src/routes/api');
+const sitesRouter = require('./src/routes/sites');
 
 const cors = require('cors'); //temp, for local test purpose
 const app = express()
@@ -35,10 +32,6 @@ app.use('/', indexRouter) // Check for server availability
 app.use('/sites', keycloak.protect(), sitesRouter) // Sites availability
 
 app.use('/api', keycloak.protect(), apiRouter)
-app.use('/auth', keycloak.protect(), authRouter)
-
-app.use('/exec', keycloak.protect(), execRouter)
-app.use('/explorer', keycloak.protect(), explorerRouter)
 
 
 module.exports = app
