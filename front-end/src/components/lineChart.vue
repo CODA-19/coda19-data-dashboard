@@ -1,11 +1,24 @@
 <template>
-  <v-chart ref="lineChart" :options="option"/>
+  <v-chart class="chart" ref="lineChart" :option="option"/>
 </template>
 
 <script>
-import ECharts from 'vue-echarts';
-import 'echarts/lib/chart/scatter';
-import "echarts";
+import { use } from "echarts/core";
+import { CanvasRenderer } from "echarts/renderers";
+import "echarts/charts";
+import {
+  TitleComponent,
+  TooltipComponent,
+  LegendComponent
+} from "echarts/components";
+import VChart from "vue-echarts";
+
+use([
+  CanvasRenderer,
+  TitleComponent,
+  TooltipComponent,
+  LegendComponent
+]);
 
 const data = [
       [120, 132, 101, 134, 90, 230, 210],
@@ -19,9 +32,7 @@ const data = [
 
 export default {
   name: "lineChart",
-  components: {
-    'v-chart': ECharts
-  },
+  components: { VChart },
   props:{
     title: String
   },

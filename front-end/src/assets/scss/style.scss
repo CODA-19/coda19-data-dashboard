@@ -23,7 +23,9 @@ html, body{
   min-height: 100vh;
   flex-direction: column;
 }
-
+.chart {
+  height: 400px;
+}
 .home{
   .cardContainer{
     margin:10px 0;
