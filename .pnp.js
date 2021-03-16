@@ -1692,7 +1692,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["moment", "npm:2.29.1"],
             ["morgan", "npm:1.9.1"],
             ["nodemon", "npm:2.0.6"],
-            ["pug", "npm:3.0.0"],
             ["r-script", "npm:0.0.4"],
             ["underscore", "npm:1.11.0"]
           ],
