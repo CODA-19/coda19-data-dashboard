@@ -4,6 +4,7 @@ dotenv.config();
 
 const express = require('express');
 const logger = require('morgan');
+const cors = require('cors');
 
 const KeycloakFactory = require('./src/auth/keycloak-factory');
 
@@ -17,6 +18,7 @@ const app = express()
 app.use(logger('dev'))
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
+app.use(cors());
 
 const keycloak = KeycloakFactory.get(app);
 app.use(keycloak.middleware());
