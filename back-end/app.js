@@ -11,6 +11,7 @@ const indexRouter = require('./src/routes/index');
 const apiRouter = require('./src/routes/api');
 const sitesRouter = require('./src/routes/sites');
 const homeRouter = require('./src/routes/home');
+const debugRouter = require('./src/routes/debug');
 
 const app = express()
 app.use(logger('dev'))
@@ -24,5 +25,6 @@ app.use('/', indexRouter) // Check for server availability
 app.use('/sites', keycloak.protect(), sitesRouter) // Sites availability
 app.use('/home', keycloak.protect(), homeRouter) // Homepage Viewmodel Data
 app.use('/api', keycloak.protect(), apiRouter)
+app.use('/debug', keycloak.protect(), debugRouter)
 
 module.exports = app
