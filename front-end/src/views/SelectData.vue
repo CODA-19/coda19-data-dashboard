@@ -151,7 +151,7 @@
                     <div>{{ $t("selectResourceTypeTxt") }}</div>
                     <div>
                       <select>
-                        <option :value="patien">{{ $t("selectResourcePatient") }}</option>
+                        <option :value="patient">{{ $t("selectResourcePatient") }}</option>
                       </select>
                     </div>
                   </div>
