@@ -19,7 +19,7 @@ router.get('/', async function(req, res, next) {
     let options = passAuth(req);
     options['data'] = sq;
 
-    let df = await axios.get('/stats/summarize', options).then(res => res.data);
+    let df = await axios.get('/stats/summarize?sites=115,112', options).then(res => res.data);
     console.log(df);
 
     try {
