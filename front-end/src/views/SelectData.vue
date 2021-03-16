@@ -145,7 +145,7 @@
                 <span>{{ $t("selectBreakdownTxt") }}</span>
               </div>
               <div class="selectBreakdown selectionPanel">
-                <p class="panelTitle">{{ $t("selectBreakdownByTxt") }}</p>
+                <p>{{ $t("selectBreakdownByTxt") }}</p>
                 <div class="row">
                   <div class="col-lg-4 col-md-4">
                     <div>{{ $t("selectResourceTypeTxt") }}</div>
