@@ -1,11 +1,25 @@
 <template>
-  <v-chart ref="barChart" :options="option"/>
+  <v-chart class="chart" ref="barChart" :option="option"/>
 </template>
 
 <script>
-import ECharts from 'vue-echarts';
-import 'echarts/lib/chart/scatter';
-import "echarts";
+import { use } from "echarts/core";
+import { CanvasRenderer } from "echarts/renderers";
+import { BarChart } from "echarts/charts";
+import {
+  TitleComponent,
+  TooltipComponent,
+  LegendComponent
+} from "echarts/components";
+import VChart from "vue-echarts";
+
+use([
+  CanvasRenderer,
+  BarChart,
+  TitleComponent,
+  TooltipComponent,
+  LegendComponent
+]);
 
 // var data = [
 //   ['age', 'CHUM', 'MUHC', 'MUHQ', 'JGH'],
@@ -18,9 +32,6 @@ import "echarts";
 
 export default {
   name: "BarChart",
-  components: {
-    'v-chart': ECharts
-  },
   props:{
     colors: Array,
     data: Array,
@@ -30,6 +41,9 @@ export default {
     labels: Object,
     group: Array,
     horizontal: Boolean
+  },
+  components:{
+    'v-chart': VChart
   },
   created() {
     window.addEventListener("resize", ()=>{

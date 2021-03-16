@@ -1,17 +1,28 @@
 <template>
-  <v-chart class='gauge' ref="gauge" :options="option"/>
+  <v-chart class='chart' ref="gauge" :option="option"/>
 </template>
 
 <script>
-import ECharts from 'vue-echarts';
-import 'echarts/lib/chart/scatter';
-import "echarts";
+import { use } from "echarts/core";
+import { CanvasRenderer } from "echarts/renderers";
+import "echarts/charts";
+import {
+  TitleComponent,
+  TooltipComponent,
+  LegendComponent
+} from "echarts/components";
+import VChart from "vue-echarts";
+
+use([
+  CanvasRenderer,
+  TitleComponent,
+  TooltipComponent,
+  LegendComponent
+]);
 
 export default {
   name: "Gauge",
-  components: {
-    'v-chart': ECharts
-  },
+  components: { VChart},
   props: {
     value: Number
   },
