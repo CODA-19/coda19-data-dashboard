@@ -11,8 +11,7 @@
   "author": "MCHI & CHUM",
   "license": "UNLICENSED",
   "workspaces": [
-    "back-end",
-    "front-end"
+    "back-end"
   ],
   "dependencies": {
     "concurrently": "^5.3.0"
