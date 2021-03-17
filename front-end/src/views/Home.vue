@@ -30,7 +30,7 @@
           </v-card>
         </div>
         <div  class="col-lg-4 col-md-12 col-sm-12 cardContainer">
-          <div class="title"><span>Total Occupation</span></div>
+          <div class="title"><span>{{$t("home_total_occupation")}}</span></div>
           <v-card>
           <Gauge style="width: 100%" :value="60"></Gauge>
           </v-card>
