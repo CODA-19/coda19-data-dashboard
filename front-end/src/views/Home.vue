@@ -15,7 +15,7 @@
 
       <div class="row">
         <div v-for="chart in lineCharts" class="col-lg-4 col-md-6 col-sm-12 cardContainer">
-          <div class="title"><span>{{chart.title}}</span></div>
+          <div class="title"><span>{{$t(chart.titleKey)}}</span></div>
         <v-card>
           <LineChart style="width: 100%"></LineChart>
         </v-card>
@@ -113,7 +113,7 @@ export default {
     return {
       sets1:['covid_cases','death','ventilator'],
       sets2:['death','icu'],
-      lineCharts: [{title:  this.$t("home_positive_rate_per_site")},{title: this.$t("home_new_case_per_site")},{title: this.$t("home_hospitalisation_rate")}],
+      lineCharts: [{titleKey: "home_positive_rate_per_site" },{titleKey: "home_new_case_per_site"},{titleKey: "home_hospitalisation_rate"}],
       colors: Const.colors,
       summaries: {},
       legendSites: [],
