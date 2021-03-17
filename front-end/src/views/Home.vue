@@ -113,7 +113,7 @@ export default {
     return {
       sets1:['covid_cases','death','ventilator'],
       sets2:['death','icu'],
-      lineCharts: [{title: 'Positive rate per site'},{title:'New cases per site'},{title:'Hospitalization rate'}],
+      lineCharts: [{title:  this.$t("home_positive_rate_per_site")},{title: this.$t("home_new_case_per_site")},{title: this.$t("home_hospitalisation_rate")}],
       colors: Const.colors,
       summaries: {},
       legendSites: [],

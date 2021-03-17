@@ -6,6 +6,11 @@
   "home_average": "Avg. float. {average}",
   "home_rt": " Rate Rt. {rate}",
 
+  "home_new_case_per_site": "New cases per site",
+  "home_hospitalisation_rate": " Hospitalization rate",
+  "home_positive_rate_per_site": " Positive rate per site",
+  "home_total_occupation": " Total Occupation",
+  
   "covid_cases":  "Number of covid cases",
   "death": "Number of death",
   "ventilator":  "Number of patient on ventilator",

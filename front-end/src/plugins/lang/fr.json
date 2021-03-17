@@ -5,7 +5,12 @@
   "home_positivity": " Taux de positivité total: {positivity} %",
   "home_average": " Moy. mob.{average}",
   "home_rt": " Taux Rt. {rate}",
- 
+
+  "home_new_case_per_site": "Nouveaux cas par site",
+  "home_hospitalisation_rate": " Taux d'hospitalisation",
+  "home_positive_rate_per_site": " Taux de positivité par site",
+  "home_total_occupation": " Occupation totale",
+
   "covid_cases": "Nombre de cas de covid",
   "death": "Nombre de décès",
   "ventilator": "Nombre de patients sous respirateur",
