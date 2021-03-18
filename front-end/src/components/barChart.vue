@@ -40,7 +40,8 @@ export default {
     highlight: String,
     labels: Object,
     group: Array,
-    horizontal: Boolean
+    horizontal: Boolean,
+    margin: Array
   },
   components:{
     'v-chart': VChart
@@ -145,6 +146,41 @@ export default {
         }];
       }
 
+      if(this.margin){
+        option.tooltip = {
+          trigger: 'axis',
+          axisPointer: {
+            type: 'shadow'
+          },
+          formatter: (params) => {
+            var icon =`<span style="background-color:${params[0].color};border: 1px solid ${params[0].color};border-radius:50%;display:inline-block;height:10px;margin-right:5px;margin-top:3px;width:10px;"></span>`,
+                category = params[0].name,
+                value = `<strong>${params[0].value}</strong>`,
+                margin = `${params[1].value[1]}-${params[1].value[2]}`,
+                tooltip = `<div style="display: flex;flex-direction: row;min-width:80px"><div style="display:flex;flex-direction:column"><div>${icon}${category}</div> </div><div style="display:flex;flex-direction:column;text-align: right"><div>${value}</div><div>${margin}</div></div>`
+
+            return tooltip;
+          }
+        };
+
+        option.series.push({
+          type: 'custom',
+          name: 'margin',
+          itemStyle: {
+            normal: {
+              borderWidth: 1.5
+            }
+          },
+          renderItem: this.renderItem,
+          encode: {
+            x: 0,
+            y: [1, 2]
+          },
+          data: this.margin,
+          z: 100
+        })
+      }
+
       if(this.title){
         option.title.text = this.$t(this.title);
         option.title.show = true;
@@ -171,6 +207,47 @@ export default {
       })
     }
   },
+  methods:{
+    renderItem(params, api) {
+      const xValue = api.value(0),
+          highPoint = api.coord([xValue, api.value(1)]),
+          lowPoint = api.coord([xValue, api.value(2)]),
+          halfWidth = api.size([1, 0])[0] * 0.1,
+          style = api.style({
+            stroke: "#333",
+            fill: null
+          });
+
+      return {
+        type: 'group',
+        children: [{
+          type: 'line',
+          transition: ['shape'],
+          shape: {
+            x1: highPoint[0] - halfWidth, y1: highPoint[1],
+            x2: highPoint[0] + halfWidth, y2: highPoint[1]
+          },
+          style: style
+        }, {
+          type: 'line',
+          transition: ['shape'],
+          shape: {
+            x1: highPoint[0], y1: highPoint[1],
+            x2: lowPoint[0], y2: lowPoint[1]
+          },
+          style: style
+        }, {
+          type: 'line',
+          transition: ['shape'],
+          shape: {
+            x1: lowPoint[0] - halfWidth, y1: lowPoint[1],
+            x2: lowPoint[0] + halfWidth, y2: lowPoint[1]
+          },
+          style: style
+        }]
+      };
+}
+  }
 }
 </script>
 
