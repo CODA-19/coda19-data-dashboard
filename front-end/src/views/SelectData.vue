@@ -262,6 +262,8 @@ export default {
       connOptions: [],
       allSelected: true,
       indeterminate: false,
+      patient:"",
+      age:99,
       form: {
         query: {},
         variables:{},
