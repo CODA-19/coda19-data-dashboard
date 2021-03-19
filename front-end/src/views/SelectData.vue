@@ -232,12 +232,12 @@ export default {
   mounted(){
     bus.$on('queryUpdate',(query)=>{this.getQuery(query)})
   },
-    updated(){
-       if( this.lastLang != this.$i18n.locale )  {
-           this.componentKey = this.$i18n.locale ;
-            this.lastLang = this.$i18n.locale  ;
-           }
-  },
+  //   updated(){
+  //      if( this.lastLang != this.$i18n.locale )  {
+  //          this.componentKey = this.$i18n.locale ;
+  //           this.lastLang = this.$i18n.locale  ;
+  //          }
+  // },
   computed: {
     options() {
       return [
