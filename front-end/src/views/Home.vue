@@ -32,7 +32,7 @@
         <div  class="col-lg-4 col-md-12 col-sm-12 cardContainer">
           <div class="title"><span>{{$t("home_total_occupation")}}</span></div>
           <v-card>
-          <Gauge style="width: 100%" :value="60"></Gauge>
+          <Gauge style="width: 100%" :value="totalOccupation"></Gauge>
           </v-card>
         </div>
       </div>
@@ -119,7 +119,8 @@ export default {
       legendSites: [],
       siteLabels:{},
       highlight: null,
-      tiles:{patientGroup:{rate: 12.5,total:422000}, dailyCase:{total:145,average:135,rt:0.84} ,dailyDeath:{total:11,average:12,rt:0.4}}
+      tiles:{patientGroup:{rate: 12.5,total:422000}, dailyCase:{total:145,average:135,rt:0.84} ,dailyDeath:{total:11,average:12,rt:0.4}},
+      totalOccupation: 60
     }}
 }
 </script>

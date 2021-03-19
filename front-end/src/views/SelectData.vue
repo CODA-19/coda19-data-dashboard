@@ -96,7 +96,7 @@
 
                       <div class="subPanel">
                         <span>Filters</span>
-                        <QueryBuilder :id="i+'-queryBuilder'" :query="query"></QueryBuilder>
+                        <QueryBuilder :id="i+'-queryBuilder'"  :key="componentKey" :query="query"></QueryBuilder>
                       </div>
                       <div class="subPanel">
                         <span>Fields</span>
@@ -232,6 +232,12 @@ export default {
   mounted(){
     bus.$on('queryUpdate',(query)=>{this.getQuery(query)})
   },
+    updated(){
+       if( this.lastLang != this.$i18n.locale )  {
+           this.componentKey = this.$i18n.locale ;
+            this.lastLang = this.$i18n.locale  ;
+           }
+  },
   computed: {
     options() {
       return [
@@ -257,11 +263,15 @@ export default {
   },
   data() {
     return {
+      lastLang:"",
       selected: null,
       conns: [],
       connOptions: [],
       allSelected: true,
       indeterminate: false,
+      patient:"",
+      componentKey:this.$i18n.locale,
+      age:99,
       form: {
         query: {},
         variables:{},
