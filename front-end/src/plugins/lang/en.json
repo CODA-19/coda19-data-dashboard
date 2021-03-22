@@ -29,6 +29,9 @@
   "unselectAllTxt": "Un-select all",
   "selectTxt": "Select",
 
+  "filters": "Filters",
+  "fields": "Fields",
+
   "selectMeasuresTxt": "Measures",
   "continuous": "Continuous",
   "discreet": "Discreet",

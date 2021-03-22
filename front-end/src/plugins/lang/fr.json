@@ -30,6 +30,9 @@
   "selectTxt": "Sélectionner",
   "total": "Tous",
 
+  "filters": "Filtres",
+  "fields": " Champs",
+
   "selectMeasuresTxt": "Mesures ",
   "continuous": "Continues",
   "discreet": "Discrètes",

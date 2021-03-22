@@ -95,11 +95,11 @@
                       </template>
 
                       <div class="subPanel">
-                        <span>Filters</span>
+                        <span>{{$t("filters")}}</span>
                         <QueryBuilder :id="i+'-queryBuilder'"  :key="componentKey" :query="query"></QueryBuilder>
                       </div>
                       <div class="subPanel">
-                        <span>Fields</span>
+                        <span>{{$t("fields")}}</span>
                         <multiselect v-model="form.field"
                                      :placeholder="$t('selectFieldTxt')"
                                      :options="fieldOptions"
