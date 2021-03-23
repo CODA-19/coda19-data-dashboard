@@ -23,18 +23,17 @@ export default {
     }
   },
   mounted(){
-    let _this = this;
-    $('#'+this.id).queryBuilder(this.option);
+    let _this = this,
+     $queryBuilder = $('#'+this.id);
 
-    $(this.$refs.queryBuilder).on('rulesChanged.queryBuilder', function(){
+    $queryBuilder.queryBuilder(this.option);
 
-      if($('#'+_this.id).childNodes) {
-        const result = $(_this).queryBuilder('getRules');
+    $queryBuilder.on('rulesChanged.queryBuilder', function(){
 
-        if (!$.isEmptyObject(result)) {
-          _this.query = result
-          bus.$emit('queryUpdate', result)
-        }
+      const result = $(_this.$refs.queryBuilder).queryBuilder('getRules');
+
+      if (!$.isEmptyObject(result)) {
+        bus.$emit('queryUpdate', result)
       }
 
     })
@@ -166,40 +165,35 @@ export default {
   watch:{
     option(newVal){
 
-      var $b = $('#'+this.id),
-          lang = this.$i18n.locale;
+      const $b = $('#'+this.id),
+          lang = this.$i18n.locale,
+          _this = this;
 
+      $b.off('rulesChanged.queryBuilder');
 
-        var rules = $b.queryBuilder('getRules');
-        if (!$.isEmptyObject(rules)) {
-          newVal.rules = rules;
-        } else {
-          delete newVal.rules;
+      const rules = $b.queryBuilder('getRules');
+      if (!$.isEmptyObject(rules)) {
+        newVal.rules = rules;
+      } else {
+        delete newVal.rules;
+      }
+
+      newVal.lang_code = lang;
+      $b.queryBuilder('destroy');
+      $b.queryBuilder(newVal);
+
+      $b.on('rulesChanged.queryBuilder', function(){
+        const result = $(_this.$refs.queryBuilder).queryBuilder('getRules');
+
+        if (!$.isEmptyObject(result)) {
+          bus.$emit('queryUpdate', result)
         }
-        newVal.lang_code = lang;
-        $b.queryBuilder('destroy');
-        $('#'+this.id).queryBuilder(newVal);
+      })
 
     }
   }
 }
 
-
-$('#btn-reset').on('click', function() {
-  $('#builder-basic').queryBuilder('reset');
-});
-
-$('#btn-set').on('click', function() {
-  $('#builder-basic').queryBuilder('setRules', rules_basic);
-});
-
-$('#btn-get').on('click', function() {
-  var result = $('#builder-basic').queryBuilder('getRules');
-
-  if (!$.isEmptyObject(result)) {
-    alert(JSON.stringify(result, null, 2));
-  }
-});
 </script>
 
 <style scoped>

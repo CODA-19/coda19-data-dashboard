@@ -96,7 +96,7 @@
 
                       <div class="subPanel">
                         <span>{{$t("filters")}}</span>
-                        <QueryBuilder :id="i+'-queryBuilder'"  :key="componentKey" :query="query"></QueryBuilder>
+                        <QueryBuilder :id="i+'-queryBuilder'"  :key="componentKey" :query="form.query"></QueryBuilder>
                       </div>
                       <div class="subPanel">
                         <span>{{$t("fields")}}</span>
@@ -273,7 +273,25 @@ export default {
       componentKey:this.$i18n.locale,
       age:99,
       form: {
-        query: {},
+        query:  {
+      condition: 'AND',
+          rules: [{
+        id: 'price',
+        operator: 'less',
+        value: 10.25
+      }, {
+        condition: 'OR',
+        rules: [{
+          id: 'category',
+          operator: 'equal',
+          value: 2
+        }, {
+          id: 'category',
+          operator: 'equal',
+          value: 1
+        }]
+      }]
+    },
         variables:{},
         measures:{
           cont:[{label:'count', value:'count'},{label:'mean', value:'mean'},{label:'stdev', value:'stdev'},{label:'ci95', value:'ci95'}],
@@ -289,25 +307,25 @@ export default {
 
       //MockData
       sites: [],
-      query: {
-        condition: 'AND',
-        rules: [{
-          id: 'price',
-          operator: 'less',
-          value: 10.25
-        }, {
-          condition: 'OR',
-          rules: [{
-            id: 'category',
-            operator: 'equal',
-            value: 2
-          }, {
-            id: 'category',
-            operator: 'equal',
-            value: 1
-          }]
-        }]
-      },
+      // query: {
+      //   condition: 'AND',
+      //   rules: [{
+      //     id: 'price',
+      //     operator: 'less',
+      //     value: 10.25
+      //   }, {
+      //     condition: 'OR',
+      //     rules: [{
+      //       id: 'category',
+      //       operator: 'equal',
+      //       value: 2
+      //     }, {
+      //       id: 'category',
+      //       operator: 'equal',
+      //       value: 1
+      //     }]
+      //   }]
+      // },
       fieldOptions:[{label:'age',value: 'age'},{label:'gender', value: 'gender'}],
       contOptions:[{label:'count', value:'count'},{label:'mean', value:'mean'},{label:'stdev', value:'stdev'},{label:'ci95', value:'ci95'}],
       discOptions:[{label:'age',value: 'age'},{label:'gender', value: 'gender'}],
