@@ -166,11 +166,6 @@ export default {
         option.series.push({
           type: 'custom',
           name: 'margin',
-          itemStyle: {
-            normal: {
-              borderWidth: 1.5
-            }
-          },
           renderItem: this.renderItem,
           encode: {
             x: 0,
@@ -213,10 +208,11 @@ export default {
           highPoint = api.coord([xValue, api.value(1)]),
           lowPoint = api.coord([xValue, api.value(2)]),
           halfWidth = api.size([1, 0])[0] * 0.1,
-          style = api.style({
+          style = {
             stroke: "#333",
-            fill: null
-          });
+            fill: null,
+            lineWidth: 1.5
+          };
 
       return {
         type: 'group',
