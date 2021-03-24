@@ -40,6 +40,7 @@
 
   "resourceTxt": "Resources",
   "selectFieldTxt" : "Sélectionnez les domaines",
+  "resources_add": "Ajouter (+)",
 
   "selectBreakdownTxt": "Stratification",
   "selectBreakdownByTxt": "Stratifier par",
@@ -71,7 +72,6 @@
   "tested": "Nombre Testé",
   "positive": "Nombre Positif",
   "admitted": "Numbre d'Admis",
-  "admission_date": "Date d'Admission \n Médiane du COVID-19",
   "mean_age": "Âge Moyen",
 
   "age_0_to_4": "0 à 4 ans",
@@ -90,7 +90,7 @@
   "requestAccessTxt": "Demande d'accès",
 
   "requestAccessDescriptionTxt": " Pour obtenir accès aux données de CODA-19, contactez",
-  "mailRequestAccessTxt": "mailto:address_a_determiner@coda19.ca?subject=Demande d'accès",
+  "mailRequestAccessTxt": "mailto:adresse_a_determiner@coda19.ca?subject=Demande d'accès",
 
   "QB_name": "nom",
   "QB_category": "catégorie",

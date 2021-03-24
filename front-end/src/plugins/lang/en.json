@@ -39,6 +39,7 @@
 
   "resourceTxt": "Resources",
   "selectFieldTxt" : "Select field(s)",
+  "resources_add": "Add (+)",
 
   "selectBreakdownTxt": "Breakdown",
   "selectBreakdownByTxt": "Breakdown by",
@@ -70,7 +71,6 @@
   "tested": "Number Tested",
   "positive": "Number Positive",
   "admitted": "Number Admitted",
-  "admission_date": "Median COVID-19 \n Admission Date",
   "mean_age": "Mean Age",
   "total": "Total",
 
