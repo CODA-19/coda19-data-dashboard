@@ -163,17 +163,36 @@ export default {
           }
         };
 
+        // const encodeY = [1,2]
+        // if(this.group){
+          const encodeY = [];
+          for (let i = 0; i < 3; i++) {
+            encodeY.push(1 + i);
+          }
+        // }
+
+        if(this.group){
+          option.series = this.data.map(function (data, index) {
+            return {
+              type: 'bar',
+              animation: false,
+              itemStyle: {
+                opacity: 0.5
+              },
+              data: data
+            };
+          })
+        }
+
         option.series.push({
           type: 'custom',
           name: 'margin',
           renderItem: this.renderItem,
-          encode: {
-            x: 0,
-            y: [1, 2]
-          },
+          encode: { x: 0, y: encodeY},
           data: this.margin,
           z: 100
-        })
+        });
+
       }
 
       if(this.title){
@@ -204,6 +223,65 @@ export default {
   },
   methods:{
     renderItem(params, api) {
+      let brkdwn = this.group;
+
+      if(brkdwn){
+        const xValue = api.value(0);
+        var currentSeriesIndices = api.currentSeriesIndices();
+        var barLayout = api.barLayout({
+          barGap: '30%', barCategoryGap: '20%', count: currentSeriesIndices.length - 1
+        });
+
+        var points = [];
+        for (var i = 0; i < currentSeriesIndices.length; i++) {
+          var seriesIndex = currentSeriesIndices[i];
+          if (seriesIndex !== params.seriesIndex) {
+            var lowpoint = api.coord([xValue, this.margin[params.dataIndex][i+1][0]]);
+            var highpoint = api.coord([xValue, this.margin[params.dataIndex][i+1][1]]);
+            lowpoint[0] += barLayout[i].offsetCenter;
+            highpoint[0] += barLayout[i].offsetCenter;
+            points.push({lowPoint: lowpoint, highPoint: highpoint});
+          }
+        }
+
+
+        const halfWidth = 5;
+        var children = [];
+
+        points.map(point=>{
+          children.push({
+            type: 'line',
+            transition: ['shape'],
+            shape: {
+              x1: point.lowPoint[0] - halfWidth, y1: point.lowPoint[1],
+              x2: point.lowPoint[0] + halfWidth, y2: point.lowPoint[1]
+            }
+          });
+          children.push({
+            type: 'line',
+            transition: ['shape'],
+            shape: {
+              x1: point.highPoint[0] - halfWidth, y1: point.highPoint[1],
+              x2: point.highPoint[0] + halfWidth, y2: point.highPoint[1]
+            }
+          });
+          children.push({
+            type: 'line',
+            transition: ['shape'],
+            shape: {
+              x1: point.highPoint[0], y1: point.highPoint[1],
+              x2: point.lowPoint[0], y2: point.lowPoint[1]
+            }
+          })
+
+        })
+
+        return {
+          type: 'group',
+          children: children
+        };
+      }
+
       const xValue = api.value(0),
           highPoint = api.coord([xValue, api.value(1)]),
           lowPoint = api.coord([xValue, api.value(2)]),

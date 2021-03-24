@@ -140,6 +140,14 @@ export default {
           data:[67,60,58]
         },
         {
+          name: 'Summary of Patient.age at each site',
+          category: [['101','102','103','104'],['male','female']],
+          type: 'bar',
+          breakdown:true,
+          margin: [['101',[65,70],[70,75]],['102',[58,62],[73,80]],['103',[55,63],[78,83]], ['104',[65,73],[73,79]]],
+          data:[[67,60,58,68],[72, 76, 80,76]]
+        },
+        {
           name: 'Patient.deceased.value, broken down by Patient.deathDate in bins of 14 days',
           type: 'line',
           data:[]
