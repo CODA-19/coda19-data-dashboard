@@ -6,7 +6,7 @@
         </div>
         <div class="resultPanel">
           <div class="subPanel" v-for="(table,idx) in tables">
-            <div class="tableTitle"><span class="tableIdx">{{$t('tableTxt')+(idx+1)+"."}}</span><span>{{table.name}}</span></div>
+            <div class="tableTitle"><span class="tableIdx">{{$t('tableTxt')+(idx+1)+"."}}</span><span>{{$t(table.nameKey)}}</span></div>
             <b-table
                 :striped="false"
                 :bordered="false"
@@ -84,7 +84,7 @@ export default {
     return {
       colors: Const.colors,
       tables:[
-        {name: "Summary Of Patient.age",
+        {nameKey: "summary_age_key",   
             fields: ['site','mean', 'stdev', 'ci95', 'count'],
             items: [
               { site: 'CHUM', mean: 72, stdev: 23, ci95:'20-95', count:1766 },
@@ -93,7 +93,7 @@ export default {
             ]
 
         },
-        {name: "Summary Of Patient.gender",
+        {nameKey: "summary_gender_key",
             fields: ['site','male', 'female', 'total', 'mode'],
             items: [
               { site: 'CHUM', male: 972, female: 923, total:1895, mode:'male' },
