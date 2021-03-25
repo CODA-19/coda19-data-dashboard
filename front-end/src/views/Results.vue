@@ -104,16 +104,16 @@ export default {
         }
       ],
       figures:[
-        {
-          name: 'Summary of Patient.age at each site, broken down by Patient.gender',
-          type: 'range',
-          breakdown: true,
-          data: [
-            {site:'101', data:{ female:{ min: 62, max: 82}, male:{ min: 58, max: 82}}},
-            {site:'102', data:{ female:{ min: 60, max: 76}, male:{ min: 62, max: 75}}},
-            {site:'103', data:{ female:{ min: 58, max: 80}, male:{ min: 63, max: 79}}}
-          ]
-        },
+        // {
+        //   name: 'Summary of Patient.age at each site, broken down by Patient.gender',
+        //   type: 'range',
+        //   breakdown: true,
+        //   data: [
+        //     {site:'101', data:{ female:{ min: 62, max: 82}, male:{ min: 58, max: 82}}},
+        //     {site:'102', data:{ female:{ min: 60, max: 76}, male:{ min: 62, max: 75}}},
+        //     {site:'103', data:{ female:{ min: 58, max: 80}, male:{ min: 63, max: 79}}}
+        //   ]
+        // },
         {
           name: 'Summary of Patient.gender at each site',
           category: [['101','102','103'],['male','female']],
@@ -121,16 +121,16 @@ export default {
           breakdown:false,
           data:[[67,60,58],[72, 76, 80]]
         },
-        {
-          name: 'Summary of Patient.age at each site',
-          type: 'range',
-          breakdown: false,
-          data: [
-              {site: '101', min: 62, max: 82},
-              {site:'102', min: 60, max: 76},
-              {site:'103', min: 58, max: 80}
-          ]
-        },
+        // {
+        //   name: 'Summary of Patient.age at each site',
+        //   type: 'range',
+        //   breakdown: false,
+        //   data: [
+        //       {site: '101', min: 62, max: 82},
+        //       {site:'102', min: 60, max: 76},
+        //       {site:'103', min: 58, max: 80}
+        //   ]
+        // },
         {
           name: 'Summary of Patient.age at each site',
           category: [['101','102','103']],
