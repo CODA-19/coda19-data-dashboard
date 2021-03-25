@@ -62,6 +62,17 @@
   "tableTxt": "Table ",
   "figureTxt": "Figure ",
 
+  "summary_age_key": "Summary Of Patient.age",
+  "summary_gender_key": "Summary Of Patient.gender",
+  "summary_age_site_strat_key": "Summary of Patient.age at each site, broken down by Patient.gender",
+
+  "summary_gender_site_key": "Summary of Patient.gender at each site",
+  "summary_age_site_key": "Summary of Patient.age at each site",
+  "summary_deceased_strat_key": "Patient.deceased.value, broken down by Patient.deathDate in bins of 14 days",
+
+   "male": "homme ",
+  "female": "femme ",
+
   "newSearchTxt": "New Search",
   "summaryTxt": "Summary",
   "keyVariablesTxt": "Key Variables",

@@ -63,6 +63,17 @@
   "tableTxt": "Tableau ",
   "figureTxt": "Figure ",
 
+  "summary_age_key": "Sommaire des patients - age",
+  "summary_gender_key": "Sommaire des patients - genre",
+  "summary_age_site_strat_key": "Sommaire des patients - age - par site stratifié par genre",
+
+  "summary_gender_site_key": "Sommaire des patients - genre - par site",
+  "summary_age_site_key": "Sommaire des patients  - age - par site",
+  "summary_deceased_strat_key": "Décès - stratifié par période de 14 jours ",
+
+  "male": "homme ",
+  "female": "femme ",
+
   "newSearchTxt": "Nouvelle recherche",
   "summaryTxt": "Résumé",
   "keyVariablesTxt": "Variables-clés",
