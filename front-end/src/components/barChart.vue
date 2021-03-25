@@ -21,15 +21,6 @@ use([
   LegendComponent
 ]);
 
-// var data = [
-//   ['age', 'CHUM', 'MUHC', 'MUHQ', 'JGH'],
-//   ['0 to 4yrs', 6, 4, 5, 7, ],
-//   ['5 to 19 yrs', 5, 7, 6, 7],
-//   ['20 to 49 yrs', 15, 14, 13, 16],
-//   ['50 to 64 yrs', 26, 28, 25, 23],
-//   ['65 and up', 34, 29, 31, 36]
-// ]
-
 export default {
   name: "BarChart",
   props:{
@@ -54,7 +45,35 @@ export default {
   },
   computed:{
     option(){
-      var option = {
+
+      if(!this.data){
+        return this.getBaseOptions();
+      }
+
+      else
+        return this.getOptions();
+    }
+  },
+  watch:{
+    'highlight':function(newVal, oldVal){
+      let sites = this.category;
+      let dataIndex = sites.indexOf(newVal),
+          oldIndex = sites.indexOf(oldVal);
+
+      const barChart = this.$refs.barChart;
+      barChart.dispatchAction({
+        type: 'downplay',
+        dataIndex: oldIndex
+      })
+      barChart.dispatchAction({
+        type: 'highlight',
+        dataIndex: dataIndex
+      })
+    }
+  },
+  methods:{
+    getBaseOptions(){
+       return {
         title:{
           show:false,
           text: '',
@@ -84,15 +103,14 @@ export default {
             show: true
           }}
       };
-
-      if(!this.data){
-        return option;
-      }
-
+    },
+    getOptions(){
+      const option = this.getBaseOptions();
 
       var categories = this.category.map(cat=>{
         return this.labels[cat]?this.labels[cat][this.$i18n.locale] : cat
       })
+
       if(this.horizontal){
         option.yAxis=[{
           type:'category',
@@ -109,8 +127,30 @@ export default {
         }];
       }
 
-      const seriesOpt = []
+      const seriesOpt = this.getSeriesOptions(),
+          legend = this.getLegend(),
+          tooltip = this.getTooltip();
+
+      option.series = seriesOpt;
+      option.legend = legend;
+      if(tooltip)
+        option.tooltip = tooltip;
+
+
+      if(this.title){
+        option.title.text = this.$t(this.title);
+        option.title.show = true;
+      }
+
+
+      return option;
+
+    },
+    getSeriesOptions(){
+      var seriesOpt;
+
       if(this.group){
+        seriesOpt = [];
         this.data.forEach((serie,idx)=>{
           seriesOpt.push({
             type: 'bar',
@@ -123,12 +163,10 @@ export default {
             }
           })
         })
-        option.series = seriesOpt;
-        option.legend = {data : this.group, bottom: 0};
       }
 
       else{
-        option.series = [{
+        seriesOpt = [ {
           type: 'bar',
           // emphasis: {
           //   focus: 'self'
@@ -144,15 +182,66 @@ export default {
             }
           }
         }];
+
       }
 
       if(this.margin){
-        option.tooltip = {
+        const encodeY = [];
+        for (let i = 0; i < 3; i++) {
+          encodeY.push(1 + i);
+        }
+
+        if(this.group){
+          let _this = this;
+          seriesOpt = this.data.map(function (data, index) {
+            return {
+              type: 'bar',
+              name:_this.group[index],
+              animation: false,
+              itemStyle: {
+                opacity: 0.8
+              },
+              data: data
+            };
+          })
+        }
+
+        seriesOpt.push({
+          type: 'custom',
+          name: 'margin',
+          renderItem: this.renderItem,
+          encode: { x: 0, y: encodeY},
+          data: this.margin,
+          z: 100
+        });
+      }
+
+      return seriesOpt;
+    },
+    getLegend(){
+      var legend, selectedMode = true;
+      if(this.group){
+        var group = this.group;
+        if(this.margin)
+          selectedMode = false
+
+        legend = {data : group, bottom: 0, selectedMode : selectedMode};
+      }
+
+      return legend
+    },
+    getTooltip(){
+      var tooltip;
+      if(this.margin){
+        tooltip = {
           trigger: 'axis',
           axisPointer: {
             type: 'shadow'
-          },
-          formatter: (params) => {
+          }
+        }
+
+        if(!this.group){
+          tooltip.formatter = (params) => {
             var icon =`<span style="background-color:${params[0].color};border: 1px solid ${params[0].color};border-radius:50%;display:inline-block;height:10px;margin-right:5px;margin-top:3px;width:10px;"></span>`,
                 category = params[0].name,
                 value = `<strong>${params[0].value}</strong>`,
@@ -161,72 +250,35 @@ export default {
 
             return tooltip;
           }
-        };
-
-        // const encodeY = [1,2]
-        // if(this.group){
-          const encodeY = [];
-          for (let i = 0; i < 3; i++) {
-            encodeY.push(1 + i);
-          }
-        // }
-
-        if(this.group){
-          option.series = this.data.map(function (data, index) {
-            return {
-              type: 'bar',
-              animation: false,
-              itemStyle: {
-                opacity: 0.5
-              },
-              data: data
-            };
-          })
         }
+        else{
+          tooltip.formatter = (params) => {
+            var tooltip = `<span>${params[0].name}</span>`;
+            params.forEach((param,idx)=>{
+              if(param.seriesType !== 'custom'){
+                var category =  `<div><span style="background-color:${param.color};border: 1px solid ${param.color};border-radius:50%;display:inline-block;height:10px;margin-right:5px;margin-top:3px;width:10px;"></span><span>${param.seriesName}</span></div>`;
+                var value = `<div><strong>${param.value}</strong>(${params[params.length - 1].value[idx+1].join('-')})</div>`
+                tooltip +=`<div style="display:flex;flex-direction: row;min-width:100px;justify-content: space-between">${category+value}</div>`
+              }
+            })
 
-        option.series.push({
-          type: 'custom',
-          name: 'margin',
-          renderItem: this.renderItem,
-          encode: { x: 0, y: encodeY},
-          data: this.margin,
-          z: 100
-        });
-
+            return tooltip;
+          }
+        }
       }
-
-      if(this.title){
-        option.title.text = this.$t(this.title);
-        option.title.show = true;
-      }
-
-
-      return option;
-    }
-  },
-  watch:{
-    'highlight':function(newVal, oldVal){
-      let sites = this.category;
-      let dataIndex = sites.indexOf(newVal),
-          oldIndex = sites.indexOf(oldVal);
-
-      const barChart = this.$refs.barChart;
-      barChart.dispatchAction({
-        type: 'downplay',
-        dataIndex: oldIndex
-      })
-      barChart.dispatchAction({
-        type: 'highlight',
-        dataIndex: dataIndex
-      })
-    }
-  },
-  methods:{
+      return tooltip;
+    },
     renderItem(params, api) {
-      let brkdwn = this.group;
+      const xValue = api.value(0),
+          halfWidth = 5,
+          style = {
+            stroke: "#333",
+            fill: null,
+            lineWidth: 1.5
+          };
 
-      if(brkdwn){
-        const xValue = api.value(0);
+      if(this.group){
+
         var currentSeriesIndices = api.currentSeriesIndices();
         var barLayout = api.barLayout({
           barGap: '30%', barCategoryGap: '20%', count: currentSeriesIndices.length - 1
@@ -245,7 +297,6 @@ export default {
         }
 
 
-        const halfWidth = 5;
         var children = [];
 
         points.map(point=>{
@@ -255,7 +306,8 @@ export default {
             shape: {
               x1: point.lowPoint[0] - halfWidth, y1: point.lowPoint[1],
               x2: point.lowPoint[0] + halfWidth, y2: point.lowPoint[1]
-            }
+            },
+            style: style
           });
           children.push({
             type: 'line',
@@ -263,7 +315,8 @@ export default {
             shape: {
               x1: point.highPoint[0] - halfWidth, y1: point.highPoint[1],
               x2: point.highPoint[0] + halfWidth, y2: point.highPoint[1]
-            }
+            },
+            style: style
           });
           children.push({
             type: 'line',
@@ -271,7 +324,8 @@ export default {
             shape: {
               x1: point.highPoint[0], y1: point.highPoint[1],
               x2: point.lowPoint[0], y2: point.lowPoint[1]
-            }
+            },
+            style: style
           })
 
         })
@@ -282,15 +336,8 @@ export default {
         };
       }
 
-      const xValue = api.value(0),
-          highPoint = api.coord([xValue, api.value(1)]),
-          lowPoint = api.coord([xValue, api.value(2)]),
-          halfWidth = api.size([1, 0])[0] * 0.1,
-          style = {
-            stroke: "#333",
-            fill: null,
-            lineWidth: 1.5
-          };
+      const highPoint = api.coord([xValue, api.value(1)]),
+          lowPoint = api.coord([xValue, api.value(2)]);
 
       return {
         type: 'group',
