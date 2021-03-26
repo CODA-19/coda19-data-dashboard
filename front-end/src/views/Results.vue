@@ -26,7 +26,7 @@
           </div>
           <v-divider></v-divider>
           <div class="subPanel" v-for="(figure, idx) in figures">
-            <div class="tableTitle"><span class="tableIdx">{{$t('figureTxt')+(idx+1)+"."}}</span><span>{{figure.name}}</span></div>
+            <div class="tableTitle"><span class="tableIdx">{{$t('figureTxt')+(idx+1)+"."}}</span><span>{{$t(figure.nameKey)}}</span></div>
             <rangeBarchart v-if="figure.type === 'range'" :id="'svg-'+idx" style="height: 40vh" :colors="colors" :breakdown="figure.breakdown" :category="figure.category" :data="figure.data" :group="true" :labels="siteLabels" autoresize></rangeBarchart>
             <BarChart v-if="figure.type === 'bar'" :id="'svg-'+idx" style="width:100%"  :category="figure.category[0]" :colors="colors"  :data="figure.data" :group="figure.category[1]" :labels="siteLabels" :margin="figure.margin"></BarChart>
             <LineChart v-if="figure.type==='line'" style="width:100%" ></LineChart>
@@ -115,7 +115,7 @@ export default {
         //   ]
         // },
         {
-          name: 'Summary of Patient.gender at each site',
+          nameKey: 'summary_gender_site_key',
           category: [['101','102','103'],['male','female']],
           type: 'bar',
           breakdown:false,
@@ -132,7 +132,7 @@ export default {
         //   ]
         // },
         {
-          name: 'Summary of Patient.age at each site',
+          nameKey: 'summary_age_site_key',
           category: [['101','102','103']],
           type: 'bar',
           breakdown:false,
@@ -140,7 +140,7 @@ export default {
           data:[67,60,58]
         },
         {
-          name: 'Summary of Patient.age at each site',
+          nameKey: 'summary_age_site_key',
           category: [['101','102','103','104'],['male','female']],
           type: 'bar',
           breakdown:true,
@@ -148,7 +148,7 @@ export default {
           data:[[67,60,58,68],[72, 76, 80,76]]
         },
         {
-          name: 'Patient.deceased.value, broken down by Patient.deathDate in bins of 14 days',
+          nameKey: 'summary_deceased_strat_key',
           type: 'line',
           data:[]
         }
