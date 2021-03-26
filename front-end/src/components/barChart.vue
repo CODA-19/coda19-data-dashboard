@@ -155,7 +155,7 @@ export default {
           seriesOpt.push({
             type: 'bar',
             data:serie,
-            name:this.group[idx],
+            name: this.$t(this.group[idx]) ,
             itemStyle: {
               color: () => {
                 return this.colors[idx]
@@ -196,7 +196,7 @@ export default {
           seriesOpt = this.data.map(function (data, index) {
             return {
               type: 'bar',
-              name:_this.group[index],
+              name:_this.$t(_this.group[index]),
               animation: false,
               itemStyle: {
                 opacity: 0.8
@@ -221,7 +221,10 @@ export default {
     getLegend(){
       var legend, selectedMode = true;
       if(this.group){
-        var group = this.group;
+        var group = [];
+        for (let i = 0; i <this.group.length; i++) {
+	        group[i] = this.$t(this.group[i]);
+        }
         if(this.margin)
           selectedMode = false
 
