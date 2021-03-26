@@ -14,7 +14,8 @@
   "covid_cases": "Nombre de cas de covid",
   "death": "Nombre de décès",
   "ventilator": "Nombre de patients sous respirateur",
-  "icu": "Nombre de patients en USI",
+  "icu": "Occupation lit soins intensifs",
+  "hospitalization": "Occupation lit étage",
 
   "titleTxt": "Sélection des données",
   "langTxt": "En",

@@ -20,7 +20,8 @@ function nsummary(sitesUri, varUri) {
 
 function summary(){
   const headers = TokenBearerHeaderFactory.get();
-  return AxiosInstance.get('api/hospitalSummary', {headers: headers});
+  return AxiosInstance.get('/home', {headers: headers});
+  // return AxiosInstance.get('api/hospitalSummary', {headers: headers});
 }
 
 export default {

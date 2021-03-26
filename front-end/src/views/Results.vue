@@ -29,7 +29,7 @@
             <div class="tableTitle"><span class="tableIdx">{{$t('figureTxt')+(idx+1)+"."}}</span><span>{{$t(figure.nameKey)}}</span></div>
             <rangeBarchart v-if="figure.type === 'range'" :id="'svg-'+idx" style="height: 40vh" :colors="colors" :breakdown="figure.breakdown" :category="figure.category" :data="figure.data" :group="true" :labels="siteLabels" autoresize></rangeBarchart>
             <BarChart v-if="figure.type === 'bar'" :id="'svg-'+idx" style="width:100%"  :category="figure.category[0]" :colors="colors"  :data="figure.data" :group="figure.category[1]" :labels="siteLabels" :margin="figure.margin"></BarChart>
-            <LineChart v-if="figure.type==='line'" style="width:100%" ></LineChart>
+            <LineChart v-if="figure.type==='line'" style="width:100%" :categories = "figure.categories" :dates = "figure.dates" :data = "figure.data" ></LineChart>
           </div>
 
         </div>
@@ -119,7 +119,7 @@ export default {
           category: [['101','102','103'],['male','female']],
           type: 'bar',
           breakdown:false,
-          data:[[67,60,58],[72, 76, 80]]
+          data:[[67,60],[58,72], [76, 80]]
         },
         // {
         //   name: 'Summary of Patient.age at each site',
@@ -150,7 +150,9 @@ export default {
         {
           nameKey: 'summary_deceased_strat_key',
           type: 'line',
-          data:[]
+          categories:['CHUM', 'JGH'],
+          dates:['2020-01-01','2020-01-02','2020-01-03','2020-01-04','2020-01-05','2020-01-06','2020-01-07','2020-01-08','2020-01-09'],
+          data:[[20,18,16,14,10,10,8,9,6,5],[23,21,19,17,15,13,10,9,8,6]]
         }
         ],
       siteLabels:{

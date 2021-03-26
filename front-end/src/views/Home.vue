@@ -14,19 +14,19 @@
       </div>
 
       <div class="row">
-        <div v-for="chart in lineCharts" class="col-lg-4 col-md-6 col-sm-12 cardContainer">
-          <div class="title"><span>{{$t(chart.titleKey)}}</span></div>
+        <div v-for="chart in lines" class="col-lg-4 col-md-6 col-sm-12 cardContainer">
+          <div class="title"><span>{{$t(chart.title)}}</span></div>
         <v-card>
-          <LineChart style="width: 100%"></LineChart>
+          <LineChart style="width: 100%" :categories = "chart.categories" :dates = "chart.dates" :data = "chart.data"></LineChart>
         </v-card>
         </div>
       </div>
 
       <div class="row">
-        <div v-for="set in sets2" class="col-lg-4 col-md-12 col-sm-12 cardContainer">
-          <div class="title"><span>{{$t(set)}}</span></div>
+        <div v-for="set in set0" class="col-lg-4 col-md-12 col-sm-12 cardContainer">
+          <div class="title"><span>{{$t(set.title)}}</span></div>
           <v-card>
-            <BarChart style="width:100%" :colors="colors" :horizontal="true" :data="getData(set)" :category="category(set)" :highlight="highlight"  :labels="siteLabels" autoresize></BarChart>
+            <BarChart style="width:100%" :colors="colors" :horizontal="true" :data="set.data" :category="set.sites" :highlight="highlight" unit="%"  :labels="siteLabels" autoresize></BarChart>
           </v-card>
         </div>
         <div  class="col-lg-4 col-md-12 col-sm-12 cardContainer">
@@ -39,10 +39,10 @@
 
       <div class="row">
 <!--        <Legend class="col-12 row" v-bind:colors="colors" :sites="category()" :direction="'horizontal'" :highlight.sync="highlight" :labels="siteLabels"></Legend>-->
-        <div v-for="set in sets1" class="col-lg-4 col-md-12 col-sm-12 cardContainer">
-          <div class="title"><span>{{$t(set)}}</span></div>
+        <div v-for="set in set1" class="col-lg-4 col-md-12 col-sm-12 cardContainer">
+          <div class="title"><span>{{$t(set.title)}}</span></div>
           <v-card>
-          <BarChart style="width:100%" :colors="colors"  :data="getData(set)" :category="category(set)" :highlight="highlight"  :labels="siteLabels" autoresize></BarChart>
+          <BarChart style="width:100%" :colors="colors"  :data="set.data" :category="set.sites" :highlight="highlight" :group="set.group" :labels="siteLabels" autoresize></BarChart>
           </v-card>
         </div>
       </div>
@@ -51,6 +51,7 @@
 </template>
 
 <script>
+import {_} from "vue-underscore";
 import BarChart from "@/components/barChart";
 import HomeTextTile from "@/components/HomeTextTile";
 import Const from "@/const";
@@ -70,6 +71,7 @@ export default {
   methods:{
     getSummary: async function(){
       let res = await GeneralApi.summary();
+      console.log(res.data)
       this.loadData(res.data);
     },
     loadConn: function(connections) {
@@ -87,6 +89,36 @@ export default {
       this.siteLabels =  sites;
     },
     loadData: function(data) {
+
+      this.lines = [data.p4,data.p5,data.p6].map((line,idx)=>{
+        return {
+          title: this.lineCharts[idx].titleKey,
+          categories:_.keys(line.sites||line.types),
+          data: _.values(line.sites||line.types).map(s=>s.est),
+          dates: line.dates
+        }
+      })
+
+      this.set0 = [data.p7, data.p8].map((chart,idx)=>{
+        return {
+          sites: _.keys(chart.sites),
+          data: _.values(chart.sites),
+          title: this.set2[idx]
+        }
+      })
+
+      this.totalOccupation = data.p9.occupancy * 100;
+
+      this.set1 = [data.p10, data.p11, data.p12].map((chart, idx)=>{
+        return {
+          sites: _.keys(chart.sites),
+          data: _.values(chart.sites),
+          group: chart.categories,
+          title: this.sets1[idx]
+        }
+      })
+
+
       this.summaries = {
         covid_cases: data.covid_cases,
         death:data.death,
@@ -104,15 +136,18 @@ export default {
     }
   },
   async created() {
-    let res = await SiteApi.get();
-    this.loadConn(res.data.connections);
+    // let res = await SiteApi.get();
+    // this.loadConn(res.data.connections);
 
     this.getSummary();
     },
   data() {
     return {
-      sets1:['covid_cases','death','ventilator'],
-      sets2:['death','icu'],
+      sets1:['lengthOfStay','age','h/f'],
+      set2:['icu', 'hospitalization'],
+      lines: [],
+      set0:[],
+      set1: [],
       lineCharts: [{titleKey: "home_positive_rate_per_site" },{titleKey: "home_new_case_per_site"},{titleKey: "home_hospitalisation_rate"}],
       colors: Const.colors,
       summaries: {},
@@ -120,7 +155,7 @@ export default {
       siteLabels:{},
       highlight: null,
       tiles:{patientGroup:{rate: 12.5,total:422000}, dailyCase:{total:145,average:135,rt:0.84} ,dailyDeath:{total:11,average:12,rt:0.4}},
-      totalOccupation: 60
+      totalOccupation: 0
     }}
 }
 </script>

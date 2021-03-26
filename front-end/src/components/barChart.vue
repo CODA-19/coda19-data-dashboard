@@ -32,7 +32,8 @@ export default {
     labels: Object,
     group: Array,
     horizontal: Boolean,
-    margin: Array
+    margin: Array,
+    unit: String
   },
   components:{
     'v-chart': VChart
@@ -151,11 +152,11 @@ export default {
 
       if(this.group){
         seriesOpt = [];
-        this.data.forEach((serie,idx)=>{
+        this.group.forEach((serie,idx)=>{
           seriesOpt.push({
             type: 'bar',
-            data:serie,
-            name: this.$t(this.group[idx]) ,
+            data: this.data.map(a=>{return a[idx]}),
+            name: this.$t(serie) ,
             itemStyle: {
               color: () => {
                 return this.colors[idx]
@@ -173,9 +174,10 @@ export default {
           // },
           label:{
             show: true,
-            color: '#fff'
+            color: '#fff',
+            formatter:  this.unit ? '{c} ' +this.unit : '{c}'
           },
-          data:this.data,
+          data: this.unit === "%" ? this.data.map(d=>d*100) : this.data,
           itemStyle: {
             color: (param) => {
               return this.colors[param.dataIndex]
