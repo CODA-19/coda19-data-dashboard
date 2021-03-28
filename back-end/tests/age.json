@@ -1,0 +1,57 @@
+{
+  "0_to_4_yrs": {
+    "CHUM": 7,
+    "HGJ": 8,
+    "MUHC": 8,
+    "HMR": 8,
+    "HSCM": 5,
+    "CHUQ": 9,
+    "CHUSJ": 7,
+    "CISSS-CA": 9,
+    "OttawaHospital": 6
+  },
+  "5_to_19_yrs": {
+    "CHUM": 9,
+    "HGJ": 6,
+    "MUHC": 7,
+    "HMR": 9,
+    "HSCM": 9,
+    "CHUQ": 8,
+    "CHUSJ": 4,
+    "CISSS-CA": 5,
+    "OttawaHospital": 7
+  },
+  "20_to_49_yrs": {
+    "CHUM": 13,
+    "HGJ": 12,
+    "MUHC": 14,
+    "HMR": 13,
+    "HSCM": 14,
+    "CHUQ": 12,
+    "CHUSJ": 16,
+    "CISSS-CA": 15,
+    "OttawaHospital": 16
+  },
+  "50_to_64_yrs": {
+    "CHUM": 23,
+    "HGJ": 28,
+    "MUHC": 25,
+    "HMR": 25,
+    "HSCM": 23,
+    "CHUQ": 23,
+    "CHUSJ": 22,
+    "CISSS-CA": 23,
+    "OttawaHospital": 27
+  },
+  "65_and_up": {
+    "CHUM": 29,
+    "HGJ": 29,
+    "MUHC": 32,
+    "HMR": 28,
+    "HSCM": 34,
+    "CHUQ": 34,
+    "CHUSJ": 34,
+    "CISSS-CA": 29,
+    "OttawaHospital": 29
+  }
+}
