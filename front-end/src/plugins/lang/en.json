@@ -71,8 +71,8 @@
   "summary_age_site_key": "Summary of Patient.age at each site",
   "summary_deceased_strat_key": "Patient.deceased.value, broken down by Patient.deathDate in bins of 14 days",
 
-   "male": "homme ",
-  "female": "femme ",
+  "male": "male ",
+  "female": "female ",
 
   "newSearchTxt": "New Search",
   "summaryTxt": "Summary",
