@@ -247,9 +247,9 @@ export default {
 
         if(!this.group){
           tooltip.formatter = (params) => {
-            var icon =`<span style="background-color:${params[0].color};border: 1px solid ${params[0].color};border-radius:50%;display:inline-block;height:10px;margin-right:5px;margin-top:3px;width:10px;"></span>`,
+            var icon =params[0].marker,
                 category = params[0].name,
-                value = `<strong>${params[0].value}</strong>`,
+                value = `<b>${params[0].value}</b>`,
                 margin = `${params[1].value[1]}-${params[1].value[2]}`,
                 tooltip = `<div style="display: flex;flex-direction: row;min-width:80px"><div style="display:flex;flex-direction:column"><div>${icon}${category}</div> </div><div style="display:flex;flex-direction:column;text-align: right"><div>${value}</div><div>${margin}</div></div>`
 
@@ -261,8 +261,8 @@ export default {
             var tooltip = `<span>${params[0].name}</span>`;
             params.forEach((param,idx)=>{
               if(param.seriesType !== 'custom'){
-                var category =  `<div><span style="background-color:${param.color};border: 1px solid ${param.color};border-radius:50%;display:inline-block;height:10px;margin-right:5px;margin-top:3px;width:10px;"></span><span>${param.seriesName}</span></div>`;
-                var value = `<div><strong>${param.value}</strong>(${params[params.length - 1].value[idx+1].join('-')})</div>`
+                var category =  `<div>${param.marker} ${param.seriesName}</div>`;
+                var value = `<div><b>${param.value}</b>(${params[params.length - 1].value[idx+1].join('-')})</div>`
                 tooltip +=`<div style="display:flex;flex-direction: row;min-width:100px;justify-content: space-between">${category+value}</div>`
               }
             })
