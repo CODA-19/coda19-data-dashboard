@@ -17,7 +17,7 @@
         <div v-for="chart in lines" class="col-lg-4 col-md-6 col-sm-12 cardContainer">
           <div class="title"><span>{{$t(chart.title)}}</span></div>
         <v-card>
-          <LineChart style="width: 100%" :categories = "chart.categories" :dates = "chart.dates" :data = "chart.data"></LineChart>
+          <LineChart style="width: 100%" :categories = "chart.categories" :dates = "chart.dates" :data = "chart.data" :prediction="chart.prediction"></LineChart>
         </v-card>
         </div>
       </div>
@@ -95,7 +95,8 @@ export default {
           title: this.lineCharts[idx].titleKey,
           categories:_.keys(line.sites||line.types),
           data: _.values(line.sites||line.types).map(s=>s.est),
-          dates: line.dates
+          dates: line.dates,
+          prediction: line.start_of_predictions
         }
       })
 
