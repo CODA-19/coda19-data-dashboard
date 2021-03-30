@@ -33,13 +33,13 @@
     // From this date inclusively, they are predictions.
     "start_of_predictions": "2021-03-04",
     // In order again
-    "dates": ["2021-03-01", "2021-03-02", "2021-03-03", "2021-03-04"],
+    "dates": ["2021-03-01", "2021-03-02", "2021-03-03", "2021-03-04", "2021-03-05"],
     "sites": {
       "JGH": {
-        "est": [14, 15, 16, 17] // New daily cases per-day
+        "est": [14, 15, 16, 17, 19] // New daily cases per-day
       },
       "CHUM": {
-        "est": [23, 24, 25, 26]
+        "est": [23, 24, 25, 26, 28]
       }
     }
   },

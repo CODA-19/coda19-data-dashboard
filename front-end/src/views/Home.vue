@@ -17,7 +17,7 @@
         <div v-for="chart in lines" class="col-lg-4 col-md-6 col-sm-12 cardContainer">
           <div class="title"><span>{{$t(chart.title)}}</span></div>
         <v-card>
-          <LineChart style="width: 100%" :categories = "chart.categories" :dates = "chart.dates" :data = "chart.data"></LineChart>
+          <LineChart style="width: 100%" :categories = "chart.categories" :dates = "chart.dates" :data = "chart.data" :prediction="chart.prediction"></LineChart>
         </v-card>
         </div>
       </div>
@@ -29,7 +29,7 @@
             <BarChart style="width:100%" :colors="colors" :horizontal="true" :data="set.data" :category="set.sites" :highlight="highlight" unit="%"  :labels="siteLabels" autoresize></BarChart>
           </v-card>
         </div>
-        <div  class="col-lg-4 col-md-12 col-sm-12 cardContainer">
+        <div  v-if="totalOccupation" class="col-lg-4 col-md-12 col-sm-12 cardContainer">
           <div class="title"><span>{{$t("home_total_occupation")}}</span></div>
           <v-card>
           <Gauge style="width: 100%" :value="totalOccupation"></Gauge>
@@ -61,17 +61,12 @@ import SiteApi from '@/api/SiteApi';
 import Gauge from "@/components/Gauge";
 import LineChart from "../components/lineChart";
 
-const mockData = [
-  ['category','101','102','103','104','105','106', 'total'],
-  ['',10, 6, 4, 5, 7, 3,25 ]]
-
 export default {
   name: "Home",
   components: {LineChart, BarChart, Legend, Gauge, HomeTextTile},
   methods:{
     getSummary: async function(){
       let res = await GeneralApi.summary();
-      console.log(res.data)
       this.loadData(res.data);
     },
     loadConn: function(connections) {
@@ -95,7 +90,8 @@ export default {
           title: this.lineCharts[idx].titleKey,
           categories:_.keys(line.sites||line.types),
           data: _.values(line.sites||line.types).map(s=>s.est),
-          dates: line.dates
+          dates: line.dates,
+          prediction: line.start_of_predictions
         }
       })
 
