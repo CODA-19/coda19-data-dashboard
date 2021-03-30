@@ -74,6 +74,12 @@
   "male": "male ",
   "female": "female ",
 
+   "site": "site ",
+   "mean": "mean ",
+   "stdev": "stdev0 ",
+   "ci95": "ci95 ",
+   "count": "count ",
+
   "newSearchTxt": "New Search",
   "summaryTxt": "Summary",
   "keyVariablesTxt": "Key Variables",
