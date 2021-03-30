@@ -1,4 +1,6 @@
 {
+   "langCode":"fr",
+  
   "home_new_case": " Nouveaux cas ce jour",
   "home_new_patient": " Nombre de patient dans la cohorte",
   "home_daily_death": " Nouveaux décès",

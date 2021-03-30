@@ -18,8 +18,8 @@
                 :fixed="false"
                 :foot-clone="false"
                 :no-border-collapse="false"
-                :items="table.items"
-                :fields="table.fields"
+                :items="renameKeys( table.fieldslangEquiv[$t('langCode')],table.items  )"
+                :fields="table.fieldslang[$t('langCode')]"
                 :head-variant="null"
                 :table-variant="'light'"
             ></b-table>
@@ -76,6 +76,19 @@ export default {
     }
   },
   methods:{
+    renameKeys(keysMap, dataArray){
+
+    let newObjArray =[];
+        dataArray.forEach(obj => {
+           const keyValues = Object.keys(obj).map(key => {
+          const newKey = keysMap[key] || key;
+          return { [newKey]: obj[key] };
+        });
+           newObjArray.push(Object.assign({}, ...keyValues));
+        });
+ 
+       return newObjArray ;
+    },
     newSearch() {
       bus.$emit('newSearch')
     }
@@ -85,7 +98,10 @@ export default {
       colors: Const.colors,
       tables:[
         {nameKey: "summary_age_key",   
-            fields: ['site','mean', 'stdev', 'ci95', 'count'],
+            fieldslangEquiv:{fr:{site:'site',mean:'moyenne', stdev:'stdev', ci95:'ci95', count:'compte'},
+                        en:{site:'site',mean:'mean', stdev:'stdev', ci95:'ci95', count:'count'}},
+            fieldslang:{en: ['site','mean', 'stdev', 'ci95', 'count'],
+                  fr: ['site','moyenne', 'stdev', 'ci95', 'compte']},
             items: [
               { site: 'CHUM', mean: 72, stdev: 23, ci95:'20-95', count:1766 },
               { site: "MUHC", mean: 75, stdev: 21, ci95:'22-99', count:649},
@@ -94,7 +110,10 @@ export default {
 
         },
         {nameKey: "summary_gender_key",
-            fields: ['site','male', 'female', 'total', 'mode'],
+             fieldslangEquiv:{fr:{site:'site',male:'homme', female:'femme', total:'total', mode:'mode'},
+                        en:{site:'site',male:'male', female:'female', total:'total', mode:'mode'}},
+            fieldslang:{en: ['site','male', 'female', 'total', 'mode'],
+                 fr: ['site','homme', 'femme', 'total', 'mode']},
             items: [
               { site: 'CHUM', male: 972, female: 923, total:1895, mode:'male' },
               { site: "MUHC", male: 485, female: 321, total:806, mode:'male'},

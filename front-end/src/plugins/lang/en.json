@@ -1,4 +1,6 @@
 {
+  "langCode":"en",
+
   "home_new_case": " New cases today",
   "home_new_patient": "Number of patient in this group",
   "home_daily_death": "New death",
