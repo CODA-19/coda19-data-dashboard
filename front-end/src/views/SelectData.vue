@@ -51,7 +51,7 @@
                                :showLabels="false"
                   >
                     <template slot="clear" slot-scope="cont">
-                      <div class="multiselect__clear" v-if="form.measures.cont.length" @mousedown.prevent.stop="clearAllCont(cont.search)"></div>
+                      <div class="multiselect__clear" v-if="form.measures.cont[componentKey].length" @mousedown.prevent.stop="clearAllCont(cont.search)"></div>
                     </template><span slot="noResult">No measure found.</span>
 
                   </multiselect>
@@ -70,7 +70,7 @@
                                :showLabels="false"
                   >
                     <template slot="clear" slot-scope="disc">
-                      <div class="multiselect__clear" v-if="form.measures.disc.length" @mousedown.prevent.stop="clearAllDisc(disc.search)"></div>
+                      <div class="multiselect__clear" v-if="form.measures.disc[componentKey].length" @mousedown.prevent.stop="clearAllDisc(disc.search)"></div>
                     </template><span slot="noResult">No measure found.</span>
 
                   </multiselect>
@@ -164,7 +164,7 @@
                     </div>
                   </div>
                 </div>
-                <div v-if="form.measures.cont.length" class="row">
+                <div v-if="form.measures.cont[componentKey].length" class="row">
                     <div class="col-lg-4 col-md-4">
                         <span>{{ $t("breakdownStart") }}</span>
                         <input class="form-control" type="date" id="start_breakdown"></input>
