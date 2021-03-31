@@ -40,9 +40,9 @@
               <div class="selectionPanel">
                 <div class="subPanel">
                   <span>{{$t("contTxt")}}</span>
-                  <multiselect v-model="form.measures.cont"
+                  <multiselect v-model="form.measures.cont[$t('langCode')]"
                                :placeholder="$t('selectContTxt')"
-                               :options="contOptions"
+                               :options="contOptions[$t('langCode')]"
                                label="label"
                                track-by="value"
                                :multiple="true"
@@ -59,9 +59,9 @@
 
                 <div class="subPanel">
                   <span>{{$t("discTxt")}}</span>
-                  <multiselect v-model="form.measures.disc"
+                  <multiselect v-model="form.measures.disc[$t('langCode')]"
                                :placeholder="$t('selectDiscTxt')"
-                               :options="discOptions"
+                               :options="discOptions[$t('langCode')]"
                                label="label"
                                track-by="value"
                                :multiple="true"
@@ -102,7 +102,7 @@
                         <span>{{$t("fields")}}</span>
                         <multiselect v-model="form.field"
                                      :placeholder="$t('selectFieldTxt')"
-                                     :options="fieldOptions"
+                                     :options="fieldOptions[$t('langCode')]"
                                      label="label"
                                      track-by="value"
                                      :multiple="true"
@@ -289,8 +289,14 @@ export default {
     },
         variables:{},
         measures:{
-          cont:[{label:'count', value:'count'},{label:'mean', value:'mean'},{label:'stdev', value:'stdev'},{label:'ci95', value:'ci95'}],
-          disc:[{label:'age',value: 'age'},{label:'gender', value: 'gender'}]
+          cont:{
+              en:[{label:'count', value:'count'},{label:'mean', value:'mean'},{label:'stdeve', value:'stdev'},{label:'ci95', value:'ci95'}],
+              fr:[{label:'compte', value:'count'},{label:'moyenne', value:'mean'},{label:'stdeve', value:'stdev'},{label:'ci95', value:'ci95'}]
+          },
+          disc:{
+              en:[{label:'age',value: 'age'},{label:'gender', value: 'gender'}],
+              fr:[{label:'age',value: 'age'},{label:'genre', value: 'gender'}]
+            }
         },
         sites: [],
         field: []
@@ -321,9 +327,15 @@ export default {
       //     }]
       //   }]
       // },
-      fieldOptions:[{label:'age',value: 'age'},{label:'gender', value: 'gender'}],
-      contOptions:[{label:'count', value:'count'},{label:'mean', value:'mean'},{label:'stdev', value:'stdev'},{label:'ci95', value:'ci95'}],
-      discOptions:[{label:'age',value: 'age'},{label:'gender', value: 'gender'}],
+      fieldOptions:{
+          en:[{label:'age',value: 'age'},{label:'gender', value: 'gender'}],
+          fr:[{label:'age',value: 'age'},{label:'genre', value: 'gender'}]},
+      contOptions:{
+          en:[{label:'count', value:'count'},{label:'mean', value:'mean'},{label:'stdev', value:'stdev'},{label:'ci95', value:'ci95'}],
+          fr: [{label:'Compte', value:'count'},{label:'Moyenne', value:'mean'},{label:'stdev', value:'stdev'},{label:'ci95', value:'ci95'}]},
+      discOptions:{
+          en:[{label:'age',value: 'age'},{label:'gender', value: 'gender'}],
+          fr:[{label:'age',value: 'age'},{label:'genre', value: 'gender'}]},
       tabCounter:1,
       tabs:['patient']
     };
