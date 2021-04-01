@@ -26,6 +26,8 @@
   "selectVariableTxt": "Veuillez sélectionner une variable parmis les resources communes: ",
   "length_of_stay": "Durée du séjour",
   "age_groups": "Les groupes d'âge",
+  "age": "Age",
+  "h/f": "H/F",
   "selectDaysTxt": "Jours de sélection à partir de maintenant",
   "selectHospitalTxt": "Sélectionnez les hôpitaux à inclure: ",
   "selectAllTxt": "Tout sélectionner",

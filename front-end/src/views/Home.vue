@@ -110,7 +110,7 @@ export default {
           sites: _.keys(chart.sites),
           data: _.values(chart.sites),
           group: chart.categories,
-          title: this.sets1[idx]
+          title:  this.sets1[idx]
         }
       })
 
@@ -139,7 +139,7 @@ export default {
     },
   data() {
     return {
-      sets1:['lengthOfStay','age','h/f'],
+      sets1:['length_of_stay','age','h/f'],
       set2:['icu', 'hospitalization'],
       lines: [],
       set0:[],

@@ -26,6 +26,8 @@
   "selectVariableTxt": "Please select a variable among cross-site common resources: ",
   "length_of_stay": "Length of stay",
   "age_groups": "Age groups",
+  "age": "Age",
+  "h/f": "M/F",
   "selectDaysTxt": "Days of selection from now",
   "selectHospitalTxt": "Select hospitals to include: ",
   "selectAllTxt": "Select all",
