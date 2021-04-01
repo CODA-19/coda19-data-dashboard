@@ -287,7 +287,7 @@ export default {
         }]
       }]
     },
-        variables:{},
+        variables:[],
         measures:{
           cont:{
               en:[{label:'count', value:'count'},{label:'mean', value:'mean'},{label:'stdeve', value:'stdev'},{label:'ci95', value:'ci95'}],
