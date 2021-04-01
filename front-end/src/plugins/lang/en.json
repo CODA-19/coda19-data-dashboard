@@ -109,6 +109,7 @@
   "activeConnectionsTxt": "Active Connections",
   "noActiveConnectionsTxt": "No active connection",
   "requestAccessTxt": "Request access",
+  "hubNotConnectedTxt": "HUB Disconnected",
   "learningTitle": "Learning",
   "startLearning": "Start a machine learning process",
 

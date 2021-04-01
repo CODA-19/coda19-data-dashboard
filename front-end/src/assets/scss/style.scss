@@ -38,6 +38,8 @@ html, body{
     text-align: center;
   }
 }
+
+
 .selectData{
   width:100%;
   margin: 20px auto;
@@ -286,4 +288,8 @@ html, body{
     padding-left: 3px!important;
     padding-right: 3px!important;
   }
+}
+
+.warn {
+  font-weight: bold;
 }

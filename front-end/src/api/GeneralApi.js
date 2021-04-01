@@ -18,6 +18,18 @@ function nsummary(sitesUri, varUri) {
     return AxiosInstance.get(`api/nsummary?sites=${sitesUri}&var=${varUri}`, {headers: headers});
 }
 
+/**
+ * Checks for a response from the hub.
+ * @returns {Promise<Response>}
+ */
+async function isConnected() {
+    const timeoutInMs = 100;
+    return Promise.race([
+        fetch(process.env.VUE_APP_CODA19_DASHBOARD_BACKEND_URL),
+        new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), timeoutInMs))
+    ]);
+}
+
 function summary(){
   const headers = TokenBearerHeaderFactory.get();
   return AxiosInstance.get('/home', {headers: headers});
@@ -28,5 +40,6 @@ export default {
     data,
     summary,
     nsummary,
-    testData
+    testData,
+    isConnected
 }

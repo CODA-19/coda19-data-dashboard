@@ -110,6 +110,7 @@
   "activeConnectionsTxt": "Connections actives",
   "noActiveConnectionsTxt": "Aucune connection active",
   "requestAccessTxt": "Demande d'accès",
+  "hubNotConnectedTxt": "HUB Déconnecté",
 
   "requestAccessDescriptionTxt": " Pour obtenir accès aux données de CODA-19, contactez",
   "mailRequestAccessTxt": "mailto:adresse_a_determiner@coda19.ca?subject=Demande d'accès",

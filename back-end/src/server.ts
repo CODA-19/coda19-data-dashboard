@@ -16,7 +16,10 @@ const app = express();
 CorsMiddleware.register(app);
 
 // start the server
-app.listen(process.env.PORT || '3000', () => console.log('app started'));
+app.set('port', process.env.PORT || 3000);
+const server = app.listen(app.get('port'), () => console.log("Dashboard Backend Started"));
+
+console.log(`Listening on ${JSON.stringify(server.address())}`);
 
 const keycloak = KeycloakFactory.get(app);
 app.use(keycloak.middleware());
