@@ -4,6 +4,7 @@ import Stats from '@/views/Stats'
 import AppHeader from '@/components/AppHeader'
 import Footer from '@/components/Footer'
 import About from '@/views/About'
+import HomeMetrics from '@/views/HomeMetrics'
 import Request from '@/views/Request'
 import Learning from '@/views/Learning'
 import Connections from "@/views/Connections";
@@ -12,96 +13,108 @@ import Forest from "@/components/Forest"
 
 
 const routes = [
-  {
-    path: '/',
-    name: 'Home',
-    components: {
-      header: AppHeader,
-      default: Home,
-      footer: Footer
-    },
-    meta: {
-      title: "CODA 19"
-    }
-  },
-  {
-    path: '/stats',
-    name: 'Stats',
-    components: {
-      header: AppHeader,
-      default: Stats,
-      footer: Footer
-    },
-    meta: {
-      title: "CODA 19 - Stats"
-    }
-  },
     {
-    path: '/request',
-    name: 'Request',
-    components: {
-      header: AppHeader,
-      default: Request,
-      footer: Footer
+        path: '/',
+        name: 'Home',
+        components: {
+            header: AppHeader,
+            default: Home,
+            footer: Footer
+        },
+        meta: {
+            title: "CODA 19"
+        }
     },
-    meta: {
-      title: "CODA 19 - Request"
-    }
-  },
-  {
-    path: '/learning',
-    name: 'Learning',
-    components: {
-      header: AppHeader,
-      default: Learning,
-      footer: Footer
+    {
+        path: '/stats',
+        name: 'Stats',
+        components: {
+            header: AppHeader,
+            default: Stats,
+            footer: Footer
+        },
+        meta: {
+            title: "CODA 19 - Stats"
+        }
     },
-    meta: {
-      title: "CODA 19 - Learning"
-    }
-  },
-  {
-    path: '/ui',
-    name: 'UI',
-    components: {
-      header: AppHeader,
-      default: UI,
-      footer: Footer
+    {
+        path: '/request',
+        name: 'Request',
+        components: {
+            header: AppHeader,
+            default: Request,
+            footer: Footer
+        },
+        meta: {
+            title: "CODA 19 - Request"
+        }
     },
-    meta: {
-      title: "CODA 19 - UI Dashboard - (Connected data selection)"
-    }
-  },
-  {
-    path: '/forest',
-    name: 'Forest',
-    components: {
-      header: AppHeader,
-      default: Forest,
-      footer: Footer
+    {
+        path: '/homemetrics',
+        name: 'HomeMetrics',
+        components: {
+            header: AppHeader,
+            default: HomeMetrics,
+            footer: Footer
+        },
+        meta: {
+            title: "CODA 19 - HomeMetrics"
+        }
     },
-    meta: {
-      title: "CODA 19 - Forest"
-    }
-  },
-  {
-    path: '/connections',
-    name: 'Connections',
-    components: {
-      header: AppHeader,
-      default: Connections,
-      footer: Footer
+    {
+        path: '/learning',
+        name: 'Learning',
+        components: {
+            header: AppHeader,
+            default: Learning,
+            footer: Footer
+        },
+        meta: {
+            title: "CODA 19 - Learning"
+        }
     },
-    meta: {
-      title: "CODA 19 - Connections"
+    {
+        path: '/ui',
+        name: 'UI',
+        components: {
+            header: AppHeader,
+            default: UI,
+            footer: Footer
+        },
+        meta: {
+            title: "CODA 19 - UI Dashboard - (Connected data selection)"
+        }
+    },
+    {
+        path: '/forest',
+        name: 'Forest',
+        components: {
+            header: AppHeader,
+            default: Forest,
+            footer: Footer
+        },
+        meta: {
+            title: "CODA 19 - Forest"
+        }
+    },
+    {
+        path: '/connections',
+        name: 'Connections',
+        components: {
+            header: AppHeader,
+            default: Connections,
+            footer: Footer
+        },
+        meta: {
+            title: "CODA 19 - Connections"
+        }
     }
-  }
 ]
 
 
 const router = new VueRouter({
-  routes,
-  linkExactActiveClass: "active",
+    routes,
+    linkExactActiveClass: "active",
 })
 
 export default router

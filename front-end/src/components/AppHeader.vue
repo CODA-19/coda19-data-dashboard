@@ -28,7 +28,7 @@
       <b-nav-item>
         <router-link to="/request" class="nav-link">{{ $t('requestAccessTxt') }}</router-link>
       </b-nav-item>
-      <b-nav-item class="nav-link warn" v-if="!isHubConnected">{{ $t('Hub not connected') }}</b-nav-item>
+      <b-nav-item class="nav-link warn" v-if="!isHubConnected">{{ $t('hubNotConnectedTxt') }}</b-nav-item>
       <b-nav-item>
         <b-button variant="info" @click="keycloak.logout()">{{ $t('logoutTxt') }}</b-button>
       </b-nav-item>

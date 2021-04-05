@@ -110,6 +110,7 @@
   "noActiveConnectionsTxt": "No active connection",
   "requestAccessTxt": "Request access",
   "hubNotConnectedTxt": "HUB Disconnected",
+  "homeMetricsTxt": "HM",
   "learningTitle": "Learning",
   "startLearning": "Start a machine learning process",
 
