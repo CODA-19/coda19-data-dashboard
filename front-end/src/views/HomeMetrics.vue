@@ -50,7 +50,6 @@ export default {
       if (Number.isNaN(this.totalTime))
         this.totalTime = 0;
       this.totalTime += timeMs;
-      console.log('logging query completed.');
     }
   },
   computed: {

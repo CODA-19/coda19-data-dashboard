@@ -2,8 +2,9 @@
   <v-card>
     <v-card-text :class="status">
       <v-row>
-        <v-col cols="8" class="test-left">{{ query.name }} - {{ query.endpoint }} - {{ status }}</v-col>
-        <v-col cols="4" class="test-right">{{ timeInMs }} ms - HTTP code {{ httpCode }}</v-col>
+        <v-col cols="4" class="test-left">{{ query.name }} - {{ query.endpoint }} - {{ status }}</v-col>
+        <v-col cols="4" class="test-left">{{ timeInMs }} ms - HTTP code {{ httpCode }}</v-col>
+        <v-col cols="4" class="test-right">{{ reason }}</v-col>
       </v-row>
     </v-card-text>
   </v-card>
@@ -18,8 +19,8 @@
 
 <script>
 
-import AxiosInstance from '../api/AxiosInstance';
 import TokenBearerHeaderFactory from '../api/TokenBearerHeaderFactory';
+import axios from "axios";
 
 export default {
   name: "TestQuery",
@@ -29,7 +30,8 @@ export default {
       status: 'NOTLAUNCHED',
       timeMs: NaN,
       httpCode: 'N/A',
-      startTime: null
+      startTime: null,
+      reason: ''
     };
   },
   computed: {
@@ -42,9 +44,12 @@ export default {
       this.status = 'INPROGRESS';
       const headers = TokenBearerHeaderFactory.get();
       this.startTime = performance.now();
-      AxiosInstance.get(this.query.endpoint, { headers: headers, timeout: 1000 })
-                   .then(res => this.onSuccess(res))
-                   .catch(err => this.onError(err));
+      axios.create({
+        baseURL: process.env.VUE_APP_CODA19_DASHBOARD_BACKEND_URL,
+        timeout: 30000,
+      }).get(this.query.endpoint, { headers: headers })
+       .then(res => this.onSuccess(res))
+       .catch(err => this.onError(err));
     },
     onSuccess(response) {
       const httpStatus = response.request.status;
@@ -52,6 +57,8 @@ export default {
     },
     onError(err) {
       const httpStatus = err.request.status;
+      console.error(`${this.query.name} failed with reason ${err.request.response}`);
+      this.reason = err.request.response;
       this.onDone('FAILED', httpStatus === 0 ? err.code : httpStatus)
     },
     onDone(cmptStatus, httpStatus) {
@@ -59,7 +66,6 @@ export default {
       this.status = cmptStatus;
       this.httpCode = httpStatus;
       this.$emit('queryComplete', this.timeMs);
-      console.log('emit query completed.');
     }
   },
   watch: {
