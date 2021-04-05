@@ -33,9 +33,12 @@ router.get('/:panel', async (req: Request, res: Response) => {
     const proxyReq = proxy.getRequest(panelID);
 
     proxyReq(req)
-        .then((data:Response) => res.json(data))
+        .then((response:any) => response.data)
+        .then((data:Object) => {
+            res.json(data);
+        })
         .catch((err:Error) => {
-            return res.status(500).json(err.message);
+            res.status(500).json(err.message);
         });
 });
 
