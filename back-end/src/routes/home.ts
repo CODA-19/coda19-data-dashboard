@@ -2,7 +2,7 @@ import { Router, Request, Response, Application } from 'express';
 import JSON5 from 'json5';
 import fs from 'fs';
 
-import { DashPanels } from "../services/DashPanels";
+import {DashCalculator, DashPanels} from "../services/DashPanels";
 
 // For Panel 1 through 12, with prefix P.
 const validPanelIDRegex = /^p[1-9][012]?$/;
@@ -38,6 +38,9 @@ router.get('/', async (req: Request, res: Response) => {
 });
 
 router.get('/:panel', async (req: Request, res: Response) => {
+    // In the end, the mocked data would really need to be better place than here, most probably
+    // dependency injection of the service getting the panel answer. And then just asking the service normally.
+    // Both for the demo, I'll keep it like that.
     const homeData = getHomeData(req.app);
 
     // Get Panel ID
@@ -53,20 +56,11 @@ router.get('/:panel', async (req: Request, res: Response) => {
         return;
     }
 
-
-
-
-    const proxy = new DashPanels();
-    const proxyReq = proxy.getRequest(panelID);
-
-    proxyReq(req)
-        .then((response:any) => response.data)
-        .then((data:Object) => {
-            res.json(data);
-        })
-        .catch((err:Error) => {
-            res.status(500).json(err.message);
-        });
+    // This is instanced to later inject some dependencies.
+    const proxy = new DashPanels(homeData);
+    proxy.getPanelViewModel(panelID, req)
+        .then((data:Object) => res.json(data))
+        .catch((err:Error) => res.status(500).json(err.message));
 });
 
 export default router;
