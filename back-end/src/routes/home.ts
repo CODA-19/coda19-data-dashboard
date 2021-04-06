@@ -57,7 +57,7 @@ router.get('/:panel', async (req: Request, res: Response) => {
     }
 
     // This is instanced to later inject some dependencies.
-    const proxy = new DashPanels(homeData);
+    const proxy = new DashPanels(homeData, req.app);
     proxy.getPanelViewModel(panelID, req)
         .then((data:Object) => res.json(data))
         .catch((err:Error) => res.status(500).json(err.message));

@@ -107,10 +107,15 @@ function siteMapper(siteCode: string): string {
 
 export class DashPanels {
     mock: {[panel: string]:Object};
+    app: Application;
 
-    constructor(mock: {[panel: string]:Object}) {
+    constructor(mock: {[panel: string]:Object}, app: Application) {
         this.mock = mock;
+        this.app = app;
     }
+
+    private getCache(key: string): any { return this.app.get(key); }
+    private setCache(key: string, data: any) { this.app.set(key, data); }
 
     private static getSummarizeUrl(sites: string[]) {
         return '/stats/summarize?sites=' + sites.join(',');
@@ -118,21 +123,28 @@ export class DashPanels {
 
     public getRequest(panelId: string) {
         const reqCfg = preMadeReq[panelId];
+
+        let reqSites = parseInt(panelId.substr(1)) < 4 ? ['115']: ['115', '110'];
+
         return (req: Request) => {
             return reqCfg
-                ? axios.get(DashPanels.getSummarizeUrl(sites), {...{data: reqCfg}, ...passAuth(req)}).then((res:Response) => res)
+                ? axios.get(DashPanels.getSummarizeUrl(reqSites), {...{data: reqCfg}, ...passAuth(req)}).then((res:Response) => res)
                 : Promise.reject(new Error("Not Implemented"));
         }
     }
 
     public getPanelViewModel(panelId: string, req: Request) : Promise<any> {
+        const cached = this.getCache(panelId);
+        if (cached !== undefined)
+            return Promise.resolve(cached);
+
         switch (panelId) {
             // Line 1
-            case 'p1': return this.computePanel1(req);
-            case 'p2': return this.computePanel2(req);
-            case 'p3': return this.computePanel3(req);
+            case 'p1': return this.computePanel1(req).then(res => { this.setCache(panelId, res); return res; })
+            case 'p2': return this.computePanel2(req).then(res => { this.setCache(panelId, res); return res; });
+            case 'p3': return this.computePanel3(req).then(res => { this.setCache(panelId, res); return res; });
             // line 3
-            case 'p7': return this.computePanel7(req);
+            case 'p7': return this.computePanel7(req).then(res => { this.setCache(panelId, res); return res; });
             //case 'p8': return this.computePanel8(req); // Currently no hub data
             //case 'p9': return this.computePanel9(req); // Currently no hub data
             default:
