@@ -67,7 +67,15 @@ export default {
   methods:{
     getSummary: async function(){
       let res = await GeneralApi.summary();
+
+      // TODO make it parallel
       this.loadData(res.data);
+      let res1 = await GeneralApi.panel(1);
+      this.loadP1(res1.data);
+      let res2 = await GeneralApi.panel(2);
+      this.loadP2(res2.data);
+      let res3 = await GeneralApi.panel(3);
+      this.loadP3(res3.data);
     },
     loadConn: function(connections) {
       // Loading active connections
@@ -82,6 +90,22 @@ export default {
       })
 
       this.siteLabels =  sites;
+    },
+     loadP1: function(data){
+        this.tiles.patientGroup.rate =  data.prevalence ;
+        this.tiles.patientGroup.total =  data.total_count ;
+    },
+     loadP2: function(data){
+        this.tiles.dailyCase.average = data.sma_7d;
+        this.tiles.dailyCase.rt   = data.exp_rate_7d;
+        this.tiles.dailyCase.total   = data.new_cases ;
+        // {"date":"2021-03-15","new_cases":669,"sma_7d":943,"exp_rate_7d":0.92}
+    },
+     loadP3: function(data){
+        this.tiles.dailyDeath.average =   data.sma_7d ;
+        this.tiles.dailyDeath.rt      =   data.exp_rate_7d ;
+        this.tiles.dailyDeath.total   =   data.new_cases ;
+        // {"date":"2021-03-15","new_cases":7,"sma_7d":11,"exp_rate_7d":0.86
     },
     loadData: function(data) {
 
