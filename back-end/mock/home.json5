@@ -57,19 +57,19 @@
   },
   // Third Row
   "p7": {
-    "sites" : { // ICU beds occupancy (prop. of available beds)
-      "JGH": 1.0,
-      "CHUM": 0.6,
-      "CISSCA": 0.25,
-      "CHUQ": 0.4
+    "sites" : { // ICU beds occupancy (total beds)
+      "JGH": 63,
+      "CHUM": 56,
+      "CISSCA": 24,
+      "CHUQ": 36
     }
   },
   "p8": {
     "sites" : { // Ward beds occupancy (prop. of available beds)
-      "JGH": 0.9,
-      "CHUM": 1.0,
-      "CISSCA": 0.6,
-      "CHUQ": 0.75
+      "JGH": 323,
+      "CHUM": 290,
+      "CISSCA": 151,
+      "CHUQ": 242
     }
   },
   "p9": {

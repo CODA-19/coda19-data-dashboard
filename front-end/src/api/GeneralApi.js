@@ -36,8 +36,16 @@ function DashData(i){
   // return AxiosInstance.get('api/hospitalSummary', {headers: headers});
 }
 
+function panel(panelNumber){
+  const headers = TokenBearerHeaderFactory.get();
+  return AxiosInstance.get('/home/p' + panelNumber + '?mode=lagmock', {headers: headers});
+  // return AxiosInstance.get('api/hospitalSummary', {headers: headers});
+}
+
+
 export default {
     data,
+    panel,
     nsummary,
     testData,
     isConnected,
