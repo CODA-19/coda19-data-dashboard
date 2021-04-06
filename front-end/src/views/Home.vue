@@ -27,7 +27,7 @@
         <div v-for="(bar,i) in barcharts0" class="col-lg-4 col-md-12 col-sm-12 cardContainer">
           <div class="title"><span>{{$t(titleKeys[i])}}</span></div>
           <v-card>
-            <BarChart style="width:100%" :colors="colors" :horizontal="true" :data="bar.data" :category="bar.sites"  unit="%"  :labels="siteLabels" autoresize></BarChart>
+            <BarChart style="width:100%" :colors="colors" :horizontal="true" :data="bar.data" :category="bar.sites"  :labels="siteLabels" autoresize></BarChart>
           </v-card>
         </div>
         <div class="col-lg-4 col-md-12 col-sm-12 cardContainer">

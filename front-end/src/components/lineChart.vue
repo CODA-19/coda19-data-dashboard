@@ -165,7 +165,6 @@ export default {
 
         });
       }
-      else this.categories = [];
 
       option.series = seriesOpt;
 
