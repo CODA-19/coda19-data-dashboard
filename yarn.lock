@@ -1187,6 +1187,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/node@npm:^14.14.37":
+  version: 14.14.37
+  resolution: "@types/node@npm:14.14.37"
+  checksum: 5e2d9baf7594ebacaf016716515f30de0765169412787f981481c2fb8b468923149bb9e2e3219ee672399811672ceddc339a7372a61cf15bc656836a5494d991
+  languageName: node
+  linkType: hard
+
 "@types/normalize-package-data@npm:^2.4.0":
   version: 2.4.0
   resolution: "@types/normalize-package-data@npm:2.4.0"
@@ -1753,10 +1760,10 @@ __metadata:
     "@types/express-session": ^1.17.3
     "@types/jest-when": ^2.7.2
     "@types/joi": ^14.3.4
+    "@types/node": ^14.14.37
     "@types/socket.io": ^2.1.11
     "@types/underscore": ^1.10.24
     axios: ^0.21.0
-    coda19-ts: "file:./coda19-ts"
     cookie-parser: ~1.4.4
     cors: ^2.8.5
     cross-env: ^7.0.2
@@ -2248,13 +2255,6 @@ __metadata:
   version: 4.6.0
   resolution: "co@npm:4.6.0"
   checksum: 3f22dbbe0f413ff72831d087d853a81d1137093e12e8ec90b4da2bde5c67bc6bff11b6adeb38ca9fa8704b8cd40dba294948bda3c271bccb74669972b840cc1a
-  languageName: node
-  linkType: hard
-
-"coda19-ts@file:./coda19-ts::locator=back-end%40workspace%3Aback-end":
-  version: 1.0.0
-  resolution: "coda19-ts@file:./coda19-ts#./coda19-ts::hash=78bd0f&locator=back-end%40workspace%3Aback-end"
-  checksum: 8c61709461953ec9ed9b30a475efe894a663b2bc2a7d5dc51acf358f7c75ab59ee82f7e6a8341b4695f71ed628f034787f657ba1a5705fd7989b96a8183ae9ec
   languageName: node
   linkType: hard
 

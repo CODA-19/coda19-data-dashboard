@@ -1502,6 +1502,13 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]
       ]],
       ["@types/node", [
+        ["npm:14.14.37", {
+          "packageLocation": "./.yarn/cache/@types-node-npm-14.14.37-6783f920bd-5e2d9baf75.zip/node_modules/@types/node/",
+          "packageDependencies": [
+            ["@types/node", "npm:14.14.37"]
+          ],
+          "linkType": "HARD",
+        }],
         ["npm:14.14.7", {
           "packageLocation": "./.yarn/cache/@types-node-npm-14.14.7-e4d93f4d9a-4fc8434bfe.zip/node_modules/@types/node/",
           "packageDependencies": [
@@ -2180,10 +2187,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/express-session", "npm:1.17.3"],
             ["@types/jest-when", "npm:2.7.2"],
             ["@types/joi", "npm:14.3.4"],
+            ["@types/node", "npm:14.14.37"],
             ["@types/socket.io", "npm:2.1.13"],
             ["@types/underscore", "npm:1.11.0"],
             ["axios", "npm:0.21.0"],
-            ["coda19-ts", "file:./coda19-ts#./coda19-ts::hash=78bd0f&locator=back-end%40workspace%3Aback-end"],
             ["cookie-parser", "npm:1.4.5"],
             ["cors", "npm:2.8.5"],
             ["cross-env", "npm:7.0.2"],
@@ -2714,15 +2721,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/co-npm-4.6.0-03f2d1feb6-3f22dbbe0f.zip/node_modules/co/",
           "packageDependencies": [
             ["co", "npm:4.6.0"]
-          ],
-          "linkType": "HARD",
-        }]
-      ]],
-      ["coda19-ts", [
-        ["file:./coda19-ts#./coda19-ts::hash=78bd0f&locator=back-end%40workspace%3Aback-end", {
-          "packageLocation": "./.yarn/cache/coda19-ts-file-d9032d3316-8c61709461.zip/node_modules/coda19-ts/",
-          "packageDependencies": [
-            ["coda19-ts", "file:./coda19-ts#./coda19-ts::hash=78bd0f&locator=back-end%40workspace%3Aback-end"]
           ],
           "linkType": "HARD",
         }]
