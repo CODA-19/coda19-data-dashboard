@@ -26,7 +26,7 @@
         <div v-for="set in set0" class="col-lg-4 col-md-12 col-sm-12 cardContainer">
           <div class="title"><span>{{$t(set.title)}}</span></div>
           <v-card>
-            <BarChart style="width:100%" :colors="colors" :horizontal="true" :data="set.data" :category="set.sites" :highlight="highlight" unit="%"  :labels="siteLabels" autoresize></BarChart>
+            <BarChart style="width:100%" :colors="colors" :horizontal="true" :data="set.data" :category="set.sites" :highlight="highlight" unit=""  :labels="siteLabels" autoresize></BarChart>
           </v-card>
         </div>
         <div  v-if="totalOccupation" class="col-lg-4 col-md-12 col-sm-12 cardContainer">
@@ -85,7 +85,7 @@ export default {
     },
     loadData: function(data) {
 
-      this.lines = [data.p4,data.p5,data.p6].map((line,idx)=>{
+      this.lines = [data.p4, data.p5, data.p6].map((line,idx)=>{
         return {
           title: this.lineCharts[idx].titleKey,
           categories:_.keys(line.sites||line.types),
