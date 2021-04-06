@@ -60,7 +60,7 @@ export default {
       .catch(() => this.isHubConnected = false);
 
 
-    console.info('Component has been created!' + JSON.stringify(GeneralApi.isConnected()));
+    // console.info('Component has been created!' + JSON.stringify(GeneralApi.isConnected()));
   },
   methods: {
     toggleLocale() {

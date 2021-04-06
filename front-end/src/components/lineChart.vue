@@ -105,64 +105,67 @@ export default {
         }
       };
       let seriesOpt = [];
-      this.categories.forEach((cat,i)=>{
-        var _this = this,
-            data = this.data[i],
-            predictData = [];
+      if(this.categories){
+        this.categories.forEach((cat,i)=>{
+          var _this = this,
+              data = this.data[i],
+              predictData = [];
 
-        if(this.prediction){
-          var predictIdx = this.dates.indexOf(this.prediction),
-              data = this.data[i].slice(0,predictIdx),
-              rawPrediction = this.data[i].slice(predictIdx - 1);
-          const fillArray = new Array(data.length - 1).fill(null);
-          predictData = fillArray.concat(rawPrediction);
+          if(this.prediction){
+            var predictIdx = this.dates.indexOf(this.prediction),
+                data = this.data[i].slice(0,predictIdx),
+                rawPrediction = this.data[i].slice(predictIdx - 1);
+            const fillArray = new Array(data.length - 1).fill(null);
+            predictData = fillArray.concat(rawPrediction);
 
-          option.tooltip = {
-            trigger: "axis",
-            formatter: (params) => {
-              var output = '';
+            option.tooltip = {
+              trigger: "axis",
+              formatter: (params) => {
+                var output = '';
 
-              if(_this.dates.indexOf(params[0].name)>=predictIdx)
-                output += `<b>prediction</b><br>`
+                if(_this.dates.indexOf(params[0].name)>=predictIdx)
+                  output += `<b>prediction</b><br>`
 
-              output +=  params[0].name + '<br/>';
+                output +=  params[0].name + '<br/>';
 
-              for (i = 0; i < params.length; i++) {
+                for (i = 0; i < params.length; i++) {
 
-                if(params[i].value){
-                  if(i>0 && params[i].seriesName=== params[i-1].seriesName)
-                    return;
+                  if(params[i].value){
+                    if(i>0 && params[i].seriesName=== params[i-1].seriesName)
+                      return;
 
-                  output += `<div style='display: flex;flex-direction: column'>`
-                  output += `<div style='display:flex;justify-content: space-between'><div>${params[i].marker + params[i].seriesName} </div><div><b>${params[i].value}</b></div>`;
-                  output += `</div>`
+                    output += `<div style='display: flex;flex-direction: column'>`
+                    output += `<div style='display:flex;justify-content: space-between'><div>${params[i].marker + params[i].seriesName} </div><div><b>${params[i].value}</b></div>`;
+                    output += `</div>`
+                  }
                 }
+                return output
               }
-              return output
             }
           }
-        }
 
-        seriesOpt.push({
-          name: cat,
-          type: 'line',
-          stack: '',
-          smooth: true,
-          data: data
+          seriesOpt.push({
+            name: cat,
+            type: 'line',
+            stack: '',
+            smooth: true,
+            data: data
+          });
+          if(this.prediction){
+            seriesOpt.push(
+                {
+                  name: cat,
+                  type: 'line',
+                  lineStyle:{type:'dashed'},
+                  stack: '',
+                  smooth: true,
+                  data: predictData
+                })
+          }
+
         });
-            if(this.prediction){
-              seriesOpt.push(
-                  {
-                    name: cat,
-                    type: 'line',
-                    lineStyle:{type:'dashed'},
-                    stack: '',
-                    smooth: true,
-                    data: predictData
-                  })
-            }
-
-      });
+      }
+      else this.categories = [];
 
       option.series = seriesOpt;
 

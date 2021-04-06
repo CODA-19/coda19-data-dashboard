@@ -30,16 +30,16 @@ async function isConnected() {
     ]);
 }
 
-function summary(){
+function DashData(i){
   const headers = TokenBearerHeaderFactory.get();
-  return AxiosInstance.get('/home', {headers: headers});
+  return AxiosInstance.get(`/home/p${i}?mode=lagmock`, {headers: headers});
   // return AxiosInstance.get('api/hospitalSummary', {headers: headers});
 }
 
 export default {
     data,
-    summary,
     nsummary,
     testData,
-    isConnected
+    isConnected,
+    DashData
 }
