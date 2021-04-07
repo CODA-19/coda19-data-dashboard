@@ -41,16 +41,10 @@ function DashData(i, mode = null){
   //return AxiosInstance.get(`/home/p${i}?mode=lagmock`, {headers: headers});
 }
 
-function panel(panelNumber, mode = null){
-  const headers = TokenBearerHeaderFactory.get();
-  return AxiosInstance.get(getPanelURI(panelNumber, mode), {headers: headers});
-  //return AxiosInstance.get('/home/p' + panelNumber + '?mode=lagmock', {headers: headers});
-}
 
 
 export default {
     data,
-    panel,
     nsummary,
     testData,
     isConnected,

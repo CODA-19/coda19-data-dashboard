@@ -2,20 +2,12 @@
   <div class="mainContainer home">
     <v-container>
       <div class="row">
-        <div class="col-lg-4 col-md-4">
-          <HomeTextTile :txTitle="$t('home_new_patient')"
-                        :txBottom="$t('home_positivity',{positivity: tiles.patientGroup.rate})"
-                        :data="tiles.patientGroup.total"></HomeTextTile>
-        </div>
-        <div class="col-lg-4 col-md-4">
-          <HomeTextTile :txTitle="$t('home_new_case')"
-                        :txBottom="$t('home_average',{average: tiles.dailyCase.average})  +  $t('home_rt',{rate: tiles.dailyCase.rt})"
-                        :data="tiles.dailyCase.total"></HomeTextTile>
-        </div>
-        <div class="col-lg-4 col-md-4">
-          <HomeTextTile :txTitle="$t('home_daily_death')"
-                        :txBottom="$t('home_average',{average: tiles.dailyDeath.average})  + $t('home_rt',{rate: tiles.dailyDeath.rt})"
-                        :data="tiles.dailyDeath.total"></HomeTextTile>
+        <div v-for="(tile,i) in numberTiles" class="col-lg-4 col-md-4">
+          <HomeTextTile :txTitle= "$t(titleKeys[i])"
+                        :txBottom="i==='1' ?
+                        $t('home_positivity',{positivity: tile.rate})
+                        : $t('home_average',{average: tile.average})  + $t('home_rt',{rate: tile.rt})"
+                        :data="tile.total"></HomeTextTile>
         </div>
       </div>
 
@@ -80,24 +72,22 @@ export default {
           .then(res => this.loadData(res.data, i))
           .catch(err => console.error(err.stack));
     },
-    loadP1: function (data) {
-      this.tiles.patientGroup.rate = data.prevalence;
-      this.tiles.patientGroup.total = data.total_count;
-    },
-    loadP2: function (data) {
-      this.tiles.dailyCase.average = data.sma_7d;
-      this.tiles.dailyCase.rt = data.exp_rate_7d;
-      this.tiles.dailyCase.total = data.new_cases;
-      // {"date":"2021-03-15","new_cases":669,"sma_7d":943,"exp_rate_7d":0.92}
-    },
-    loadP3: function (data) {
-      this.tiles.dailyDeath.average = data.sma_7d;
-      this.tiles.dailyDeath.rt = data.exp_rate_7d;
-      this.tiles.dailyDeath.total = data.new_cases;
-      // {"date":"2021-03-15","new_cases":7,"sma_7d":11,"exp_rate_7d":0.86
-    },
     loadData: function (data, i) {
       switch (i) {
+        case 1:
+          this.numberTiles[i] = {
+            rate : data.prevalence,
+            total : data.total_count
+          };
+          break;
+        case 2:
+        case 3:
+          this.numberTiles[i] = {
+            average : data.sma_7d,
+            rt : data.exp_rate_7d,
+            total : data.new_cases
+          };
+          break;
         case 4:
         case 5:
         case 6:
@@ -136,27 +126,16 @@ export default {
   async created() {
     //const mode = null;
     const mode = "lagmock";
-    for (let i = 4; i < 13; i++) {
-      this.getPanelData(i, mode);
+    for (let i = 1; i < 13; i++) {
+       await this.getPanelData(i, mode);
     }
-    GeneralApi.panel(1, mode)
-        .then(res => this.loadP1(res.data))
-        .catch(err => console.error(err.stack));
-
-    GeneralApi.panel(2, mode)
-        .then(res => this.loadP2(res.data))
-        .catch(err => console.error(err.stack));
-
-    GeneralApi.panel(3, mode)
-        .then(res => this.loadP3(res.data))
-        .catch(err => console.error(err.stack));
   },
   data() {
     return {
-      text: {
-        1: {},
-        2: {},
-        3: {}
+      numberTiles: {
+        1: {rate: NaN, total: NaN},
+        2: {total: NaN, average: NaN, rt: NaN},
+        3: {total: NaN, average: NaN, rt: NaN}
       },
       lines: {
         4: {},
@@ -173,6 +152,9 @@ export default {
         12: {}
       },
       titleKeys: {
+        1: "home_new_patient",
+        2: "home_new_case",
+        3: "home_daily_death",
         4: "home_positive_rate_per_site",
         5: "home_new_case_per_site",
         6: "home_hospitalisation_rate",
@@ -183,12 +165,6 @@ export default {
         12: "h/f"
       },
       colors: Const.colors,
-      //tiles:{patientGroup:{rate: 12.5,total:422000}, dailyCase:{total:145,average:135,rt:0.84} ,dailyDeath:{total:11,average:12,rt:0.4}},
-      tiles: {
-        patientGroup: {rate: NaN, total: NaN},
-        dailyCase: {total: NaN, average: NaN, rt: NaN},
-        dailyDeath: {total: NaN, average: NaN, rt: NaN}
-      },
       totalOccupation: 0,
       siteLabels: {},
     }
