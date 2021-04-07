@@ -15,7 +15,7 @@
         <div v-for="(line,i) in lines" class="col-lg-4 col-md-6 col-sm-12 cardContainer">
           <div class="title"><span>{{ $t(titleKeys[i]) }}</span></div>
           <v-card>
-            <PanelOverlay :dataReady="line.data" :dataError="line.dataError" />
+            <PanelOverlay :dataReady="isReady(line.data)" :dataError="line.dataError" />
 
             <LineChart style="width: 100%" :categories="line.categories" :dates="line.dates" :data="line.data"
                        :prediction="line.prediction"></LineChart>
@@ -28,7 +28,7 @@
         <div v-for="(bar,i) in barcharts0" class="col-lg-4 col-md-12 col-sm-12 cardContainer">
           <div class="title"><span>{{ $t(titleKeys[i]) }}</span></div>
           <v-card>
-            <PanelOverlay :dataReady="bar.data" :dataError="bar.dataError" />
+            <PanelOverlay :dataReady="isReady(bar.data)" :dataError="bar.dataError" />
 
             <BarChart style="width:100%" :colors="colors" :horizontal="true" :data="bar.data" :category="bar.sites"
                       :labels="siteLabels" autoresize></BarChart>
@@ -37,9 +37,9 @@
         <div class="col-lg-4 col-md-12 col-sm-12 cardContainer">
           <div class="title"><span>{{ $t("home_total_occupation") }}</span></div>
           <v-card>
-            <PanelOverlay :dataReady="guage.rate" :dataError="guage.dataError"  />
+            <PanelOverlay :dataReady="isReady(gauge.rate)" :dataError="gauge.dataError"  />
 
-            <Gauge style="width: 100%" :value="guage.rate"></Gauge>
+            <Gauge style="width: 100%" :value="gauge.rate"></Gauge>
           </v-card>
         </div>
       </div>
@@ -49,7 +49,7 @@
         <div v-for="(bar,i) in barcharts1" class="col-lg-4 col-md-12 col-sm-12 cardContainer">
           <div class="title"><span>{{ $t(titleKeys[i]) }}</span></div>
           <v-card>
-            <PanelOverlay :dataReady="bar.data" :dataError="bar.dataError" />
+            <PanelOverlay :dataReady="isReady(bar.data)" :dataError="bar.dataError" />
 
             <BarChart style="width:100%" :colors="colors" :data="bar.data" :category="bar.sites" :group="bar.group"
                       :labels="siteLabels" autoresize></BarChart>
@@ -117,7 +117,7 @@ export default {
           break;
 
         case 9:
-          this.guage = { rate :data.occupancy * 100 };
+          this.gauge = { rate :data.occupancy * 100 };
           break;
 
         case 10:
@@ -144,7 +144,7 @@ export default {
           break;
 
         case 9:
-          this.guage.dataError = true;
+          this.gauge.dataError = true;
           break;
 
         case 10:
@@ -157,6 +157,11 @@ export default {
           this.errors[i].dataError = true;
           break;
       }
+    },
+    isReady: function (data) {
+      if(data)
+        return true;
+      else return false;
     }
   },
   async created() {
@@ -182,7 +187,9 @@ export default {
         7: {},
         8: {}
       },
-      guage: {},
+      gauge: {
+        rate:0
+      },
       barcharts1: {
         10: {},
         11: {},
