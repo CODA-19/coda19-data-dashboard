@@ -7,6 +7,7 @@ back-end/node_modules/**/*
 .env
 .env*
 openshift-project-params.env
+dist
 
 # Yarn related, from official doc (https://yarnpkg.com/getting-started/qa#which-files-should-be-gitignored)
 .yarn/*
