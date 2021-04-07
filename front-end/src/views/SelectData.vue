@@ -299,8 +299,8 @@ export default {
         },
         measures:{
           cont:{
-              en:[{label:'count', value:'count'},{label:'mean', value:'mean'},{label:'stdeve', value:'stdev'},{label:'ci95', value:'ci95'}],
-              fr:[{label:'compte', value:'count'},{label:'moyenne', value:'mean'},{label:'stdeve', value:'stdev'},{label:'ci95', value:'ci95'}]
+              en:[{label:'count', value:'count'},{label:'mean', value:'mean'},{label:'stdev', value:'stdev'},{label:'ci95', value:'ci95'}],
+              fr:[{label:'décompte', value:'count'},{label:'moyenne', value:'mean'},{label:'stdev', value:'stdev'},{label:'ci95', value:'ci95'}]
           },
           disc:{
               en:[{label:'age',value: 'age'},{label:'gender', value: 'gender'}],

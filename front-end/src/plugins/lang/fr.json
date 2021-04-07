@@ -1,33 +1,36 @@
 {
    "langCode":"fr",
-  
-  "home_new_case": " Nouveaux cas ce jour",
-  "home_new_patient": " Nombre de patients dans la cohorte",
-  "home_daily_death": " Nouveaux décès",
+
+  "home_new_patient": "Nombre de patients testés",
+  "home_new_case": "Nouveaux cas ce jour",
+  "home_daily_death": "Nouveaux décès ce jour",
+
+  "home_positive_rate_per_site": "Taux de positivité",
+  "home_new_case_per_site": "Nombre de cas positifs",
+  "home_hospitalisation_rate": "Hospitalisations totales",
+
+  "icu": "Occupation lits de soins intensifs",
+  "hospitalization": "Occupation de lits d'hôpitaux",
+  "home_total_occupation": "Taux d'occupation des lits total",
+
+  "length_of_stay": "Distribution de la durée de séjour par site",
+  "age": "Distribution de l'âge par site",
+  "h/f": "Distribution du sexe par status COVID-19",
+
   "home_positivity": " Taux de positivité total: {positivity} %",
   "home_average": " Moy. mob.{average}",
   "home_rt": " Taux Rt. {rate}",
 
-  "home_new_case_per_site": "Nouveaux cas par site",
-  "home_hospitalisation_rate": " Taux d'hospitalisation",
-  "home_positive_rate_per_site": " Taux de positivité par site",
-  "home_total_occupation": " Occupation totale",
-
   "covid_cases": "Nombre de cas de covid",
   "death": "Nombre de décès",
   "ventilator": "Nombre de patients sous respirateur",
-  "icu": "Occupation lit soins intensifs",
-  "hospitalization": "Occupation lit étage",
 
   "titleTxt": "Sélection des données",
   "langTxt": "En",
   "logoutTxt": "Se déconnecter",
   "siteTitleTxt": "Dépôts connectés",
   "selectVariableTxt": "Veuillez sélectionner une variable parmis les resources communes: ",
-  "length_of_stay": "Durée du séjour COVID+ par site",
   "age_groups": "Les groupes d'âge",
-  "age": "Âge COVID+ par site",
-  "h/f": "Proportion H/F COVID+ par site",
   "selectDaysTxt": "Jours de sélection à partir de maintenant",
   "selectHospitalTxt": "Sélectionnez les hôpitaux à inclure: ",
   "selectAllTxt": "Tout sélectionner",
