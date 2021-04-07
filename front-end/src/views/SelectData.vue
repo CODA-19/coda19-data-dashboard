@@ -271,17 +271,17 @@ export default {
         query:  {
       condition: 'AND',
           rules: [{
-        id: 'price',
-        operator: 'less',
-        value: 10.25
+        id: 'deceased',
+        operator: 'equal',
+        value: 1
       }, {
-        condition: 'OR',
+        condition: 'AND',
         rules: [{
-          id: 'category',
-          operator: 'equal',
-          value: 2
+          id: 'age',
+          operator: 'greater',
+          value: 70
         }, {
-          id: 'category',
+          id: 'sex',
           operator: 'equal',
           value: 1
         }]

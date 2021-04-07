@@ -73,13 +73,13 @@
   "tableTxt": "Tableau ",
   "figureTxt": "Figure ",
 
-  "summary_age_key": "Sommaire des patients - age",
-  "summary_gender_key": "Sommaire des patients - genre",
-  "summary_age_site_strat_key": "Sommaire des patients - age - par site stratifié par genre",
+  "summary_age_key": "Description de l'âge des patients par site",
+  "summary_gender_key": "Description du sex des patients par site",
+  "summary_age_site_strat_key": "Description de l'âge des patients par site et sexe",
 
-  "summary_gender_site_key": "Sommaire des patients - genre - par site",
-  "summary_age_site_key": "Sommaire des patients  - age - par site",
-  "summary_deceased_strat_key": "Décès - stratifié par période de 14 jours ",
+  "summary_gender_site_key": "Description du sex des patients par site",
+  "summary_age_site_key": "Description de l'âge des patients par site",
+  "summary_deceased_strat_key": "Nombre de déces par période de 14 jours ",
 
   "male": "homme ",
   "female": "femme ",
@@ -110,6 +110,7 @@
   "homeTxt": "Accueil",
   "statsTxt": "Stats",
   "learningTxt": "Learning",
+  "docsApiTxt": "API",
   "learningTitle": "Learning",
   "startLearning": "Démarrer un processus d'aprentissage",
   "activeConnectionsTxt": "Connections actives",
@@ -123,6 +124,9 @@
 
   "QB_name": "nom",
   "QB_category": "catégorie",
+  "QB_sex": "sexe",
+  "QB_deceased": "décédé",
+  "QB_age": "âge",
   "QB_in_stock": "en stock",
   "QB_yes": "oui",
   "QB_no": "non",

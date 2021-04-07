@@ -42,6 +42,12 @@ const inICUFilter: SummarizeRequestSelectorFilter = {
     "operator": "is",
     "value": "intensive_care_unit"
 };
+const afterDate: SummarizeRequestSelectorFilter = {
+    "path": "location.period.start",
+    "operator": "afterOrOn",
+    "value": "2021-03-01"
+};
+
 const covidPosObservations: SummarizeRequestSelector = {
     resource: "Observation",
     filters: [covidPosFilter],
@@ -72,7 +78,7 @@ const preMadeReq: {[id: string] : SummarizeRequestBody }   = {
     'p7': {
         selectors: [{
             resource: "Encounter",
-            filters: [ inICUFilter ],
+            filters: [ inICUFilter, afterDate ],
             fields: []
         }],
         options: onlyCountOptions

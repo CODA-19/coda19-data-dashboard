@@ -120,7 +120,34 @@ export default {
             5: 'Goodies',
             6: 'Clothes'
           },
+          operators: ['more', 'equal', 'not_equal', 'in', 'not_in', 'is_null', 'is_not_null']
+        },{
+          id: 'deceased',
+          label: this.$t("QB_deceased"),
+          type: 'integer',
+          input: 'select',
+          values: {
+            1: 'false',
+          },
           operators: ['equal', 'not_equal', 'in', 'not_in', 'is_null', 'is_not_null']
+        },{
+          id: 'sex',
+          label: this.$t("QB_sex"),
+          type: 'integer',
+          input: 'select',
+          values: {
+            1: 'female',
+          },
+          operators: ['equal', 'not_equal', 'in', 'not_in', 'is_null', 'is_not_null']
+        },{
+          id: 'age',
+          label: this.$t("QB_age"),
+          type: 'double',
+          validation: {
+            min: 0,
+            step: 0.01
+          },
+          operators: ['greater', 'not_equal', 'in', 'not_in', 'is_null', 'is_not_null']
         }, {
           id: 'in_stock',
           label:   this.$t("QB_in_stock") ,

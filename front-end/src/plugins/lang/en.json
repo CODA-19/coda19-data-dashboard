@@ -111,6 +111,7 @@
   "homeTxt": "Home",
   "statsTxt": "Stats",
   "learningTxt": "Learning",
+  "docsApiTxt": "API",
   "activeConnectionsTxt": "Active Connections",
   "noActiveConnectionsTxt": "No active connection",
   "requestAccessTxt": "Request access",
@@ -124,9 +125,12 @@
 
   "QB_name": "name",
   "QB_category": "category",
+  "QB_sex": "sex",
+  "QB_deceased": "deceased",
   "QB_in_stock": "in stock",
   "QB_yes": "yes",
   "QB_no": "no",
+  "QB_age": "age",
   "QB_price": "price",
   "QB_identifier": "identifier"
 }

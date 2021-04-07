@@ -21,6 +21,9 @@
         <b-nav-item>
           <router-link to="/connections" class="nav-link">{{ $t('activeConnectionsTxt') }}</router-link>
         </b-nav-item>
+        <b-nav-item>
+          <h5 @click="goToApiDocs()" class="nav-link">{{ $t('docsApiTxt') }}</h5>
+        </b-nav-item>
       </b-navbar-nav>
     </b-collapse>
 
@@ -65,6 +68,9 @@ export default {
   methods: {
     toggleLocale() {
       this.$i18n.locale = this.$i18n.locale === 'en' ? 'fr' : 'en';
+    },
+    goToApiDocs() {
+      location.replace('https://coda19-api-specification.redoc.ly/');
     }
   }
 }
