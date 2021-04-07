@@ -1,7 +1,7 @@
 <template>
-  <div v-if="!dataReady || dataError" class="hover"> // Show overlay when data is not ready or error occurs
+  <div v-if="!dataReady || dataError" class="hover">
 
-    //Spinner
+<!--    Spinner-->
     <div v-if="!dataReady && !dataError" class="spinner">
       <v-progress-circular
           :size="70"
@@ -11,7 +11,7 @@
       ></v-progress-circular>
     </div>
 
-    //Error message
+<!--    Error message-->
     <div v-if="dataError" class="errorMsg">
       <div class="msgContainer">
         <div class="center-block"><i class="fas fa-info-circle fa-5x"></i></div>
