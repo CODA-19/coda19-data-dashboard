@@ -134,8 +134,8 @@ export default {
     },
   },
   async created() {
-    //const mode = null;
-    const mode = "lagmock";
+    const mode = null;
+    //const mode = "lagmock";
     for (let i = 4; i < 13; i++) {
       this.getPanelData(i, mode);
     }
