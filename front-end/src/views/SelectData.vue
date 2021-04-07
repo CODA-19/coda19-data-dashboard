@@ -288,6 +288,15 @@ export default {
       }]
     },
         variables:[],
+        breakdown:{
+            resourceType:"",
+            resourceAttribute:"",
+            period:{
+                start:'2021/01/01',
+                end:'2021/01/01',
+                step:0,
+            }
+        },
         measures:{
           cont:{
               en:[{label:'count', value:'count'},{label:'mean', value:'mean'},{label:'stdeve', value:'stdev'},{label:'ci95', value:'ci95'}],
@@ -303,6 +312,7 @@ export default {
       },
       cached: {
         variables: [],
+        breakdown:[],
         sites: []
       },
 
@@ -367,6 +377,7 @@ export default {
         conns: this.form.sites,
         sites: ["CHUM", "MUHC"],
         query: this.form.query,
+        breakdown:this.form.breakdown,
         variables: ["length_of_stay"],
       };
 
@@ -379,10 +390,12 @@ export default {
     getNSummaryData: async function() {
       this.cached.variables = this.form.variables;
       this.cached.sites = this.form.sites;
-
+      this.cached.breakdown  = this.form.breakdown;
+      
       const sitesUri = encodeURI(this.form.sites.map(conn=>{return conn.value}));
       const varUri = encodeURI(this.form.variables.map(conn=>{return conn.value}));
-      const data = await GeneralApi.nsummary(sitesUri, varUri).then(res => res.data);
+      const breakdownUri = encodeURI(this.form.breakdown.map(conn=>{return conn.value}));
+      const data = await GeneralApi.nsummary(sitesUri, varUri, breakdownUri).then(res => res.data);
 
       return data;
     },
