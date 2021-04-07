@@ -22,12 +22,15 @@
           <router-link to="/connections" class="nav-link">{{ $t('activeConnectionsTxt') }}</router-link>
         </b-nav-item>
         <b-nav-item>
-          <h5 @click="goToApiDocs()" class="nav-link">{{ $t('docsApiTxt') }}</h5>
+          <h6 @click="goToApiDocs()" class="nav-link">{{ $t('docsApiTxt') }}</h6>
         </b-nav-item>
       </b-navbar-nav>
     </b-collapse>
 
     <b-navbar-nav right style="flex-direction: row; place-content: flex-end;flex: 1 1 auto;margin-top: 10px;">
+      <b-nav-item style="margin-top: 7px;">
+        <h5>{{ new Date().toISOString().split("T")[0] }}</h5>
+      </b-nav-item>
       <b-nav-item>
         <router-link to="/request" class="nav-link">{{ $t('requestAccessTxt') }}</router-link>
       </b-nav-item>
