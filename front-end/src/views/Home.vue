@@ -162,11 +162,11 @@ export default {
       else return false;
     }
   },
-  async created() {
-    //const mode = null;
-    const mode = "lagmock";
-    for (let i = 1; i < 13; i++) {
-       await this.getPanelData(i, mode);
+  created() {
+    const mode = null;
+    //const mode = "lagmock";
+    for (let i = 4; i < 13; i++) {
+      this.getPanelData(i, mode);
     }
   },
   data() {
