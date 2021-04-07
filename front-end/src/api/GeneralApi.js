@@ -13,9 +13,9 @@ function testData(post_data) {
     return AxiosInstance.post('api/testData', post_data, {headers: headers});
 }
 
-function nsummary(sitesUri, varUri) {
+function nsummary(sitesUri, varUri, breakdownUri) {
     const headers = TokenBearerHeaderFactory.get();
-    return AxiosInstance.get(`api/nsummary?sites=${sitesUri}&var=${varUri}`, {headers: headers});
+    return AxiosInstance.get(`api/nsummary?sites=${sitesUri}&var=${varUri}&breakdown=${breakdownUri}`, {headers: headers});
 }
 
 /**
