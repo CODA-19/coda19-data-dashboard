@@ -1,3 +1,4 @@
 [submodule "back-end/coda19-ts"]
 	path = back-end/coda19-ts
 	url = https://github.com/CODA-19/coda19-ts
+	branch = master
