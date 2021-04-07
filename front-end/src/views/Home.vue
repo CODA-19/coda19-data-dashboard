@@ -30,8 +30,7 @@
           <v-card>
             <PanelOverlay :dataReady="isReady(bar.data)" :dataError="bar.dataError" />
 
-            <BarChart style="width:100%" :colors="colors" :horizontal="true" :data="bar.data" :category="bar.sites"
-                      :labels="siteLabels" autoresize></BarChart>
+            <BarChart style="width:100%" :colors="colors" :horizontal="true" :data="bar.data" :category="bar.sites" autoresize></BarChart>
           </v-card>
         </div>
         <div class="col-lg-4 col-md-12 col-sm-12 cardContainer">
@@ -51,8 +50,7 @@
           <v-card>
             <PanelOverlay :dataReady="isReady(bar.data)" :dataError="bar.dataError" />
 
-            <BarChart style="width:100%" :colors="colors" :data="bar.data" :category="bar.sites" :group="bar.group"
-                      :labels="siteLabels" autoresize></BarChart>
+            <BarChart style="width:100%" :colors="colors" :data="bar.data" :category="bar.sites" :group="bar.group" autoresize></BarChart>
           </v-card>
         </div>
       </div>
@@ -208,8 +206,7 @@ export default {
         11: "age",
         12: "h/f"
       },
-      colors: Const.colors,
-      siteLabels: {},
+      colors: Const.colors
     }
   }
 }

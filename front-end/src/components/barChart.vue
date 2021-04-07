@@ -108,9 +108,10 @@ export default {
     getOptions(){
       const option = this.getBaseOptions();
 
-      var categories = this.category.map(cat=>{
-        return this.labels[cat]?this.labels[cat][this.$i18n.locale] : cat
-      })
+      var categories = this.category
+      //     .map(cat=>{
+      //   return this.labels[cat]?this.labels[cat][this.$i18n.locale] : cat
+      // })
 
       if(this.horizontal){
         option.yAxis=[{
