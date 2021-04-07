@@ -30,16 +30,21 @@ async function isConnected() {
     ]);
 }
 
-function DashData(i){
-  const headers = TokenBearerHeaderFactory.get();
-  return AxiosInstance.get(`/home/p${i}?mode=lagmock`, {headers: headers});
-  // return AxiosInstance.get('api/hospitalSummary', {headers: headers});
+function getPanelURI(panelId, mode = null) {
+    const modeQuery = mode == null ? '' : `?mode=${mode}`;
+    return `/home/p${panelId}${modeQuery}`;
 }
 
-function panel(panelNumber){
+function DashData(i, mode = null){
   const headers = TokenBearerHeaderFactory.get();
-  return AxiosInstance.get('/home/p' + panelNumber + '?mode=lagmock', {headers: headers});
-  // return AxiosInstance.get('api/hospitalSummary', {headers: headers});
+  return AxiosInstance.get(getPanelURI(i, mode), {headers: headers});
+  //return AxiosInstance.get(`/home/p${i}?mode=lagmock`, {headers: headers});
+}
+
+function panel(panelNumber, mode = null){
+  const headers = TokenBearerHeaderFactory.get();
+  return AxiosInstance.get(getPanelURI(panelNumber, mode), {headers: headers});
+  //return AxiosInstance.get('/home/p' + panelNumber + '?mode=lagmock', {headers: headers});
 }
 
 
