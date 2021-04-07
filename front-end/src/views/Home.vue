@@ -15,6 +15,17 @@
         <div v-for="(line,i) in lines" class="col-lg-4 col-md-6 col-sm-12 cardContainer">
           <div class="title"><span>{{ $t(titleKeys[i]) }}</span></div>
           <v-card>
+            <div v-if="!line.data" class="hover">
+              <div>
+              <v-progress-circular
+                  :size="70"
+                  :width="7"
+                  color="#ccc"
+                  indeterminate
+              ></v-progress-circular>
+              </div>
+            </div>
+
             <LineChart style="width: 100%" :categories="line.categories" :dates="line.dates" :data="line.data"
                        :prediction="line.prediction"></LineChart>
           </v-card>
@@ -26,6 +37,16 @@
         <div v-for="(bar,i) in barcharts0" class="col-lg-4 col-md-12 col-sm-12 cardContainer">
           <div class="title"><span>{{ $t(titleKeys[i]) }}</span></div>
           <v-card>
+            <div v-if="!bar.data" class="hover">
+              <div>
+                <v-progress-circular
+                    :size="70"
+                    :width="7"
+                    color="#ccc"
+                    indeterminate
+                ></v-progress-circular>
+              </div>
+            </div>
             <BarChart style="width:100%" :colors="colors" :horizontal="true" :data="bar.data" :category="bar.sites"
                       :labels="siteLabels" autoresize></BarChart>
           </v-card>
@@ -33,6 +54,17 @@
         <div class="col-lg-4 col-md-12 col-sm-12 cardContainer">
           <div class="title"><span>{{ $t("home_total_occupation") }}</span></div>
           <v-card>
+            <div v-if="!totalOccupation" class="hover">
+              <div>
+                <v-progress-circular
+                    :size="70"
+                    :width="7"
+                    color="#ccc"
+                    indeterminate
+                ></v-progress-circular>
+              </div>
+            </div>
+
             <Gauge style="width: 100%" :value="totalOccupation"></Gauge>
           </v-card>
         </div>
@@ -43,6 +75,17 @@
         <div v-for="(bar,i) in barcharts1" class="col-lg-4 col-md-12 col-sm-12 cardContainer">
           <div class="title"><span>{{ $t(titleKeys[i]) }}</span></div>
           <v-card>
+            <div v-if="!bar.data" class="hover">
+              <div>
+                <v-progress-circular
+                    :size="70"
+                    :width="7"
+                    color="#ccc"
+                    indeterminate
+                ></v-progress-circular>
+              </div>
+            </div>
+
             <BarChart style="width:100%" :colors="colors" :data="bar.data" :category="bar.sites" :group="bar.group"
                       :labels="siteLabels" autoresize></BarChart>
           </v-card>
