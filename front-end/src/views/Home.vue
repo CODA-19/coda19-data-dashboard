@@ -74,22 +74,10 @@ export default {
   name: "Home",
   components: {LineChart, BarChart, Legend, Gauge, HomeTextTile},
   methods: {
-    getPanelData: async function (i) {
+    getPanelData: async function (i, mode) {
       // Moved from await to promise, because await is making all queries sequential.
-      GeneralApi.DashData(i, "lagmock")
+      GeneralApi.DashData(i, mode)
           .then(res => this.loadData(res.data, i))
-          .catch(err => console.error(err.stack));
-
-      GeneralApi.panel(1, "lagmock")
-          .then(res => this.loadP1(res.data))
-          .catch(err => console.error(err.stack));
-
-      GeneralApi.panel(2, "lagmock")
-          .then(res => this.loadP2(res.data))
-          .catch(err => console.error(err.stack));
-
-      GeneralApi.panel(3, "lagmock")
-          .then(res => this.loadP3(res.data))
           .catch(err => console.error(err.stack));
     },
     loadP1: function (data) {
@@ -146,9 +134,22 @@ export default {
     },
   },
   async created() {
-    for (let i = 1; i < 13; i++) {
-      this.getPanelData(i);
+    //const mode = null;
+    const mode = "lagmock";
+    for (let i = 4; i < 13; i++) {
+      this.getPanelData(i, mode);
     }
+    GeneralApi.panel(1, mode)
+        .then(res => this.loadP1(res.data))
+        .catch(err => console.error(err.stack));
+
+    GeneralApi.panel(2, mode)
+        .then(res => this.loadP2(res.data))
+        .catch(err => console.error(err.stack));
+
+    GeneralApi.panel(3, mode)
+        .then(res => this.loadP3(res.data))
+        .catch(err => console.error(err.stack));
   },
   data() {
     return {
