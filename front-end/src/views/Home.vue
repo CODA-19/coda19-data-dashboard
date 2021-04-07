@@ -15,16 +15,7 @@
         <div v-for="(line,i) in lines" class="col-lg-4 col-md-6 col-sm-12 cardContainer">
           <div class="title"><span>{{ $t(titleKeys[i]) }}</span></div>
           <v-card>
-            <div v-if="!line.data" class="hover">
-              <div>
-              <v-progress-circular
-                  :size="70"
-                  :width="7"
-                  color="#ccc"
-                  indeterminate
-              ></v-progress-circular>
-              </div>
-            </div>
+            <PanelOverlay :dataReady="line.data" :dataError="line.dataError" />
 
             <LineChart style="width: 100%" :categories="line.categories" :dates="line.dates" :data="line.data"
                        :prediction="line.prediction"></LineChart>
@@ -37,16 +28,8 @@
         <div v-for="(bar,i) in barcharts0" class="col-lg-4 col-md-12 col-sm-12 cardContainer">
           <div class="title"><span>{{ $t(titleKeys[i]) }}</span></div>
           <v-card>
-            <div v-if="!bar.data" class="hover">
-              <div>
-                <v-progress-circular
-                    :size="70"
-                    :width="7"
-                    color="#ccc"
-                    indeterminate
-                ></v-progress-circular>
-              </div>
-            </div>
+            <PanelOverlay :dataReady="bar.data" :dataError="bar.dataError" />
+
             <BarChart style="width:100%" :colors="colors" :horizontal="true" :data="bar.data" :category="bar.sites"
                       :labels="siteLabels" autoresize></BarChart>
           </v-card>
@@ -54,18 +37,9 @@
         <div class="col-lg-4 col-md-12 col-sm-12 cardContainer">
           <div class="title"><span>{{ $t("home_total_occupation") }}</span></div>
           <v-card>
-            <div v-if="!totalOccupation" class="hover">
-              <div>
-                <v-progress-circular
-                    :size="70"
-                    :width="7"
-                    color="#ccc"
-                    indeterminate
-                ></v-progress-circular>
-              </div>
-            </div>
+            <PanelOverlay :dataReady="guage.rate" :dataError="guage.dataError"  />
 
-            <Gauge style="width: 100%" :value="totalOccupation"></Gauge>
+            <Gauge style="width: 100%" :value="guage.rate"></Gauge>
           </v-card>
         </div>
       </div>
@@ -75,16 +49,7 @@
         <div v-for="(bar,i) in barcharts1" class="col-lg-4 col-md-12 col-sm-12 cardContainer">
           <div class="title"><span>{{ $t(titleKeys[i]) }}</span></div>
           <v-card>
-            <div v-if="!bar.data" class="hover">
-              <div>
-                <v-progress-circular
-                    :size="70"
-                    :width="7"
-                    color="#ccc"
-                    indeterminate
-                ></v-progress-circular>
-              </div>
-            </div>
+            <PanelOverlay :dataReady="bar.data" :dataError="bar.dataError" />
 
             <BarChart style="width:100%" :colors="colors" :data="bar.data" :category="bar.sites" :group="bar.group"
                       :labels="siteLabels" autoresize></BarChart>
@@ -104,16 +69,17 @@ import Legend from "@/components/legend";
 import GeneralApi from "@/api/GeneralApi";
 import Gauge from "@/components/Gauge";
 import LineChart from "../components/lineChart";
+import PanelOverlay from "../components/PanelOverlay";
 
 export default {
   name: "Home",
-  components: {LineChart, BarChart, Legend, Gauge, HomeTextTile},
+  components: {PanelOverlay, LineChart, BarChart, Legend, Gauge, HomeTextTile},
   methods: {
     getPanelData: async function (i, mode) {
       // Moved from await to promise, because await is making all queries sequential.
       GeneralApi.DashData(i, mode)
           .then(res => this.loadData(res.data, i))
-          .catch(err => console.error(err.stack));
+          .catch(err => {this.dataError(i); console.error(err.stack)});
     },
     loadData: function (data, i) {
       switch (i) {
@@ -151,7 +117,7 @@ export default {
           break;
 
         case 9:
-          this.totalOccupation = data.occupancy * 100;
+          this.guage = { rate :data.occupancy * 100 };
           break;
 
         case 10:
@@ -165,6 +131,33 @@ export default {
           break;
       }
     },
+    dataError: function(i){
+      switch (i) {
+        case 4:
+        case 5:
+        case 6:
+          this.lines[i].dataError = true;
+          break;
+        case 7:
+        case 8:
+          this.barcharts0[i].dataError = true;
+          break;
+
+        case 9:
+          this.guage.dataError = true;
+          break;
+
+        case 10:
+        case 11:
+        case 12:
+          this.barcharts1[i].dataError = true;
+          break;
+        case 13:
+        case 14:
+          this.errors[i].dataError = true;
+          break;
+      }
+    }
   },
   async created() {
     //const mode = null;
@@ -189,6 +182,7 @@ export default {
         7: {},
         8: {}
       },
+      guage: {},
       barcharts1: {
         10: {},
         11: {},
@@ -208,7 +202,6 @@ export default {
         12: "h/f"
       },
       colors: Const.colors,
-      totalOccupation: 0,
       siteLabels: {},
     }
   }
