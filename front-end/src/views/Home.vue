@@ -163,8 +163,8 @@ export default {
     }
   },
   created() {
-    //const mode = null; // null means direct query to the HUB *real* and if it fails it fails
-    const mode = "lagmock"; // lagmock returns mocked data with random lag.
+    const mode = null; // null means direct query to the HUB *real* and if it fails it fails
+    //const mode = "lagmock"; // lagmock returns mocked data with random lag.
     for (let i = 1; i < 13; i++) {
       this.getPanelData(i, mode);
     }
