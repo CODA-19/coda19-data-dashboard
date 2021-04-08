@@ -73,13 +73,13 @@ export default {
   name: "Home",
   components: {PanelOverlay, LineChart, BarChart, Legend, Gauge, HomeTextTile},
   methods: {
-    getPanelData: async function (i, mode) {
+    getPanelData: function(i, mode) {
       // Moved from await to promise, because await is making all queries sequential.
       GeneralApi.DashData(i, mode)
           .then(res => this.loadData(res.data, i))
           .catch(err => {this.dataError(i); console.error(err.stack)});
     },
-    loadData: function (data, i) {
+    loadData: function(data, i) {
       switch (i) {
         case 1:
           this.numberTiles[i] = {
@@ -156,17 +156,17 @@ export default {
           break;
       }
     },
-    isReady: function (data) {
+    isReady: function(data) {
       if(data)
         return true;
       else return false;
     }
   },
-  async created() {
-    //const mode = null;
-    const mode = "lagmock";
+  created() {
+    //const mode = null; // null means direct query to the HUB *real* and if it fails it fails
+    const mode = "lagmock"; // lagmock returns mocked data with random lag.
     for (let i = 1; i < 13; i++) {
-       await this.getPanelData(i, mode);
+      this.getPanelData(i, mode);
     }
   },
   data() {

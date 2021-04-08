@@ -3,74 +3,71 @@ import passAuth from '../auth/auth';
 import {Application, Request, Response} from 'express';
 import {
     SummarizeRequestBody,
-    SummarizeRequestSelector,
     SummarizeRequestSelectorFilter
 } from "../../coda19-ts/src/request/SummarizeRequest";
-import fs from "fs";
-import JSON5 from 'json5';
 
 const sites = ['115'];
+const fromThisDate = "2021-03-31";
+const onlyCountOptions = { measures: { continuous: [], categorical: ["count"] } };
 
-const onlyCountOptions = {
-    measures: {
-        continuous: [],
-        categorical: ["count"]
-    }
-};
-const covidPosFilter: SummarizeRequestSelectorFilter = {
-    path: "code.coding.display",
-    operator: "is",
-    value: "positive"
-};
-const afterDateFilter: SummarizeRequestSelectorFilter = {
-    path: "effectiveDateTime",
-    operator: "afterOrOn",
-    value: "2021-03-31"
-};
-const isDeadFilter: SummarizeRequestSelectorFilter = {
-    "path": "deceasedBoolean",
-    "operator": "is",
-    "value": "true"
-};
-const isDeadAfterDateFilter: SummarizeRequestSelectorFilter = {
-    "path": "deceasedDateTime",
-    "operator": "afterOrOn",
-    "value": "2021-03-31"
-};
-const inICUFilter: SummarizeRequestSelectorFilter = {
-    "path": "location.location.display",
-    "operator": "is",
-    "value": "intensive_care_unit"
-};
-const afterDate: SummarizeRequestSelectorFilter = {
-    "path": "location.period.start",
-    "operator": "afterOrOn",
-    "value": "2021-03-01"
-};
+/**
+ * Creates an "is" operator filter.
+ * @param path Field path
+ * @param value Is value
+ * @returns 
+ */
+function FilterIs(path: string, value: string) : SummarizeRequestSelectorFilter {
+    return { path: path, operator: "is", value: value };
+}
 
-const covidPosObservations: SummarizeRequestSelector = {
-    resource: "Observation",
-    filters: [covidPosFilter],
-    fields: []
-};
+/**
+ * Creates a AfterOrOn Date filter.
+ * @param path Field path
+ * @param date Date as a string, YYYY-MM-DD
+ * @returns 
+ */
+function FilterAfterOrOnDate(path: string, date: string) : SummarizeRequestSelectorFilter {
+    return { path: path, operator: "afterOrOn", value: date };
+}
 
 const preMadeReq: {[id: string] : SummarizeRequestBody }   = {
     'p1': {
-        selectors: [{ resource: "Patient", filters: [], fields: [], joins: covidPosObservations }],
+        selectors: [
+            { 
+                resource: "Patient", 
+                filters: [], 
+                fields: [], 
+                joins: { 
+                    resource: "Observation", 
+                    filters: [FilterIs("code.coding.display", "positive")], 
+                    fields: [] 
+                } 
+            }
+        ],
         options: onlyCountOptions
     },
     'p2': {
-        selectors: [ { resource: "Observation", filters: [ covidPosFilter, afterDateFilter ], fields: [] } ],
+        selectors: [ 
+            { 
+                resource: "Observation", 
+                filters: [ 
+                    FilterIs("code.coding.display", "positive"), 
+                    FilterAfterOrOnDate("effectiveDateTime", fromThisDate) 
+                ], 
+                fields: [] 
+            } 
+        ],
         options: onlyCountOptions
     },
     'p3': {
         selectors: [
             {
-                "resource": "Patient",
-                "filters": [ isDeadFilter, isDeadAfterDateFilter ],
-                "fields": [
-                    {"path": "gender" }
-                ]
+                resource: "Patient",
+                filters: [ 
+                    FilterIs("deceasedBoolean", "true"), 
+                    FilterAfterOrOnDate("deceasedDateTime", fromThisDate) 
+                ],
+                fields: [ {"path": "gender" } ]
             }
         ],
         options: onlyCountOptions
@@ -78,7 +75,7 @@ const preMadeReq: {[id: string] : SummarizeRequestBody }   = {
     'p7': {
         selectors: [{
             resource: "Encounter",
-            filters: [ inICUFilter, afterDate ],
+            filters: [ FilterIs("location.location.display", "intensive_care_unit"), FilterAfterOrOnDate("location.period.start", "2021-03-01") ],
             fields: []
         }],
         options: onlyCountOptions
@@ -130,6 +127,7 @@ export class DashPanels {
     public getRequest(panelId: string) {
         const reqCfg = preMadeReq[panelId];
 
+        // FIXME(malavv): this is not meant to be permanent. All sites should be asked.
         let reqSites = parseInt(panelId.substr(1)) < 4 ? ['115']: ['115', '110'];
 
         return (req: Request) => {
@@ -174,7 +172,7 @@ export class DashPanels {
 
         let totalCounts : Map<string, number> = new Map(res.data.map((s:any) => [s[0].siteCode, s[0].total]));
 
-        p2Data["date"] = afterDateFilter.value;
+        p2Data["date"] = fromThisDate;
         p2Data["new_cases"] = totalCounts.get('all');
         return Promise.resolve(p2Data);
     }
@@ -185,7 +183,7 @@ export class DashPanels {
 
         let totalCounts : Map<string, number> = new Map(res.data.map((s:any) => [s[0].siteCode, s[0].total]));
 
-        p3Data["date"] = isDeadAfterDateFilter.value;
+        p3Data["date"] = fromThisDate;
         p3Data["new_cases"] = totalCounts.get('all');
         return Promise.resolve(p3Data);
     }
