@@ -9,6 +9,10 @@ import{ format, addDays } from 'date-fns';
 
 const fromThisDate = new Date(2021, 4, 5);
 const onlyCountOptions = { measures: { continuous: [], categorical: ["count"] } };
+const breakdownPerDay = {
+    "resource": { "type": "Observation", "field": "issued" },
+    "slices": { "step": 86400 /* in sec or 1 day */ }
+};
 
 /**
  * Creates an "is" operator filter.
@@ -42,7 +46,7 @@ const preMadeReq: {[id: string] : SummarizeRequestBody }   = {
                 fields: [], 
                 joins: { 
                     resource: "Observation", 
-                    filters: [FilterIs("code.coding.display", "positive")], 
+                    filters: [FilterDate("effectiveDateTime", "before", format(addDays(fromThisDate, 1), "yyyy-MM-dd"))],
                     fields: [] 
                 } 
             }
@@ -73,6 +77,35 @@ const preMadeReq: {[id: string] : SummarizeRequestBody }   = {
                     FilterDate("deceasedDateTime", "before", format(addDays(fromThisDate, 1), "yyyy-MM-dd"))
                 ],
                 fields: [ {"path": "gender" } ]
+            }
+        ],
+        options: onlyCountOptions
+    },
+    'p4': {
+        selectors: [
+            {
+                resource: "Observation",
+                filters: [
+                    FilterIs("code.coding.display", "positive"),
+                    FilterDate("issued", "afterOrOn", format(new Date(2021, 1,1), "yyyy-MM-dd")),
+                    FilterDate("issued", "before", format(addDays(fromThisDate, 1), "yyyy-MM-dd"))
+                ],
+                "fields": [],
+                "breakdown": breakdownPerDay
+            }
+        ],
+        options: onlyCountOptions
+    },
+    'p5': {
+        selectors: [
+            {
+                resource: "Observation",
+                filters: [
+                    FilterDate("issued", "afterOrOn", format(new Date(2021, 1,1), "yyyy-MM-dd")),
+                    FilterDate("issued", "before", format(addDays(fromThisDate, 1), "yyyy-MM-dd"))
+                ],
+                "fields": [],
+                "breakdown": breakdownPerDay
             }
         ],
         options: onlyCountOptions
