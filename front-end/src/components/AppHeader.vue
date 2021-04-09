@@ -21,15 +21,15 @@
         <b-nav-item>
           <router-link to="/connections" class="nav-link">{{ $t('activeConnectionsTxt') }}</router-link>
         </b-nav-item>
-        <b-nav-item>
-          <h6 @click="goToApiDocs()" class="nav-link">{{ $t('docsApiTxt') }}</h6>
+        <b-nav-item target="_blank" :href="goToApiDocs()">
+          <span class="nav-link">{{ $t('docsApiTxt') }}</span>
         </b-nav-item>
       </b-navbar-nav>
     </b-collapse>
 
     <b-navbar-nav right style="flex-direction: row; place-content: flex-end;flex: 1 1 auto;margin-top: 10px;">
-      <b-nav-item style="margin-top: 7px;">
-        <h5>{{ new Date().toISOString().split("T")[0] }}</h5>
+      <b-nav-item id="currentDate">
+        {{ new Date(2021, 4, 5).toISOString().split("T")[0] }}
       </b-nav-item>
       <b-nav-item>
         <router-link to="/request" class="nav-link">{{ $t('requestAccessTxt') }}</router-link>
@@ -73,7 +73,7 @@ export default {
       this.$i18n.locale = this.$i18n.locale === 'en' ? 'fr' : 'en';
     },
     goToApiDocs() {
-      location.replace('https://coda19-api-specification.redoc.ly/');
+      return 'https://coda19-api-specification.redoc.ly/';
     }
   }
 }

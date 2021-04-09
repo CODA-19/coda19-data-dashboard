@@ -150,7 +150,7 @@
                   <div class="col-lg-4 col-md-4">
                     <div>{{ $t("selectResourceTypeTxt") }}</div>
                     <div>
-                      <select>
+                      <select class="form-control">
                         <option :value="patient">{{ $t("selectResourcePatient") }}</option>
                       </select>
                     </div>
@@ -158,7 +158,7 @@
                   <div class="col-lg-4 col-md-4">
                     <div>{{ $t("selectResourceAttributeTxt") }}</div>
                     <div>
-                      <select>
+                      <select class="form-control">
                         <option :value="age">{{ $t("selectResourceAttributeAge")}}</option>
                       </select>
                     </div>
