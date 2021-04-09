@@ -5,9 +5,9 @@ import {
     SummarizeRequestBody,
     SummarizeRequestSelectorFilter
 } from "../../coda19-ts/src/request/SummarizeRequest";
+import{ format, addDays } from 'date-fns';
 
-const sites = ['115'];
-const fromThisDate = "2021-03-31";
+const fromThisDate = new Date(2021, 4, 5);
 const onlyCountOptions = { measures: { continuous: [], categorical: ["count"] } };
 
 /**
@@ -20,14 +20,17 @@ function FilterIs(path: string, value: string) : SummarizeRequestSelectorFilter 
     return { path: path, operator: "is", value: value };
 }
 
+type DataFilterType = "afterOrOn" | "before";
+
 /**
  * Creates a AfterOrOn Date filter.
  * @param path Field path
+ * @param type Type of date filter
  * @param date Date as a string, YYYY-MM-DD
  * @returns 
  */
-function FilterAfterOrOnDate(path: string, date: string) : SummarizeRequestSelectorFilter {
-    return { path: path, operator: "afterOrOn", value: date };
+function FilterDate(path: string, type: DataFilterType, date: string) : SummarizeRequestSelectorFilter {
+    return { path: path, operator: type, value: date };
 }
 
 const preMadeReq: {[id: string] : SummarizeRequestBody }   = {
@@ -51,8 +54,9 @@ const preMadeReq: {[id: string] : SummarizeRequestBody }   = {
             { 
                 resource: "Observation", 
                 filters: [ 
-                    FilterIs("code.coding.display", "positive"), 
-                    FilterAfterOrOnDate("effectiveDateTime", fromThisDate) 
+                    FilterIs("code.coding.display", "positive"),
+                    FilterDate("effectiveDateTime", "afterOrOn", format(fromThisDate, "yyyy-MM-dd")),
+                    FilterDate("effectiveDateTime", "before", format(addDays(fromThisDate, 1), "yyyy-MM-dd"))
                 ], 
                 fields: [] 
             } 
@@ -64,8 +68,9 @@ const preMadeReq: {[id: string] : SummarizeRequestBody }   = {
             {
                 resource: "Patient",
                 filters: [ 
-                    FilterIs("deceasedBoolean", "true"), 
-                    FilterAfterOrOnDate("deceasedDateTime", fromThisDate) 
+                    FilterIs("deceasedBoolean", "true"),
+                    FilterDate("deceasedDateTime", "afterOrOn", format(fromThisDate, "yyyy-MM-dd")),
+                    FilterDate("deceasedDateTime", "before", format(addDays(fromThisDate, 1), "yyyy-MM-dd"))
                 ],
                 fields: [ {"path": "gender" } ]
             }
@@ -75,7 +80,7 @@ const preMadeReq: {[id: string] : SummarizeRequestBody }   = {
     'p7': {
         selectors: [{
             resource: "Encounter",
-            filters: [ FilterIs("location.location.display", "intensive_care_unit"), FilterAfterOrOnDate("location.period.start", "2021-03-01") ],
+            filters: [ FilterIs("location.location.display", "intensive_care_unit"), FilterDate("location.period.start", "afterOrOn", "2021-03-01") ],
             fields: []
         }],
         options: onlyCountOptions
@@ -172,7 +177,7 @@ export class DashPanels {
 
         let totalCounts : Map<string, number> = new Map(res.data.map((s:any) => [s[0].siteCode, s[0].total]));
 
-        p2Data["date"] = fromThisDate;
+        p2Data["date"] = format(fromThisDate, "yyyy-MM-dd");
         p2Data["new_cases"] = totalCounts.get('all');
         return Promise.resolve(p2Data);
     }
@@ -183,7 +188,7 @@ export class DashPanels {
 
         let totalCounts : Map<string, number> = new Map(res.data.map((s:any) => [s[0].siteCode, s[0].total]));
 
-        p3Data["date"] = fromThisDate;
+        p3Data["date"] = format(fromThisDate, "yyyy-MM-dd");
         p3Data["new_cases"] = totalCounts.get('all');
         return Promise.resolve(p3Data);
     }
