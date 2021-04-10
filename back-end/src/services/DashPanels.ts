@@ -4,7 +4,7 @@ import {
     SummarizeRequestSelectorFilter
 } from "../../coda19-ts/src/request/SummarizeRequest";
 import{ format, addDays } from 'date-fns';
-import {Sites} from "./Sites";
+import {PeriodBreakdownPerSite, Sites} from "./Sites";
 
 const fromThisDate = new Date("2021/04/05");
 const onlyCountOptions = { measures: { continuous: [], categorical: ["count"] } };
@@ -103,6 +103,8 @@ export class DashPanels {
             case 'p1': return this.computePanel1().then(res => { this.setCache(panelId, res); return res; })
             case 'p2': return this.computePanel2().then(res => { this.setCache(panelId, res); return res; });
             case 'p3': return this.computePanel3().then(res => { this.setCache(panelId, res); return res; });
+            // Line 2
+            case 'p4': return this.computePanel4().then(res => { this.setCache(panelId, res); return res; });
             // line 3
             case 'p7': return this.computePanel7().then(res => { this.setCache(panelId, res); return res; });
             //case 'p8': return this.computePanel8(req); // Currently no hub data
@@ -139,6 +141,25 @@ export class DashPanels {
                 "sma_7d": 11, // 7d moving average over the day prior to "date"
                 "exp_rate_7d": 0.86 // Instantaneous Exponential Rate based on the last 7 day.
             }));
+    }
+
+    private async computePanel4() : Promise<any> {
+        return this.sitesProxy.getNewDailyPosPerSiteBetween(new Date("2021/01/01"), fromThisDate, ["115"])
+            .then((breakdownPerDayPerSite: PeriodBreakdownPerSite) => {
+                let sites: {[site: string]: {est: number[]}} = {};
+
+                Object.keys(breakdownPerDayPerSite.sites).forEach((site: string) => {
+                    sites[site] = {
+                        est: breakdownPerDayPerSite.sites[site]
+                    }
+                })
+
+                return {
+                    // Results are in the same exact order as the dates.
+                    "dates": breakdownPerDayPerSite.dates.map((d: Date) => format(d, "yyyy-MM-dd")),
+                    "sites": sites
+                }
+            });
     }
 
     private async computePanel7() : Promise<any> {

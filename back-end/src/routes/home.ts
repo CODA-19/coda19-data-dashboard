@@ -40,7 +40,9 @@ router.get('/', async (req: Request, res: Response) => {
 
 router.get('/t', async (req: Request, res: Response) => {
     const sitesProxy = new Sites(req);
-    const dat = await sitesProxy.getCohortSizeOnDate(new Date(2021, 4, 5), ["115"]);
+    const from = new Date("2021/01/01");
+    const to = new Date("2021/04/05");
+    const dat = await sitesProxy.getNewDailyPosPerSiteBetween(from, to, ["115"]);
     res.json(dat);
 });
 

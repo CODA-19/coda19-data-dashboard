@@ -66,6 +66,17 @@ export class SRSBld {
         this.selector.filters.push({ path: path, operator: operator, value: format(date, "yyyy-MM-dd") })
         return this;
     }
+
+    breakdownPerDay(type: string, field: string): SRSBld {
+        this.selector.breakdown = {
+            "resource": {
+                "type": type,
+                "field": field
+            },
+            "slices": { "step": 86400 /* Number of seconds in a day */ }
+        }
+        return this;
+    }
 }
 
 export class SRBuilder {

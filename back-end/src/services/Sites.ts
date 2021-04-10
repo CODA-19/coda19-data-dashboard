@@ -6,9 +6,9 @@ import {SRBuilder} from "../model/SummarizeRequestBuilder";
 import {addDays} from 'date-fns';
 import {I18nString} from "../../coda19-ts/src/base";
 import {
-    SummarizeRequestBody,
+    SummarizeRequestBody, SummarizeRequestBreakdownSliceResult,
     SummarizeRequestResult,
-    SummarizeRequestSiteAllResult
+    SummarizeRequestSiteAllResult, SummarizeRequestSiteResult
 } from "../../coda19-ts/src/request/SummarizeRequest";
 import {PerSiteNumber} from "./DashPanels";
 
@@ -72,6 +72,29 @@ function getSRData(res: any): SummarizeRequestResult {
  */
 function getSites2Total(res: SummarizeRequestResult): Map<string, number> {
     return new Map(res.map((s: SummarizeRequestSiteAllResult) => [s[0].siteCode, s[0].total]));
+}
+
+export type PeriodBreakdownPerSite = { dates: Date[], sites: {[site: string]: number[]} };
+
+function getPeriodBreakdownPerSite(res: SummarizeRequestResult): PeriodBreakdownPerSite {
+    // Get first result for each site
+    const firstResults: SummarizeRequestSiteResult[] = res.map((arr: SummarizeRequestSiteResult[]) => arr[0]);
+    // Remove all, for some reason, all is not property computed.
+    const sitesDf: SummarizeRequestSiteResult[] = firstResults.filter((site: SummarizeRequestSiteResult) => site.siteCode !== 'all');
+    // Get dates from first result. (Note this will probably be flaky if not all sites have the same data.)
+    const dates = sitesDf[0].breakdown.result.map((rec: SummarizeRequestBreakdownSliceResult) => new Date(rec.periodStart));
+
+    // Load site data
+    const sites: {[site:string]: number[]} = {};
+    for (let site of sitesDf) {
+        sites[code2name(site.siteCode)] = site.breakdown.result.map((rec: SummarizeRequestBreakdownSliceResult) => rec.periodCount);
+    }
+
+    // Nice packaging
+    return {
+        dates: dates,
+        sites: sites
+    };
 }
 
 /**
@@ -183,6 +206,23 @@ export class Sites {
         // Get summary results.
         return this.doSummaryQuery(sr, sitesCodes)
             .then(getSites2Total);
+    }
+
+    getNewDailyPosPerSiteBetween(from: Date, to: Date, sitesCodes?: string[]) {
+        const newPosPerSitePerDayUpTo = SRBuilder.newSel("Observation")
+            .filterIs("code.coding.display", "positive")
+            .filterDateAfterOrOn("issued", from)
+            .filterDateBefore("issued", to)
+            .breakdownPerDay("Observation", "issued");
+
+        const sr = SRBuilder.newReq()
+            .addSelector(newPosPerSitePerDayUpTo)
+            .addMeasures({categorical: ["count"]})
+            .build();
+
+        // Get summary results.
+        return this.doSummaryQuery(sr, sitesCodes)
+            .then(getPeriodBreakdownPerSite);
     }
 
     private doSummaryQuery(request: SummarizeRequestBody, sitesCodes?: string[]): Promise<SummarizeRequestResult> {
