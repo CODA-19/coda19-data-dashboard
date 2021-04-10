@@ -225,6 +225,39 @@ export class Sites {
             .then(getPeriodBreakdownPerSite);
     }
 
+    getNewDailyTestsPerSiteBetween(from: Date, to: Date, sitesCodes?: string[]) {
+        const newTestsPerSitePerDayUpTo = SRBuilder.newSel("Observation")
+            .filterDateAfterOrOn("issued", from)
+            .filterDateBefore("issued", to)
+            .breakdownPerDay("Observation", "issued");
+
+        const sr = SRBuilder.newReq()
+            .addSelector(newTestsPerSitePerDayUpTo)
+            .addMeasures({categorical: ["count"]})
+            .build();
+
+        // Get summary results.
+        return this.doSummaryQuery(sr, sitesCodes)
+            .then(getPeriodBreakdownPerSite);
+    }
+
+    getNewDailyIcuPerSiteBetween(from: Date, to: Date, sitesCodes?: string[]) {
+        const icuCountPerSitesBetweenDates = SRBuilder.newSel("Encounter")
+            .filterIs("location.location.display", "intensive_care_unit")
+            .filterDateAfterOrOn("location.period.start", from)
+            .filterDateBefore("location.period.start", to)
+            .breakdownPerDay("Encounter", "location.period.start");
+
+        const sr = SRBuilder.newReq()
+            .addSelector(icuCountPerSitesBetweenDates)
+            .addMeasures({categorical: ["count"]})
+            .build();
+
+        // Get summary results.
+        return this.doSummaryQuery(sr, sitesCodes)
+            .then(getPeriodBreakdownPerSite);
+    }
+
     private doSummaryQuery(request: SummarizeRequestBody, sitesCodes?: string[]): Promise<SummarizeRequestResult> {
         if (sitesCodes === undefined || !Array.isArray(sitesCodes))
             return Promise.reject(new Error("Invalid sites"));

@@ -1,72 +1,9 @@
 import {Application, Request} from 'express';
-import {
-    SummarizeRequestBody,
-    SummarizeRequestSelectorFilter
-} from "../../coda19-ts/src/request/SummarizeRequest";
-import{ format, addDays } from 'date-fns';
-import {PeriodBreakdownPerSite, Sites} from "./Sites";
+import{ format } from 'date-fns';
+import {Sites} from "./Sites";
+import {zip} from 'underscore';
 
 const fromThisDate = new Date("2021/04/05");
-const onlyCountOptions = { measures: { continuous: [], categorical: ["count"] } };
-const breakdownPerDay = {
-    "resource": { "type": "Observation", "field": "issued" },
-    "slices": { "step": 86400 /* in sec or 1 day */ }
-};
-
-/**
- * Creates an "is" operator filter.
- * @param path Field path
- * @param value Is value
- * @returns 
- */
-function FilterIs(path: string, value: string) : SummarizeRequestSelectorFilter {
-    return { path: path, operator: "is", value: value };
-}
-
-type DataFilterType = "afterOrOn" | "before";
-
-/**
- * Creates a AfterOrOn Date filter.
- * @param path Field path
- * @param type Type of date filter
- * @param date Date as a string, YYYY-MM-DD
- * @returns 
- */
-function FilterDate(path: string, type: DataFilterType, date: string) : SummarizeRequestSelectorFilter {
-    return { path: path, operator: type, value: date };
-}
-
-const preMadeReq: {[id: string] : SummarizeRequestBody }   = {
-    'p4': {
-        selectors: [
-            {
-                resource: "Observation",
-                filters: [
-                    FilterIs("code.coding.display", "positive"),
-                    FilterDate("issued", "afterOrOn", format(new Date(2021, 1,1), "yyyy-MM-dd")),
-                    FilterDate("issued", "before", format(addDays(fromThisDate, 1), "yyyy-MM-dd"))
-                ],
-                "fields": [],
-                "breakdown": breakdownPerDay
-            }
-        ],
-        options: onlyCountOptions
-    },
-    'p5': {
-        selectors: [
-            {
-                resource: "Observation",
-                filters: [
-                    FilterDate("issued", "afterOrOn", format(new Date(2021, 1,1), "yyyy-MM-dd")),
-                    FilterDate("issued", "before", format(addDays(fromThisDate, 1), "yyyy-MM-dd"))
-                ],
-                "fields": [],
-                "breakdown": breakdownPerDay
-            }
-        ],
-        options: onlyCountOptions
-    }
-}
 
 export type PerSiteNumber = {[site: string]:number};
 
@@ -105,6 +42,8 @@ export class DashPanels {
             case 'p3': return this.computePanel3().then(res => { this.setCache(panelId, res); return res; });
             // Line 2
             case 'p4': return this.computePanel4().then(res => { this.setCache(panelId, res); return res; });
+            case 'p5': return this.computePanel5().then(res => { this.setCache(panelId, res); return res; });
+            case 'p6': return this.computePanel6().then(res => { this.setCache(panelId, res); return res; });
             // line 3
             case 'p7': return this.computePanel7().then(res => { this.setCache(panelId, res); return res; });
             //case 'p8': return this.computePanel8(req); // Currently no hub data
@@ -144,22 +83,71 @@ export class DashPanels {
     }
 
     private async computePanel4() : Promise<any> {
-        return this.sitesProxy.getNewDailyPosPerSiteBetween(new Date("2021/01/01"), fromThisDate, ["115"])
-            .then((breakdownPerDayPerSite: PeriodBreakdownPerSite) => {
-                let sites: {[site: string]: {est: number[]}} = {};
+        return Promise.all([
+            this.sitesProxy.getNewDailyPosPerSiteBetween(new Date("2021/01/01"), fromThisDate, ["115"]),
+            this.sitesProxy.getNewDailyTestsPerSiteBetween(new Date("2021/01/01"), fromThisDate, ["115"])
+        ]).then(res => {
+            const [posBreakdown, totalBreakdown] = res;
+            // Get common date ! this assumes both request returns the same dates!.
+            const formattedDates = totalBreakdown.dates.map((d: Date) => format(d, "yyyy-MM-dd"));
 
-                Object.keys(breakdownPerDayPerSite.sites).forEach((site: string) => {
-                    sites[site] = {
-                        est: breakdownPerDayPerSite.sites[site]
-                    }
+            // Get the proportion.
+            let sites: {[site: string]: {est: number[]}} = {};
+            Object.keys(totalBreakdown.sites).forEach((site: string) => {
+                sites[site] = { est: zip(posBreakdown.sites[site], totalBreakdown.sites[site]).map((p:number[]) => p[0] / p[1]) }
+            })
+
+            // FIXME(malavv): No LOESS yet, maybe client side?
+            return {
+                // Results are in the same exact order as the dates.
+                "dates": formattedDates,
+                "sites": sites
+            }
+        });
+    }
+
+    private async computePanel5() : Promise<any> {
+        return this.sitesProxy.getNewDailyPosPerSiteBetween(new Date("2021/01/01"), fromThisDate, ["115"])
+            .then(posBreakdown => {
+                // Get common date ! this assumes both request returns the same dates!.
+                const formattedDates = posBreakdown.dates.map((d: Date) => format(d, "yyyy-MM-dd"));
+
+                // Get the proportion.
+                let sites: {[site: string]: {est: number[]}} = {};
+                Object.keys(posBreakdown.sites).forEach((site: string) => {
+                    sites[site] = { est: posBreakdown.sites[site] }
                 })
 
                 return {
+                    // FIXME(malavv): no predictions yet.
+                    start_of_predictions: formattedDates[formattedDates.length - 1],
                     // Results are in the same exact order as the dates.
-                    "dates": breakdownPerDayPerSite.dates.map((d: Date) => format(d, "yyyy-MM-dd")),
+                    "dates": formattedDates,
                     "sites": sites
                 }
             });
+    }
+
+    private async computePanel6() : Promise<any> {
+        return Promise.all([
+            this.sitesProxy.getNewDailyIcuPerSiteBetween(new Date("2021/01/01"), fromThisDate, ["115"]),
+            this.sitesProxy.getNewDailyPosPerSiteBetween(new Date("2021/01/01"), fromThisDate, ["115"])
+        ]).then(res => {
+            const [icuBreakdown, posBreakdown] = res;
+            // Get common date ! this assumes both request returns the same dates!.
+            const formattedDates = icuBreakdown.dates.map((d: Date) => format(d, "yyyy-MM-dd"));
+
+            // FIXME(malavv): This should be using the breakdown "all" but it doesn't work for the moment.
+            let sites: {[site: string]: {est: number[]}} = {};
+            sites["WARD"] = { est: Object.values(posBreakdown.sites)[0] }
+            sites["ICU"] = { est: Object.values(icuBreakdown.sites)[0] }
+
+            return {
+                // Results are in the same exact order as the dates.
+                "dates": formattedDates,
+                "sites": sites
+            }
+        });
     }
 
     private async computePanel7() : Promise<any> {
