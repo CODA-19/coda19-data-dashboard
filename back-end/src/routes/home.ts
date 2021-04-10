@@ -40,7 +40,7 @@ router.get('/', async (req: Request, res: Response) => {
 
 router.get('/t', async (req: Request, res: Response) => {
     const sitesProxy = new Sites(req);
-    const dat = await sitesProxy.getCohortSizeAtDate(new Date(2021, 4, 5), ["115"]);
+    const dat = await sitesProxy.getCohortSizeOnDate(new Date(2021, 4, 5), ["115"]);
     res.json(dat);
 });
 

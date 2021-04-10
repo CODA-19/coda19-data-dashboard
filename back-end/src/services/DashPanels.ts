@@ -8,7 +8,7 @@ import {
 import{ format, addDays } from 'date-fns';
 import {Sites} from "./Sites";
 
-const fromThisDate = new Date(2021, 4, 5);
+const fromThisDate = new Date("2021/04/05");
 const onlyCountOptions = { measures: { continuous: [], categorical: ["count"] } };
 const breakdownPerDay = {
     "resource": { "type": "Observation", "field": "issued" },
@@ -186,8 +186,8 @@ export class DashPanels {
         switch (panelId) {
             // Line 1
             case 'p1': return this.computePanel1().then(res => { this.setCache(panelId, res); return res; })
-            case 'p2': return this.computePanel2(req).then(res => { this.setCache(panelId, res); return res; });
-            case 'p3': return this.computePanel3(req).then(res => { this.setCache(panelId, res); return res; });
+            case 'p2': return this.computePanel2().then(res => { this.setCache(panelId, res); return res; });
+            case 'p3': return this.computePanel3().then(res => { this.setCache(panelId, res); return res; });
             // line 3
             case 'p7': return this.computePanel7(req).then(res => { this.setCache(panelId, res); return res; });
             //case 'p8': return this.computePanel8(req); // Currently no hub data
@@ -199,33 +199,31 @@ export class DashPanels {
     }
 
     private async computePanel1() : Promise<any> {
-        return this.sitesProxy.getCohortSizeAtDate(fromThisDate, ["115"])
+        return this.sitesProxy.getCohortSizeOnDate(fromThisDate, ["115"])
             .then((numberInCohort: number) => ({
                 "total_count": numberInCohort, // Total number of "participants" in our cohort at this date.
                 "prevalence": 0.04 // fraction of the cohort that is COVID-19 positive
             }));
     }
 
-    private async computePanel2(req: Request) : Promise<any> {
-        let p2Data: any = deepCloneHack(this.mock['p2']);
-        let res = await this.getRequest("p2")(req);
-
-        let totalCounts : Map<string, number> = new Map(res.data.map((s:any) => [s[0].siteCode, s[0].total]));
-
-        p2Data["date"] = format(fromThisDate, "yyyy-MM-dd");
-        p2Data["new_cases"] = totalCounts.get('all');
-        return Promise.resolve(p2Data);
+    private async computePanel2() : Promise<any> {
+        return this.sitesProxy.getNewCasesOnDate(fromThisDate, ["115"])
+            .then((newPosOnDate: number) => ({
+                "date": format(fromThisDate, "yyyy-MM-dd"), // Date associated with this result
+                "new_cases": newPosOnDate, // Count of Patient with COVID+ tests on this day.
+                "sma_7d": 943, // 7d moving average over the day prior to "date"
+                "exp_rate_7d": 0.92 // Instantaneous Exponential Rate based on the last 7 day.
+            }));
     }
 
-    private async computePanel3(req: Request) : Promise<any> {
-        let p3Data: any = deepCloneHack(this.mock['p3']);
-        let res = await this.getRequest("p3")(req);
-
-        let totalCounts : Map<string, number> = new Map(res.data.map((s:any) => [s[0].siteCode, s[0].total]));
-
-        p3Data["date"] = format(fromThisDate, "yyyy-MM-dd");
-        p3Data["new_cases"] = totalCounts.get('all');
-        return Promise.resolve(p3Data);
+    private async computePanel3() : Promise<any> {
+        return this.sitesProxy.getNewCaseFatalityOnDate(fromThisDate, ["115"])
+            .then((newDeathsOnDate: number) => ({
+                "date": format(fromThisDate, "yyyy-MM-dd"), // Date associated with this result
+                "new_cases": newDeathsOnDate, // Number of new members of this cohort that were COVID-19 positive and died
+                "sma_7d": 11, // 7d moving average over the day prior to "date"
+                "exp_rate_7d": 0.86 // Instantaneous Exponential Rate based on the last 7 day.
+            }));
     }
 
     private async computePanel7(req: Request) : Promise<any> {
@@ -238,14 +236,6 @@ export class DashPanels {
         totalCounts.forEach((value: number, key: string) => { sites[siteMapper(key)] = value; });
         p7Data["sites"] = sites;
         return Promise.resolve(p7Data);
-    }
-
-    private computePanel8(req: Request) : Promise<any> {
-        return Promise.resolve(undefined);
-    }
-
-    private computePanel9(req: Request) : Promise<any> {
-        return Promise.resolve(undefined);
     }
 }
 

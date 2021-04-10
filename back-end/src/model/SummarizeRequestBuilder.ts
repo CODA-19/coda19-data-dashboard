@@ -6,7 +6,7 @@ import {
     SummaryOperator
 } from "../../coda19-ts/src/request/SummarizeRequest";
 
-import{ format } from 'date-fns';
+import{ format, addDays } from 'date-fns';
 
 export class SRBld {
     selectors: SummarizeRequestSelector[];
@@ -51,6 +51,15 @@ export class SRSBld {
     }
     filterDateAfterOrOn(path: string, date: Date): SRSBld {
         return this.filterDate(path, "afterOrOn", date);
+    }
+    filterDateOn(path: string, date: Date): SRSBld {
+        this.filterDateAfterOrOn(path, date);
+        this.filterDateBefore(path, addDays(date, 1));
+        return this;
+    }
+    filterIs(path: string, value: string): SRSBld {
+        this.selector.filters.push({ path: path, operator: "is", value: value })
+        return this;
     }
 
     private filterDate(path: string, operator: SummaryOperator, date: Date): SRSBld {
