@@ -10,6 +10,7 @@ import {
     SummarizeRequestResult,
     SummarizeRequestSiteAllResult
 } from "../../coda19-ts/src/request/SummarizeRequest";
+import {PerSiteNumber} from "./DashPanels";
 
 // FIXME(malavv): The names should come from each sites, not being faked here.
 function convertMock2Name(pkg: any) {
@@ -166,6 +167,24 @@ export class Sites {
             .then(getAllTotal);
     }
 
+    getIcuBetween(from: Date, to: Date, sitesCodes?: string[]): Promise<Map<string, number>> {
+        // ICU Hospitalizations between two dates
+        const icuCountPerSitesBetweenDates = SRBuilder.newSel("Encounter")
+            .filterIs("location.location.display", "intensive_care_unit")
+            .filterDateAfterOrOn("location.period.start", from)
+            .filterDateBefore("location.period.start", to);
+
+        // Building summary request
+        const sr = SRBuilder.newReq()
+            .addSelector(icuCountPerSitesBetweenDates)
+            .addMeasures({categorical: ["count"]})
+            .build();
+
+        // Get summary results.
+        return this.doSummaryQuery(sr, sitesCodes)
+            .then(getSites2Total);
+    }
+
     private doSummaryQuery(request: SummarizeRequestBody, sitesCodes?: string[]): Promise<SummarizeRequestResult> {
         if (sitesCodes === undefined || !Array.isArray(sitesCodes))
             return Promise.reject(new Error("Invalid sites"));
@@ -177,4 +196,15 @@ export class Sites {
         return axios.get(`/stats/summarize?sites=${sitesCodes.join(',')}`, reqCfg)
             .then(getSRData);
     }
+}
+
+// Incomplete and for latter, I don't have time to make pretty interface before demo.
+export interface DashCalculator {
+    getCohortSize(): Promise<number>;
+    getCovidPosFrom(date: Date): Promise<number>;
+    getCaseFatalityFrom(date: Date): Promise<number>;
+    getPrevalence(): Promise<number>;
+    getCaseFatality(): Promise<PerSiteNumber>;
+    getIcuOccupancy(): Promise<PerSiteNumber>;
+    getOccupation(): Promise<number>;
 }

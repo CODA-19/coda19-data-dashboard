@@ -1,6 +1,4 @@
-import axios from '../helpers/axios';
-import passAuth from '../auth/auth';
-import {Application, Request, Response} from 'express';
+import {Application, Request} from 'express';
 import {
     SummarizeRequestBody,
     SummarizeRequestSelectorFilter
@@ -39,49 +37,6 @@ function FilterDate(path: string, type: DataFilterType, date: string) : Summariz
 }
 
 const preMadeReq: {[id: string] : SummarizeRequestBody }   = {
-    'p1': {
-        selectors: [
-            { 
-                resource: "Patient", 
-                filters: [], 
-                fields: [], 
-                joins: { 
-                    resource: "Observation", 
-                    filters: [FilterDate("effectiveDateTime", "before", format(addDays(fromThisDate, 1), "yyyy-MM-dd"))],
-                    fields: [] 
-                } 
-            }
-        ],
-        options: onlyCountOptions
-    },
-    'p2': {
-        selectors: [ 
-            { 
-                resource: "Observation", 
-                filters: [ 
-                    FilterIs("code.coding.display", "positive"),
-                    FilterDate("effectiveDateTime", "afterOrOn", format(fromThisDate, "yyyy-MM-dd")),
-                    FilterDate("effectiveDateTime", "before", format(addDays(fromThisDate, 1), "yyyy-MM-dd"))
-                ], 
-                fields: [] 
-            } 
-        ],
-        options: onlyCountOptions
-    },
-    'p3': {
-        selectors: [
-            {
-                resource: "Patient",
-                filters: [ 
-                    FilterIs("deceasedBoolean", "true"),
-                    FilterDate("deceasedDateTime", "afterOrOn", format(fromThisDate, "yyyy-MM-dd")),
-                    FilterDate("deceasedDateTime", "before", format(addDays(fromThisDate, 1), "yyyy-MM-dd"))
-                ],
-                fields: [ {"path": "gender" } ]
-            }
-        ],
-        options: onlyCountOptions
-    },
     'p4': {
         selectors: [
             {
@@ -110,33 +65,10 @@ const preMadeReq: {[id: string] : SummarizeRequestBody }   = {
             }
         ],
         options: onlyCountOptions
-    },
-    'p7': {
-        selectors: [{
-            resource: "Encounter",
-            filters: [ FilterIs("location.location.display", "intensive_care_unit"), FilterDate("location.period.start", "afterOrOn", "2021-03-01") ],
-            fields: []
-        }],
-        options: onlyCountOptions
     }
 }
 
 export type PerSiteNumber = {[site: string]:number};
-
-// Incomplete and for latter, I don't have time to make pretty interface before demo.
-export interface DashCalculator {
-    getCohortSize(): Promise<number>;
-    getCovidPosFrom(date: Date): Promise<number>;
-    getCaseFatalityFrom(date: Date): Promise<number>;
-    getPrevalence(): Promise<number>;
-    getCaseFatality(): Promise<PerSiteNumber>;
-    getIcuOccupancy(): Promise<PerSiteNumber>;
-    getOccupation(): Promise<number>;
-}
-
-function deepCloneHack(obj: Object): Object {
-    return JSON.parse(JSON.stringify(obj));
-}
 
 function siteMapper(siteCode: string): string {
     switch (siteCode) {
@@ -161,24 +93,7 @@ export class DashPanels {
     private getCache(key: string): any { return this.app.get(key); }
     private setCache(key: string, data: any) { this.app.set(key, data); }
 
-    private static getSummarizeUrl(sites: string[]) {
-        return '/stats/summarize?sites=' + sites.join(',');
-    }
-
-    public getRequest(panelId: string) {
-        const reqCfg = preMadeReq[panelId];
-
-        // FIXME(malavv): this is not meant to be permanent. All sites should be asked.
-        let reqSites = parseInt(panelId.substr(1)) < 4 ? ['115']: ['115', '110'];
-
-        return (req: Request) => {
-            return reqCfg
-                ? axios.get(DashPanels.getSummarizeUrl(reqSites), {...{data: reqCfg}, ...passAuth(req)}).then((res:Response) => res)
-                : Promise.reject(new Error("Not Implemented"));
-        }
-    }
-
-    public getPanelViewModel(panelId: string, req: Request) : Promise<any> {
+    public getPanelViewModel(panelId: string) : Promise<any> {
         const cached = this.getCache(panelId);
         if (cached !== undefined)
             return Promise.resolve(cached);
@@ -189,7 +104,7 @@ export class DashPanels {
             case 'p2': return this.computePanel2().then(res => { this.setCache(panelId, res); return res; });
             case 'p3': return this.computePanel3().then(res => { this.setCache(panelId, res); return res; });
             // line 3
-            case 'p7': return this.computePanel7(req).then(res => { this.setCache(panelId, res); return res; });
+            case 'p7': return this.computePanel7().then(res => { this.setCache(panelId, res); return res; });
             //case 'p8': return this.computePanel8(req); // Currently no hub data
             //case 'p9': return this.computePanel9(req); // Currently no hub data
             default:
@@ -226,16 +141,16 @@ export class DashPanels {
             }));
     }
 
-    private async computePanel7(req: Request) : Promise<any> {
-        let p7Data: any = deepCloneHack(this.mock['p7']);
-        let res = await this.getRequest("p7")(req);
+    private async computePanel7() : Promise<any> {
+        // FIXME(malavv) : This is *NOT* what panel 7 should be, but since I can't get a date with ongoing ICU for both (the two dates are chosen to emulate the correct date).
+        const sites2count: Map<string, number> = await this.sitesProxy.getIcuBetween(new Date("2021/03/01"), new Date("2021/03/08"), ["110", "115"]);
 
-        let totalCounts : Map<string, number> = new Map(res.data.map((s:any) => [s[0].siteCode, s[0].total]));
+        let res: {[key: string]: number} = {};
+        sites2count.forEach((val: number, key: string) => { res[siteMapper(key)] = val; });
 
-        let sites: any = {};
-        totalCounts.forEach((value: number, key: string) => { sites[siteMapper(key)] = value; });
-        p7Data["sites"] = sites;
-        return Promise.resolve(p7Data);
+        return Promise.resolve({
+            "sites" : res
+        });
     }
 }
 

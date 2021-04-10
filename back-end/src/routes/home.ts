@@ -2,7 +2,7 @@ import { Router, Request, Response, Application } from 'express';
 import JSON5 from 'json5';
 import fs from 'fs';
 
-import {DashCalculator, DashPanels} from "../services/DashPanels";
+import {DashPanels} from "../services/DashPanels";
 import {Sites} from "../services/Sites";
 
 // For Panel 1 through 12, with prefix P.
@@ -65,7 +65,7 @@ router.get('/:panel', async (req: Request, res: Response) => {
 
     // This is instanced to later inject some dependencies.
     const proxy = new DashPanels(homeData, req.app, req);
-    proxy.getPanelViewModel(panelID, req)
+    proxy.getPanelViewModel(panelID)
         .then((data:Object) => res.json(data))
         .catch((err:Error) => res.status(500).json(err.message));
 });
