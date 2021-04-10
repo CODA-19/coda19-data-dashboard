@@ -6,6 +6,7 @@ import {
     SummarizeRequestSelectorFilter
 } from "../../coda19-ts/src/request/SummarizeRequest";
 import{ format, addDays } from 'date-fns';
+import {Sites} from "./Sites";
 
 const fromThisDate = new Date(2021, 4, 5);
 const onlyCountOptions = { measures: { continuous: [], categorical: ["count"] } };
@@ -149,10 +150,12 @@ function siteMapper(siteCode: string): string {
 export class DashPanels {
     mock: {[panel: string]:Object};
     app: Application;
+    sitesProxy: Sites;
 
-    constructor(mock: {[panel: string]:Object}, app: Application) {
+    constructor(mock: {[panel: string]:Object}, app: Application, req: Request) {
         this.mock = mock;
         this.app = app;
+        this.sitesProxy = new Sites(req);
     }
 
     private getCache(key: string): any { return this.app.get(key); }
@@ -182,7 +185,7 @@ export class DashPanels {
 
         switch (panelId) {
             // Line 1
-            case 'p1': return this.computePanel1(req).then(res => { this.setCache(panelId, res); return res; })
+            case 'p1': return this.computePanel1().then(res => { this.setCache(panelId, res); return res; })
             case 'p2': return this.computePanel2(req).then(res => { this.setCache(panelId, res); return res; });
             case 'p3': return this.computePanel3(req).then(res => { this.setCache(panelId, res); return res; });
             // line 3
@@ -195,13 +198,12 @@ export class DashPanels {
         }
     }
 
-    private async computePanel1(req: Request) : Promise<any> {
-        let p1Data: any = deepCloneHack(this.mock['p1']);
-        let res = await this.getRequest("p1")(req);
-
-        let totalCounts : Map<string, number> = new Map(res.data.map((s:any) => [s[0].siteCode, s[0].total]));
-        p1Data["total_count"] = totalCounts.get('all');
-        return Promise.resolve(p1Data);
+    private async computePanel1() : Promise<any> {
+        return this.sitesProxy.getCohortSizeAtDate(fromThisDate, ["115"])
+            .then((numberInCohort: number) => ({
+                "total_count": numberInCohort, // Total number of "participants" in our cohort at this date.
+                "prevalence": 0.04 // fraction of the cohort that is COVID-19 positive
+            }));
     }
 
     private async computePanel2(req: Request) : Promise<any> {

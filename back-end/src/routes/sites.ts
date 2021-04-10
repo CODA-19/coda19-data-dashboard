@@ -10,9 +10,10 @@ const router = Router();
  * hub. Information provided through this endpoint should be generatable at site startup.
  */
 router.get('/', async function(req: Request, res: Response) {
+  const sitesProxy = new Sites(req);
+
   try {
-    const sites = await Sites.listConnected(req);
-    res.status(200).send(sites);
+    res.status(200).send(await sitesProxy.listConnected());
   } catch (err) {
     console.error(err.stack);
     res.status(500).send("Unable to fetch site info from Hub");
