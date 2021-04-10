@@ -1,6 +1,7 @@
-const express = require('express');
-const router = express.Router();
-const Sites = require('../services/Sites');
+import { Router, Request, Response } from 'express';
+import { Sites } from "../services/Sites";
+
+const router = Router();
 
 /**
  * Explores sites availability.
@@ -8,13 +9,14 @@ const Sites = require('../services/Sites');
  * Returns available resources and technical information about deployment for each site *currently* connected to the
  * hub. Information provided through this endpoint should be generatable at site startup.
  */
-router.get('/', async function(req, res, next) {
+router.get('/', async function(req: Request, res: Response) {
   try {
     const sites = await Sites.listConnected(req);
     res.status(200).send(sites);
   } catch (err) {
+    console.error(err.stack);
     res.status(500).send("Unable to fetch site info from Hub");
   }
 })
 
-module.exports = router
+export default router;
