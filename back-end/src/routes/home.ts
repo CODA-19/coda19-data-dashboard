@@ -2,7 +2,8 @@ import { Router, Request, Response, Application } from 'express';
 import JSON5 from 'json5';
 import fs from 'fs';
 
-import {DashCalculator, DashPanels} from "../services/DashPanels";
+import {DashPanels} from "../services/DashPanels";
+import {Sites} from "../services/Sites";
 
 // For Panel 1 through 12, with prefix P.
 const validPanelIDRegex = /^p[1-9][012]?$/;
@@ -37,6 +38,14 @@ router.get('/', async (req: Request, res: Response) => {
     res.json(homeData);
 });
 
+router.get('/t', async (req: Request, res: Response) => {
+    const sitesProxy = new Sites(req);
+    const from = new Date("2021/01/01");
+    const to = new Date("2021/04/05");
+    const dat = await sitesProxy.getNewDailyPosPerSiteBetween(from, to, ["115"]);
+    res.json(dat);
+});
+
 router.get('/:panel', async (req: Request, res: Response) => {
     // In the end, the mocked data would really need to be better place than here, most probably
     // dependency injection of the service getting the panel answer. And then just asking the service normally.
@@ -57,8 +66,8 @@ router.get('/:panel', async (req: Request, res: Response) => {
     }
 
     // This is instanced to later inject some dependencies.
-    const proxy = new DashPanels(homeData, req.app);
-    proxy.getPanelViewModel(panelID, req)
+    const proxy = new DashPanels(homeData, req.app, req);
+    proxy.getPanelViewModel(panelID)
         .then((data:Object) => res.json(data))
         .catch((err:Error) => res.status(500).json(err.message));
 });
