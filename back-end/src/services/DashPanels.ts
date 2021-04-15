@@ -3,14 +3,13 @@ import{ format } from 'date-fns';
 import {Sites} from "./Sites";
 import {zip} from 'underscore';
 
-const fromThisDate = new Date("2021/04/05");
-
 export type PerSiteNumber = {[site: string]:number};
 
 function siteMapper(siteCode: string): string {
     switch (siteCode) {
         case '115': return 'CHUM';
         case '110': return 'CHUQ';
+        case '114': return 'CIUSSS-NIM';
         case 'all': return 'ALL';
         default: return 'UNIMPLEMENTED';
     }
@@ -20,11 +19,15 @@ export class DashPanels {
     mock: {[panel: string]:Object};
     app: Application;
     sitesProxy: Sites;
+    date: Date;
+    sitesCode: string[];
 
-    constructor(mock: {[panel: string]:Object}, app: Application, req: Request) {
+    constructor(mock: {[panel: string]:Object}, app: Application, req: Request, date: Date, sitesCode: string[]) {
         this.mock = mock;
         this.app = app;
         this.sitesProxy = new Sites(req);
+        this.date = date;
+        this.sitesCode = sitesCode;
     }
 
     private getCache(key: string): any { return this.app.get(key); }
@@ -55,7 +58,7 @@ export class DashPanels {
     }
 
     private async computePanel1() : Promise<any> {
-        return this.sitesProxy.getCohortSizeOnDate(fromThisDate, ["115"])
+        return this.sitesProxy.getCohortSizeOnDate(this.date, this.sitesCode)
             .then((numberInCohort: number) => ({
                 "total_count": numberInCohort, // Total number of "participants" in our cohort at this date.
                 "prevalence": 0.04 // fraction of the cohort that is COVID-19 positive
@@ -63,9 +66,9 @@ export class DashPanels {
     }
 
     private async computePanel2() : Promise<any> {
-        return this.sitesProxy.getNewCasesOnDate(fromThisDate, ["115"])
+        return this.sitesProxy.getNewCasesOnDate(this.date, this.sitesCode)
             .then((newPosOnDate: number) => ({
-                "date": format(fromThisDate, "yyyy-MM-dd"), // Date associated with this result
+                "date": format(this.date, "yyyy-MM-dd"), // Date associated with this result
                 "new_cases": newPosOnDate, // Count of Patient with COVID+ tests on this day.
                 "sma_7d": 943, // 7d moving average over the day prior to "date"
                 "exp_rate_7d": 0.92 // Instantaneous Exponential Rate based on the last 7 day.
@@ -73,9 +76,9 @@ export class DashPanels {
     }
 
     private async computePanel3() : Promise<any> {
-        return this.sitesProxy.getNewCaseFatalityOnDate(fromThisDate, ["115"])
+        return this.sitesProxy.getNewCaseFatalityOnDate(this.date, this.sitesCode)
             .then((newDeathsOnDate: number) => ({
-                "date": format(fromThisDate, "yyyy-MM-dd"), // Date associated with this result
+                "date": format(this.date, "yyyy-MM-dd"), // Date associated with this result
                 "new_cases": newDeathsOnDate, // Number of new members of this cohort that were COVID-19 positive and died
                 "sma_7d": 11, // 7d moving average over the day prior to "date"
                 "exp_rate_7d": 0.86 // Instantaneous Exponential Rate based on the last 7 day.
@@ -84,8 +87,8 @@ export class DashPanels {
 
     private async computePanel4() : Promise<any> {
         return Promise.all([
-            this.sitesProxy.getNewDailyPosPerSiteBetween(new Date("2021/01/01"), fromThisDate, ["115"]),
-            this.sitesProxy.getNewDailyTestsPerSiteBetween(new Date("2021/01/01"), fromThisDate, ["115"])
+            this.sitesProxy.getNewDailyPosPerSiteBetween(new Date("2021/01/01"), this.date, this.sitesCode),
+            this.sitesProxy.getNewDailyTestsPerSiteBetween(new Date("2021/01/01"), this.date, this.sitesCode)
         ]).then(res => {
             const [posBreakdown, totalBreakdown] = res;
             // Get common date ! this assumes both request returns the same dates!.
@@ -107,7 +110,7 @@ export class DashPanels {
     }
 
     private async computePanel5() : Promise<any> {
-        return this.sitesProxy.getNewDailyPosPerSiteBetween(new Date("2021/01/01"), fromThisDate, ["115"])
+        return this.sitesProxy.getNewDailyPosPerSiteBetween(new Date("2021/01/01"), this.date, this.sitesCode)
             .then(posBreakdown => {
                 // Get common date ! this assumes both request returns the same dates!.
                 const formattedDates = posBreakdown.dates.map((d: Date) => format(d, "yyyy-MM-dd"));
@@ -130,8 +133,8 @@ export class DashPanels {
 
     private async computePanel6() : Promise<any> {
         return Promise.all([
-            this.sitesProxy.getNewDailyIcuPerSiteBetween(new Date("2021/01/01"), fromThisDate, ["115"]),
-            this.sitesProxy.getNewDailyPosPerSiteBetween(new Date("2021/01/01"), fromThisDate, ["115"])
+            this.sitesProxy.getNewDailyIcuPerSiteBetween(new Date("2021/01/01"), this.date, this.sitesCode),
+            this.sitesProxy.getNewDailyPosPerSiteBetween(new Date("2021/01/01"), this.date, this.sitesCode)
         ]).then(res => {
             const [icuBreakdown, posBreakdown] = res;
             // Get common date ! this assumes both request returns the same dates!.
@@ -152,7 +155,7 @@ export class DashPanels {
 
     private async computePanel7() : Promise<any> {
         // FIXME(malavv) : This is *NOT* what panel 7 should be, but since I can't get a date with ongoing ICU for both (the two dates are chosen to emulate the correct date).
-        const sites2count: Map<string, number> = await this.sitesProxy.getIcuBetween(new Date("2021/03/01"), new Date("2021/03/08"), ["110", "115"]);
+        const sites2count: Map<string, number> = await this.sitesProxy.getIcuBetween(new Date("2021/03/01"), new Date("2021/03/08"), this.sitesCode);
 
         let res: {[key: string]: number} = {};
         sites2count.forEach((val: number, key: string) => { res[siteMapper(key)] = val; });
