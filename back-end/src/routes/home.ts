@@ -30,7 +30,7 @@ router.get('/:panel', async (req: Request, res: Response) => {
     // There are 2 modes "mock" and "lagmock" (first returns mocked data, second adds random jitter)
     const mode = req.query.mode;
     if (mode !== undefined) {
-        moddedQuery(<string>mode, res, homeData[panelID]);
+        moddedQuery(<ModQueryType>mode, res, homeData[panelID]);
         return;
     }
 

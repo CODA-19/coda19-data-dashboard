@@ -1,19 +1,10 @@
 import {Application, Request} from 'express';
 import{ format } from 'date-fns';
 import {Sites} from "./Sites";
-import {zip} from 'underscore';
+import {zip, sortBy, last} from 'underscore';
+import {isSetsEquals, ObjectFromEntries} from "../helpers/poly";
 
 export type PerSiteNumber = {[site: string]:number};
-
-function siteMapper(siteCode: string): string {
-    switch (siteCode) {
-        case '115': return 'CHUM';
-        case '110': return 'CHUQ';
-        case '114': return 'CIUSSS-NIM';
-        case 'all': return 'ALL';
-        default: return 'UNIMPLEMENTED';
-    }
-}
 
 export class DashPanels {
     mock: {[panel: string]:Object};
@@ -94,10 +85,20 @@ export class DashPanels {
             // Get common date ! this assumes both request returns the same dates!.
             const formattedDates = totalBreakdown.dates.map((d: Date) => format(d, "yyyy-MM-dd"));
 
-            // Get the proportion.
+            // Check returned the same sites.
+            const positSites: Set<string> = new Set(Object.keys(posBreakdown.sites));
+            const totalSites: Set<string> = new Set(Object.keys(totalBreakdown.sites));
+
+            console.assert(isSetsEquals(positSites, totalSites), 'The two queries should contain the same sites.');
+
+            const divideOrNan = (arr: number[]) => {
+                return arr[0] == null || arr[1] == null ? Number.NaN : arr[0] / arr[1];
+            }
+                // Get the proportion.
             let sites: {[site: string]: {est: number[]}} = {};
-            Object.keys(totalBreakdown.sites).forEach((site: string) => {
-                sites[site] = { est: zip(posBreakdown.sites[site], totalBreakdown.sites[site]).map((p:number[]) => p[0] / p[1]) }
+            // NOTE(malavv) : Sites data are "implicitly" aligned with dates, but not directly mapped. Meaning there must be perfect alignment from the results. i.e. no results missing for any dates.
+            totalSites.forEach(site => {
+                sites[site] = { est: zip(posBreakdown.sites[site], totalBreakdown.sites[site]).map(divideOrNan) }
             })
 
             // FIXME(malavv): No LOESS yet, maybe client side?
@@ -123,7 +124,7 @@ export class DashPanels {
 
                 return {
                     // FIXME(malavv): no predictions yet.
-                    start_of_predictions: formattedDates[formattedDates.length - 1],
+                    start_of_predictions: last(sortBy(formattedDates, i => i)),
                     // Results are in the same exact order as the dates.
                     "dates": formattedDates,
                     "sites": sites
@@ -134,15 +135,15 @@ export class DashPanels {
     private async computePanel6() : Promise<any> {
         return Promise.all([
             this.sitesProxy.getNewDailyIcuPerSiteBetween(new Date("2021/01/01"), this.date, this.sitesCode),
-            this.sitesProxy.getNewDailyPosPerSiteBetween(new Date("2021/01/01"), this.date, this.sitesCode)
+            this.sitesProxy.getNewDailyWardPerSiteBetween(new Date("2021/01/01"), this.date, this.sitesCode)
         ]).then(res => {
-            const [icuBreakdown, posBreakdown] = res;
+            const [icuBreakdown, wardBreakdown] = res;
             // Get common date ! this assumes both request returns the same dates!.
             const formattedDates = icuBreakdown.dates.map((d: Date) => format(d, "yyyy-MM-dd"));
 
             // FIXME(malavv): This should be using the breakdown "all" but it doesn't work for the moment.
             let sites: {[site: string]: {est: number[]}} = {};
-            sites["WARD"] = { est: Object.values(posBreakdown.sites)[0] }
+            sites["WARD"] = { est: Object.values(wardBreakdown.sites)[0] }
             sites["ICU"] = { est: Object.values(icuBreakdown.sites)[0] }
 
             return {
@@ -154,15 +155,8 @@ export class DashPanels {
     }
 
     private async computePanel7() : Promise<any> {
-        // FIXME(malavv) : This is *NOT* what panel 7 should be, but since I can't get a date with ongoing ICU for both (the two dates are chosen to emulate the correct date).
-        const sites2count: Map<string, number> = await this.sitesProxy.getIcuBetween(new Date("2021/03/01"), new Date("2021/03/08"), this.sitesCode);
-
-        let res: {[key: string]: number} = {};
-        sites2count.forEach((val: number, key: string) => { res[siteMapper(key)] = val; });
-
-        return Promise.resolve({
-            "sites" : res
-        });
+        return this.sitesProxy.getActiveIcuOnDate(this.date, this.sitesCode)
+            .then(sites => ({"sites" : ObjectFromEntries(sites)}));
     }
 }
 
