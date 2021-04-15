@@ -132,7 +132,7 @@ export default {
 
                   if(params[i].value){
                     if(i>0 && params[i].seriesName=== params[i-1].seriesName)
-                      return;
+                      continue;
 
                     output += `<div style='display: flex;flex-direction: column'>`
                     output += `<div style='display:flex;justify-content: space-between'><div>${params[i].marker + params[i].seriesName} </div><div><b>${params[i].value}</b></div>`;

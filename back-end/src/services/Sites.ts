@@ -11,6 +11,7 @@ import {
     SummarizeRequestSiteAllResult, SummarizeRequestSiteResult
 } from "../../coda19-ts/src/request/SummarizeRequest";
 import {PerSiteNumber} from "./DashPanels";
+import Terms from "../../coda19-ts/src/term/term";
 
 // FIXME(malavv): The names should come from each sites, not being faked here.
 function convertMock2Name(pkg: any) {
@@ -43,7 +44,8 @@ function code2name(code: string): string {
         case '103':
         case '102':
             return 'VALERIA';
-
+        case '114':
+            return 'CIUSSS-NIM';
         case '110':
             return 'CHUM';
         case '115':
@@ -52,6 +54,8 @@ function code2name(code: string): string {
             return 'CISSS-CA';
         case '112':
             return 'JGH';
+        case 'all':
+            return 'all';
 
         default:
             return 'Unknown';
@@ -71,7 +75,7 @@ function getSRData(res: any): SummarizeRequestResult {
  * @param res Summary Request Result
  */
 function getSites2Total(res: SummarizeRequestResult): Map<string, number> {
-    return new Map(res.map((s: SummarizeRequestSiteAllResult) => [s[0].siteCode, s[0].total]));
+    return new Map(res.map((s: SummarizeRequestSiteAllResult) => [code2name(s[0].siteCode), s[0].total]));
 }
 
 export type PeriodBreakdownPerSite = { dates: Date[], sites: {[site: string]: number[]} };
@@ -103,7 +107,7 @@ function getPeriodBreakdownPerSite(res: SummarizeRequestResult): PeriodBreakdown
  */
 function getAllTotal(sites2total: Map<string, number>): Promise<number> {
     if (sites2total.has("all"))
-        return Promise.resolve(sites2total.get("all") || -1);
+        return Promise.resolve(sites2total.get("all") ?? -1);
     else
         return Promise.reject("No Aggregated all value");
 }
@@ -140,6 +144,7 @@ export class Sites {
         // SARS-COV-2 observation present with any value, before given date
         const patientWithTestBeforeDate = SRBuilder.newSel("Patient").join(
             SRBuilder.newSel("Observation")
+                .filterIs("code.coding.code", Terms.LOINC.SarsCov2Probe.code)
                 .filterDateBefore("effectiveDateTime", addDays(date, 1)));
 
         // Building summary request
@@ -157,7 +162,8 @@ export class Sites {
     getNewCasesOnDate(date: Date, sitesCodes?: string[]): Promise<number> {
         // SARS-COV-2 observation present with Pos value, on a given date
         const posTestOnDate = SRBuilder.newSel("Observation")
-            .filterIs("code.coding.display", "positive")
+            .filterIs("code.coding.code", Terms.LOINC.SarsCov2Probe.code)
+            .filterIs("interpretation.coding.display", Terms.LOINC.Positive.code)
             .filterDateOn("effectiveDateTime", date);
 
         // Building summary request
@@ -190,12 +196,13 @@ export class Sites {
             .then(getAllTotal);
     }
 
-    getIcuBetween(from: Date, to: Date, sitesCodes?: string[]): Promise<Map<string, number>> {
-        // ICU Hospitalizations between two dates
+    getActiveIcuOnDate(date: Date, sitesCode?: string[]): Promise<Map<string, number>> {
+        // Active ICU Hospitalizations on Date
         const icuCountPerSitesBetweenDates = SRBuilder.newSel("Encounter")
             .filterIs("location.location.display", "intensive_care_unit")
-            .filterDateAfterOrOn("location.period.start", from)
-            .filterDateBefore("location.period.start", to);
+            .filterDateOn("location.period.start", date)
+            .join(SRBuilder.newSel("Location")
+                .filterIs("type.coding.code", "ICU"))
 
         // Building summary request
         const sr = SRBuilder.newReq()
@@ -204,13 +211,14 @@ export class Sites {
             .build();
 
         // Get summary results.
-        return this.doSummaryQuery(sr, sitesCodes)
+        return this.doSummaryQuery(sr, sitesCode)
             .then(getSites2Total);
     }
 
     getNewDailyPosPerSiteBetween(from: Date, to: Date, sitesCodes?: string[]) {
         const newPosPerSitePerDayUpTo = SRBuilder.newSel("Observation")
-            .filterIs("code.coding.display", "positive")
+            .filterIs("code.coding.code", Terms.LOINC.SarsCov2Probe.code)
+            .filterIs("interpretation.coding.display", Terms.LOINC.Positive.code)
             .filterDateAfterOrOn("issued", from)
             .filterDateBefore("issued", to)
             .breakdownPerDay("Observation", "issued");
@@ -227,6 +235,7 @@ export class Sites {
 
     getNewDailyTestsPerSiteBetween(from: Date, to: Date, sitesCodes?: string[]) {
         const newTestsPerSitePerDayUpTo = SRBuilder.newSel("Observation")
+            .filterIs("code.coding.code", Terms.LOINC.SarsCov2Probe.code)
             .filterDateAfterOrOn("issued", from)
             .filterDateBefore("issued", to)
             .breakdownPerDay("Observation", "issued");
@@ -243,13 +252,24 @@ export class Sites {
 
     getNewDailyIcuPerSiteBetween(from: Date, to: Date, sitesCodes?: string[]) {
         const icuCountPerSitesBetweenDates = SRBuilder.newSel("Encounter")
-            .filterIs("location.location.display", "intensive_care_unit")
-            .filterDateAfterOrOn("location.period.start", from)
-            .filterDateBefore("location.period.start", to)
-            .breakdownPerDay("Encounter", "location.period.start");
+            .addTEMPORARYIcuBreakdown();
 
         const sr = SRBuilder.newReq()
             .addSelector(icuCountPerSitesBetweenDates)
+            .addMeasures({categorical: ["count"]})
+            .build();
+
+        // Get summary results.
+        return this.doSummaryQuery(sr, sitesCodes)
+            .then(getPeriodBreakdownPerSite);
+    }
+
+    getNewDailyWardPerSiteBetween(from: Date, to: Date, sitesCodes?: string[]) {
+        const wardCountPerSitesBetweenDates = SRBuilder.newSel("Encounter")
+            .addTEMPORARYWardBreakdown();
+
+        const sr = SRBuilder.newReq()
+            .addSelector(wardCountPerSitesBetweenDates)
             .addMeasures({categorical: ["count"]})
             .build();
 

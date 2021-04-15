@@ -1,15 +1,17 @@
 <template>
   <div class="mainContainer home">
     <v-container>
+      <!-- Line 1 (1, 2, 3) -->
       <div class="row">
         <div v-for="(tile,i) in numberTiles" class="col-lg-4 col-md-4">
           <HomeTextTile :txTitle= "$t(titleKeys[i])"
-                        :nSites="1"
+                        :nSites="3"
                         :txBottom="i==='1' ? $t('home_positivity',{positivity: tile.rate}) : $t('home_average',{average: tile.average})  + $t('home_rt',{rate: tile.rt})"
                         :data="tile.total"></HomeTextTile>
         </div>
       </div>
 
+      <!-- Line 2 (4, 5, 6) -->
       <div class="row">
         <div v-for="(line,i) in lines" class="col-lg-4 col-md-6 col-sm-12 cardContainer">
           <div class="title"><span>{{ $t(titleKeys[i]) }}</span></div>
@@ -22,34 +24,34 @@
         </div>
       </div>
 
-
+      <!-- Line 3 (7, 8, 9 -->
       <div class="row">
         <div v-for="(bar,i) in barcharts0" class="col-lg-4 col-md-12 col-sm-12 cardContainer">
-          <div class="title"><span>{{ $t(titleKeys[i]) }}</span></div>
+          <div class="title" :style="{opacity: getTOpacity(i)}"><span>{{ $t(titleKeys[i]) }}</span></div>
           <v-card>
             <PanelOverlay :dataReady="isReady(bar.data)" :dataError="bar.dataError" />
 
-            <BarChart style="width:100%" :colors="colors" :horizontal="true" :data="bar.data" :category="bar.sites" autoresize></BarChart>
+            <BarChart :style="{width: '100%', opacity: getOpacity}" :colors="colors" :horizontal="true" :data="bar.data" :category="bar.sites" autoresize></BarChart>
           </v-card>
         </div>
         <div class="col-lg-4 col-md-12 col-sm-12 cardContainer">
-          <div class="title"><span>{{ $t("home_total_occupation") }}</span></div>
+          <div class="title" style="opacity: 0.5;"><span>{{ $t("home_total_occupation") }}</span></div>
           <v-card>
-            <PanelOverlay :dataReady="isReady(gauge.rate)" :dataError="gauge.dataError"  />
+            <PanelOverlay :dataReady="isReady(gauge.rate)" :dataError="gauge.dataError" style="opacity: 0.5;"  />
 
-            <Gauge style="width: 100%" :value="gauge.rate"></Gauge>
+            <Gauge style="width: 100%; opacity: 0.5;" :value="gauge.rate"></Gauge>
           </v-card>
         </div>
       </div>
 
+      <!-- Line 4 (10, 11, 12) -->
       <div class="row">
-
         <div v-for="(bar,i) in barcharts1" class="col-lg-4 col-md-12 col-sm-12 cardContainer">
-          <div class="title"><span>{{ $t(titleKeys[i]) }}</span></div>
+          <div class="title" style="opacity: 0.5;"><span>{{ $t(titleKeys[i]) }}</span></div>
           <v-card>
             <PanelOverlay :dataReady="isReady(bar.data)" :dataError="bar.dataError" />
 
-            <BarChart style="width:100%" :colors="colors" :data="bar.data" :category="bar.sites" :group="bar.group" autoresize></BarChart>
+            <BarChart style="width:100%; opacity: 0.5;" :colors="colors" :data="bar.data" :category="bar.sites" :group="bar.group" autoresize></BarChart>
           </v-card>
         </div>
       </div>
@@ -159,6 +161,9 @@ export default {
       if(data)
         return true;
       else return false;
+    },
+    getTOpacity(i) {
+      return i === "7" ? 1.0: 0.5;
     }
   },
   created() {
