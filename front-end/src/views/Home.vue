@@ -31,7 +31,7 @@
           <v-card>
             <PanelOverlay :dataReady="isReady(bar.data)" :dataError="bar.dataError" />
 
-            <BarChart :style="{width: '100%', opacity: getOpacity}" :colors="colors" :horizontal="true" :data="bar.data" :category="bar.sites" autoresize></BarChart>
+            <BarChart :style="{width: '100%', opacity: getTOpacity(i)}" :colors="colors" :horizontal="true" :data="bar.data" :category="bar.sites" autoresize></BarChart>
           </v-card>
         </div>
         <div class="col-lg-4 col-md-12 col-sm-12 cardContainer">
