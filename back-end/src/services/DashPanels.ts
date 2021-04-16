@@ -141,10 +141,9 @@ export class DashPanels {
             // Get common date ! this assumes both request returns the same dates!.
             const formattedDates = icuBreakdown.dates.map((d: Date) => format(d, "yyyy-MM-dd"));
 
-            // FIXME(malavv): This should be using the breakdown "all" but it doesn't work for the moment.
             let sites: {[site: string]: {est: number[]}} = {};
-            sites["WARD"] = { est: Object.values(wardBreakdown.sites)[0] }
-            sites["ICU"] = { est: Object.values(icuBreakdown.sites)[0] }
+            sites["WARD"] = { est: wardBreakdown.sites["all"] }
+            sites["ICU"] = { est: icuBreakdown.sites["all"] }
 
             return {
                 // Results are in the same exact order as the dates.
