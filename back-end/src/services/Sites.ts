@@ -81,10 +81,13 @@ function getSites2Total(res: SummarizeRequestResult): Map<string, number> {
 export type PeriodBreakdownPerSite = { dates: Date[], sites: {[site: string]: number[]} };
 
 function getPeriodBreakdownPerSite(res: SummarizeRequestResult): PeriodBreakdownPerSite {
-    // Get first result for each site
+    // Each site has an array of results with only the first filled for reasons unknown to me
     const firstResults: SummarizeRequestSiteResult[] = res.map((arr: SummarizeRequestSiteResult[]) => arr[0]);
+
     // Remove all, for some reason, all is not property computed.
-    const sitesDf: SummarizeRequestSiteResult[] = firstResults.filter((site: SummarizeRequestSiteResult) => site.siteCode !== 'all');
+    //const sitesDf: SummarizeRequestSiteResult[] = firstResults.filter((site: SummarizeRequestSiteResult) => site.siteCode !== 'all');
+    const sitesDf: SummarizeRequestSiteResult[] = firstResults;
+
     // Get dates from first result. (Note this will probably be flaky if not all sites have the same data.)
     const dates = sitesDf[0].breakdown.result.map((rec: SummarizeRequestBreakdownSliceResult) => new Date(rec.periodStart));
 
