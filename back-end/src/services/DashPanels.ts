@@ -52,7 +52,7 @@ export class DashPanels {
         return this.sitesProxy.getCohortSizeOnDate(this.date, this.sitesCode)
             .then((numberInCohort: number) => ({
                 "total_count": numberInCohort, // Total number of "participants" in our cohort at this date.
-                "prevalence": 0.04 // fraction of the cohort that is COVID-19 positive
+                "prevalence": 0.07 // fraction of the cohort that is COVID-19 positive
             }));
     }
 
@@ -61,8 +61,8 @@ export class DashPanels {
             .then((newPosOnDate: number) => ({
                 "date": format(this.date, "yyyy-MM-dd"), // Date associated with this result
                 "new_cases": newPosOnDate, // Count of Patient with COVID+ tests on this day.
-                "sma_7d": 943, // 7d moving average over the day prior to "date"
-                "exp_rate_7d": 0.92 // Instantaneous Exponential Rate based on the last 7 day.
+                "sma_7d": 351, // 7d moving average over the day prior to "date"
+                "exp_rate_7d": 1.07 // Instantaneous Exponential Rate based on the last 7 day.
             }));
     }
 
@@ -71,8 +71,8 @@ export class DashPanels {
             .then((newDeathsOnDate: number) => ({
                 "date": format(this.date, "yyyy-MM-dd"), // Date associated with this result
                 "new_cases": newDeathsOnDate, // Number of new members of this cohort that were COVID-19 positive and died
-                "sma_7d": 11, // 7d moving average over the day prior to "date"
-                "exp_rate_7d": 0.86 // Instantaneous Exponential Rate based on the last 7 day.
+                "sma_7d": 10, // 7d moving average over the day prior to "date"
+                "exp_rate_7d": 1.04 // Instantaneous Exponential Rate based on the last 7 day.
             }));
     }
 
