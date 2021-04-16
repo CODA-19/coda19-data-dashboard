@@ -221,7 +221,7 @@ export class Sites {
             .filterIs("interpretation.coding.display", Terms.LOINC.Positive.code)
             .filterDateAfterOrOn("issued", from)
             .filterDateBefore("issued", to)
-            .breakdownPerDay("Observation", "issued");
+            .breakdownPerDay("Observation", "issued", from, to);
 
         const sr = SRBuilder.newReq()
             .addSelector(newPosPerSitePerDayUpTo)
@@ -238,7 +238,7 @@ export class Sites {
             .filterIs("code.coding.code", Terms.LOINC.SarsCov2Probe.code)
             .filterDateAfterOrOn("issued", from)
             .filterDateBefore("issued", to)
-            .breakdownPerDay("Observation", "issued");
+            .breakdownPerDay("Observation", "issued", from, to);
 
         const sr = SRBuilder.newReq()
             .addSelector(newTestsPerSitePerDayUpTo)
@@ -252,7 +252,7 @@ export class Sites {
 
     getNewDailyIcuPerSiteBetween(from: Date, to: Date, sitesCodes?: string[]) {
         const icuCountPerSitesBetweenDates = SRBuilder.newSel("Encounter")
-            .addTEMPORARYIcuBreakdown();
+            .addTEMPORARYIcuBreakdown(from, to);
 
         const sr = SRBuilder.newReq()
             .addSelector(icuCountPerSitesBetweenDates)
@@ -266,7 +266,7 @@ export class Sites {
 
     getNewDailyWardPerSiteBetween(from: Date, to: Date, sitesCodes?: string[]) {
         const wardCountPerSitesBetweenDates = SRBuilder.newSel("Encounter")
-            .addTEMPORARYWardBreakdown();
+            .addTEMPORARYWardBreakdown(from, to);
 
         const sr = SRBuilder.newReq()
             .addSelector(wardCountPerSitesBetweenDates)
