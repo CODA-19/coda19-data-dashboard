@@ -104,7 +104,7 @@ export default {
             categories: _.keys(data.sites || data.types),
             data: _.values(data.sites || data.types).map(s => s.est),
             dates: data.dates.map(date => DateTime.fromISO(date).toFormat('LLL dd')), // Assume EST instead of GMT
-            prediction: data.start_of_predictions
+            prediction: data.start_of_predictions === undefined ? undefined : DateTime.fromISO(data.start_of_predictions).toFormat('LLL dd')
           };
           break;
 

@@ -12,6 +12,7 @@ import {
   LegendComponent
 } from "echarts/components";
 import VChart from "vue-echarts";
+import { uniq, contains } from "underscore";
 
 use([
   CanvasRenderer,
@@ -19,6 +20,36 @@ use([
   TooltipComponent,
   LegendComponent
 ]);
+
+// Creates two null padded arrays, with data changing from one to the other at specified index. (-1 means never)
+function splitSeries(dat, splitIdx) {
+  const n = dat.length;
+  let rhs = Array(n).fill(null);
+
+  if (splitIdx === -1)
+    return [dat];
+
+  let lhs = Array(n).fill(null);
+  for (let i = 0; i < n; i++) { // Instead of slice, this is a copy
+    if (i < splitIdx) lhs[i] = dat[i];
+    if (i === (splitIdx - 1)) rhs[i] = dat[i]; // Item switching is in both series.
+    if (i >= splitIdx) rhs[i] = dat[i];
+  }
+
+  return [lhs, rhs];
+}
+const formatSeries = (series) => `
+        <div style="display: flex; flex-direction: row;">
+                <div>${series.marker}</div>
+                <div style="flex: 1;">${series.seriesName}</div>
+                <div style="padding-left: 10px;"><b>${series.value}</b></div>
+        </div>`;
+const isSeriesPresent = (series) => series.value !== undefined;
+const tooltipFormatter = (datesOfPred) => (series) =>
+    `${series[0].name} ${contains(datesOfPred, series[0].name)? '<i>prediction</i>' : ''} <br>
+              <div style="display: flex; flex-direction: column;">
+                  ${uniq(series.filter(isSeriesPresent).map(formatSeries)).join('')}
+              </div>`;
 
 export default {
   name: "lineChart",
@@ -43,86 +74,30 @@ export default {
           bottom: '3%',
           containLabel: true
         },
-        toolbox: {
-          feature: { saveAsImage: {} }
-        },
+        toolbox: { feature: { saveAsImage: {} } },
         xAxis: {
           type: 'category',
           boundaryGap: false,
           data: this.dates,
         },
-        yAxis: {
-          type: 'value'
-        }
+        yAxis: { type: 'value' },
+        series: []
       };
 
-      let seriesOpt = [];
+      if (this.categories === undefined) // When data not loaded/available
+        return option;
 
-      if(this.categories) {
+      const startOfPredIdx = this.dates.indexOf(this.prediction);
+      const datesOfPred = startOfPredIdx === -1 ? [] : this.dates.slice(startOfPredIdx);
 
-        this.categories.forEach((cat,i) => {
-          let _this = this,
-              data = this.data[i],
-              predictData = [];
-
-          if(this.prediction) {
-
-            let predictIdx = this.dates.indexOf(this.prediction),
-                data = this.data[i].slice(0,predictIdx),
-                rawPrediction = this.data[i].slice(predictIdx - 1);
-            const fillArray = new Array(data.length - 1).fill(null);
-            predictData = fillArray.concat(rawPrediction);
-
-            option.tooltip = {
-              trigger: "axis",
-              formatter: (params) => {
-                let output = '';
-
-                if(_this.dates.indexOf(params[0].name)>=predictIdx)
-                  output += `<b>prediction</b><br>`
-
-                output +=  params[0].name + '<br/>';
-
-                for (i = 0; i < params.length; i++) {
-
-                  if(params[i].value){
-                    if(i>0 && params[i].seriesName=== params[i-1].seriesName)
-                      continue;
-
-                    output += `<div style='display: flex;flex-direction: column'>`
-                    output += `<div style='display:flex;justify-content: space-between'><div>${params[i].marker + params[i].seriesName} </div><div><b>${params[i].value}</b></div>`;
-                    output += `</div>`
-                  }
-                }
-                return output
-              }
-            }
-          }
-
-          seriesOpt.push({
-            name: cat,
-            type: 'line',
-            stack: '',
-            smooth: true,
-            data: data
-          });
-
-          if(this.prediction){
-            seriesOpt.push(
-                {
-                  name: cat,
-                  type: 'line',
-                  lineStyle:{type:'dashed'},
-                  stack: '',
-                  smooth: true,
-                  data: predictData
-                })
-          }
-
-        });
+      option.tooltip = {
+        trigger: "axis",
+        formatter: tooltipFormatter(datesOfPred)
       }
 
-      option.series = seriesOpt;
+      option.series = this.categories.map((cat, i) =>
+          splitSeries(this.data[i], startOfPredIdx).map((data, isPrediction) =>
+              ({name: cat, type: 'line', lineStyle: { type: isPrediction ? 'dashed' : 'solid' }, stack: '', smooth: true, data: data}))).flat();
 
       return option;
     }
