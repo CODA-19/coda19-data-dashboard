@@ -20,16 +20,6 @@ use([
   LegendComponent
 ]);
 
-// const data = [
-//       [120, 132, 101, 134, 90, 230, 210],
-//       [320, 332, 301, 334, 390, 330, 320],
-//       [150, 232, 201, 154, 190, 330, 410],
-//       [220, 182, 191, 234, 290, 330, 310],
-//       [820, 932, 901, 934, 1290, 1330, 1320]
-// ],
-//     categories = ['101', '102', '103', '104', '105'],
-//     dates = ['2021-02-02','2021-02-03', '2021-02-04', '2021-02-05', '2021-02-06', '2021-02-07'];
-
 export default {
   name: "lineChart",
   components: { VChart },
@@ -41,78 +31,43 @@ export default {
     prediction: String
   },
   created() {
-    window.addEventListener("resize", ()=>{
-      const lineChart = this.$refs.lineChart;
-      lineChart.resize();
-    });
+    window.addEventListener("resize", ()=> { this.$refs.lineChart.resize(); } );
   },
   computed:{
     option() {
-      if(!this.data){
-        var option = {
-          title: {
-            text: ''
-          },
-          tooltip: {
-            trigger: 'axis'
-          },
-          grid: {
-            left: '3%',
-            right: '4%',
-            bottom: '3%',
-            containLabel: true
-          },
-          toolbox: {
-            feature: {
-              saveAsImage: {}
-            }
-          },
-          xAxis: {
-            type: 'category',
-            boundaryGap: false,
-          },
-          yAxis: {
-            type: 'value'
-          }
-        };
-      }
-      var option = {
-        title: {
-          text: ''
-        },
-        tooltip: {
-          trigger: 'axis'
-        },
-        legend: {
-          data: this.categories
-        },
+      let option = {
+        title: { text: '' },
+        tooltip: { trigger: 'axis' },
+        legend: { data: this.categories },
         grid: {
           bottom: '3%',
           containLabel: true
         },
         toolbox: {
-          feature: {
-            saveAsImage: {}
-          }
+          feature: { saveAsImage: {} }
         },
         xAxis: {
           type: 'category',
           boundaryGap: false,
-          data: this.dates
+          data: this.dates,
         },
         yAxis: {
           type: 'value'
         }
       };
+
       let seriesOpt = [];
-      if(this.categories){
-        this.categories.forEach((cat,i)=>{
-          var _this = this,
+
+      if(this.categories) {
+
+        this.categories.forEach((cat,i) => {
+          let _this = this,
               data = this.data[i],
               predictData = [];
 
-          if(this.prediction){
-            var predictIdx = this.dates.indexOf(this.prediction),
+          if(this.prediction) {
+
+            let predictIdx = this.dates.indexOf(this.prediction),
                 data = this.data[i].slice(0,predictIdx),
                 rawPrediction = this.data[i].slice(predictIdx - 1);
             const fillArray = new Array(data.length - 1).fill(null);
@@ -121,7 +76,7 @@ export default {
             option.tooltip = {
               trigger: "axis",
               formatter: (params) => {
-                var output = '';
+                let output = '';
 
                 if(_this.dates.indexOf(params[0].name)>=predictIdx)
                   output += `<b>prediction</b><br>`
@@ -151,6 +106,7 @@ export default {
             smooth: true,
             data: data
           });
+
           if(this.prediction){
             seriesOpt.push(
                 {
@@ -175,5 +131,4 @@ export default {
 </script>
 
 <style scoped>
-
 </style>

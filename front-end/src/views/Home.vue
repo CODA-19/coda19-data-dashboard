@@ -69,6 +69,7 @@ import GeneralApi from "@/api/GeneralApi";
 import Gauge from "@/components/Gauge";
 import LineChart from "../components/lineChart";
 import PanelOverlay from "../components/PanelOverlay";
+import { DateTime } from "luxon";
 
 export default {
   name: "Home",
@@ -102,7 +103,7 @@ export default {
           this.lines[i] = {
             categories: _.keys(data.sites || data.types),
             data: _.values(data.sites || data.types).map(s => s.est),
-            dates: data.dates,
+            dates: data.dates.map(date => DateTime.fromISO(date).toFormat('LLL dd')), // Assume EST instead of GMT
             prediction: data.start_of_predictions
           };
           break;
