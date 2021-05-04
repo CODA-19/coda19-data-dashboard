@@ -40,17 +40,20 @@ export default {
       if (ss.length === 1 /* Simple line */ || ss.length === 3 /* with CI */)
         return false;
       // Confirms by checking the data series with data at that index is marked as a prediction.
-      return ss.filter(s => s.est[ptIdx])[0]?.type === "predic";
+      return ss.filter(s => s.est[ptIdx])[0].type === "predic";
     }
   },
   computed: {
     activeSeries() {
       let map = new Map();
       for (let s of this.series)
-        map.set(s.seriesName, Math.max(s.value ?? -1, map.get(s.seriesName) ?? -1));
+        map.set(s.seriesName, Math.max(s.value || -1, map.get(s.seriesName) || -1));
 
       return Array.from(map.entries())
-          .map(e => ({name: e[0], value: e[1], predicted: this.isPrediction(this.series[0].dataIndex, e)}));
+          .map(e => ({
+            name: e[0],
+            value: e[1],
+            predicted: this.isPrediction(this.series[0].dataIndex, e)}));
     }
   }
 }

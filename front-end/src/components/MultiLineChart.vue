@@ -101,18 +101,18 @@ export default {
         tooltip: {
           trigger: 'axis', formatter: this.getTooltipFormatter(),
         },
-        legend: { data: this.data.map(el => el.name) },
+        legend: { data: this.data ? this.data.map(el => el.name): [] },
         grid: { bottom: '3%', containLabel: true },
         toolbox: { feature: { saveAsImage: {} } },
         xAxis: {
           type: 'category',
           boundaryGap: false,
-          data: this.dates.map(dateTime => dateTime.toFormat('LLL dd')) // Luxon Format
+          data: this.dates ? this.dates.map(dateTime => dateTime.toFormat('LLL dd')) : [] // Luxon Format
         },
         yAxis: {
           type: 'value'
         },
-        series: this.data.map(this.toSeriesStyle).flat()
+        series: this.data ? this.data.map(this.toSeriesStyle).flat() : []
       };
     }
   }
