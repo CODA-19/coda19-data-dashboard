@@ -18,8 +18,7 @@
           <v-card>
             <PanelOverlay :dataReady="isReady(line.data)" :dataError="line.dataError" />
 
-            <LineChart style="width: 100%" :categories="line.categories" :dates="line.dates" :data="line.data"
-                       :prediction="line.prediction"></LineChart>
+            <MultiLineChart style="width: 100%" :dates="line.dates" :data="line.data"></MultiLineChart>
           </v-card>
         </div>
       </div>
@@ -69,10 +68,46 @@ import GeneralApi from "@/api/GeneralApi";
 import Gauge from "@/components/Gauge";
 import LineChart from "../components/lineChart";
 import PanelOverlay from "../components/PanelOverlay";
+import { DateTime } from "luxon";
+import MultiLineChart from "../components/MultiLineChart";
+
+function formatForCharts(obj) {
+  let lines = obj.sites || obj.types;
+  const cats = Array.from(Object.keys(lines));
+
+  if (obj.start_of_predictions) {
+    const idx = obj.dates.indexOf(obj.start_of_predictions) - 1;
+
+    return cats.map(cat => {
+        let real = [];
+        let pred = [];
+        for (let i = 0; i < obj.dates.length; i++) {
+            real.push(i <= idx ? lines[cat].est[i]: null);
+            pred.push(i < idx ? null: lines[cat].est[i]);
+        }
+        return [{
+          name: cat,
+          type: "normal",
+          est: real
+        },{
+          name: cat,
+          type: "predic",
+          est: pred
+        }];
+    }).flat();
+
+  } else {
+    return cats.map(cat => ({
+      name: cat,
+      type: "normal",
+      est: lines[cat].est
+    }));
+  }
+}
 
 export default {
   name: "Home",
-  components: {PanelOverlay, LineChart, BarChart, Legend, Gauge, HomeTextTile},
+  components: {PanelOverlay, LineChart, BarChart, Legend, Gauge, HomeTextTile, MultiLineChart},
   methods: {
     getPanelData: function(i, mode) {
       // Moved from await to promise, because await is making all queries sequential.
@@ -100,10 +135,8 @@ export default {
         case 5:
         case 6:
           this.lines[i] = {
-            categories: _.keys(data.sites || data.types),
-            data: _.values(data.sites || data.types).map(s => s.est),
-            dates: data.dates,
-            prediction: data.start_of_predictions
+            dates: data.dates.map(date => DateTime.fromISO(date)),
+            data: formatForCharts(data)
           };
           break;
 
