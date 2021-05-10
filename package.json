@@ -3,17 +3,12 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "client": "yarn workspace back-end start",
-    "server": "yarn workspace front-end start",
-    "start": "concurrently --kill-others-on-fail \"yarn server\"  \"yarn client\""
+    "server": "yarn workspace back-end start"
   },
   "repository": "https://github.com/CODA-19/dashboard",
   "author": "MCHI & CHUM",
   "license": "UNLICENSED",
   "workspaces": [
     "back-end"
-  ],
-  "dependencies": {
-    "concurrently": "^5.3.0"
-  }
+  ]
 }
