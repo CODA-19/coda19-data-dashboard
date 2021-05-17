@@ -18,6 +18,11 @@ function nsummary(sitesUri, varUri, breakdownUri) {
     return AxiosInstance.get(`api/nsummary?sites=${sitesUri}&var=${varUri}&breakdown=${breakdownUri}`, {headers: headers});
 }
 
+function mockStats(sitesUri, cont, disc) {
+  const headers = TokenBearerHeaderFactory.get();
+  return AxiosInstance.get(`api/mockStats?sites=${sitesUri}&cont=${cont}&disc=${disc}`, {headers: headers});
+}
+
 /**
  * Checks for a response from the hub.
  * @returns {Promise<Response>}
@@ -41,6 +46,10 @@ function DashData(i, mode = null){
   //return AxiosInstance.get(`/home/p${i}?mode=lagmock`, {headers: headers});
 }
 
+function Measures(){
+  const headers = TokenBearerHeaderFactory.get();
+  return AxiosInstance.get(`stats/measures`, {headers: headers});
+}
 
 
 export default {
@@ -48,5 +57,7 @@ export default {
     nsummary,
     testData,
     isConnected,
-    DashData
+    DashData,
+    Measures,
+    mockStats
 }
