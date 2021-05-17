@@ -18,6 +18,11 @@ function nsummary(sitesUri, varUri, breakdownUri) {
     return AxiosInstance.get(`api/nsummary?sites=${sitesUri}&var=${varUri}&breakdown=${breakdownUri}`, {headers: headers});
 }
 
+function mockStats(sitesUri, cont, disc) {
+  const headers = TokenBearerHeaderFactory.get();
+  return AxiosInstance.get(`api/mockStats?sites=${sitesUri}&cont=${cont}&disc=${disc}`, {headers: headers});
+}
+
 /**
  * Checks for a response from the hub.
  * @returns {Promise<Response>}
@@ -53,5 +58,6 @@ export default {
     testData,
     isConnected,
     DashData,
-    Measures
+    Measures,
+    mockStats
 }

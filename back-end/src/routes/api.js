@@ -135,6 +135,16 @@ router.get('/hospitalSummary', async (req, res) => {
   res.json(tempResponse);
 });
 
+router.get('/mockStats', (req,res,next)=>{
+
+  let request = req.query,
+    sites = request.sites,
+    conts = request.cont,
+    discs = request.disc;
+
+  console.log(`${sites} ${conts} ${discs}`);
+})
+
 router.post('/testData', (req, res, next) => {
 
   let request = req.body,

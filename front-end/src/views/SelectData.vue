@@ -38,7 +38,7 @@
                 <span>{{ $t("selectMeasuresTxt") }}</span>
               </div>
               <div class="selectionPanel">
-                <div class="subPanel">
+                <div class="subPanel" v-if="measures.cont">
                   <span>{{$t("contTxt")}}</span>
                   <multiselect v-model="form.measures.cont"
                                :placeholder="$t('selectContTxt')"
@@ -57,7 +57,7 @@
                   </multiselect>
                 </div>
 
-                <div class="subPanel">
+                <div class="subPanel" v-if="measures.disc">
                   <span>{{$t("discTxt")}}</span>
                   <multiselect v-model="form.measures.disc"
                                :placeholder="$t('selectDiscTxt')"
@@ -160,18 +160,18 @@
                     </div>
                   </div>
                 </div>
-                <div v-if="form.measures.cont.length" class="row">
+                <div class="row">
                     <div class="col-lg-4 col-md-4">
                         <span>{{ $t("breakdownStart") }}</span>
-                        <input class="form-control" type="date" id="start_breakdown"></input>
+                        <input class="form-control" type="date" id="start_breakdown" v-model="form.breakdown.period.start" />
                     </div>
                     <div class="col-lg-4 col-md-4">
                         <span>{{ $t("breakdownEnd") }}</span>
-                        <input class="form-control" type="date" id="end_breakdown"></input>
+                        <input class="form-control" type="date" id="end_breakdown" v-model="form.breakdown.period.end"/>
                     </div>
                     <div class="col-lg-4 col-md-4">
                         <span>{{ $t("breakdownStep") }}</span>
-                        <input class="form-control" type="number"  :placeholder="$t('breakdownDays')" id="step_breakdown"></input>
+                        <input class="form-control" type="number"  :placeholder="$t('breakdownDays')" id="step_breakdown" v-model="form.breakdown.period.step"/>
                     </div>
                 </div>
             </div>
@@ -180,7 +180,7 @@
 
 
         <div class="col-lg-6 col-md-4 submit-btn">
-                <b-button type="submit" pill block variant="success" :disabled="dataUpdate">{{$t("selectTxt")}}</b-button>
+                <b-button type="submit" pill block variant="success" :disabled="!dataUpdate">{{$t("selectTxt")}}</b-button>
         </div>
       </b-form>
 
@@ -288,8 +288,8 @@ export default {
             resourceType:"",
             resourceAttribute:"",
             period:{
-                start:'2021/01/01',
-                end:'2021/01/01',
+                start:'2021-01-01',
+                end:'2021-01-01',
                 step:0,
             }
         },
@@ -372,14 +372,18 @@ export default {
     },
 
     getNSummaryData: async function() {
-      this.cached.variables = this.form.variables;
       this.cached.sites = this.form.sites;
       this.cached.breakdown  = this.form.breakdown;
+      this.cache.measures = this.from.measures;
 
       const sitesUri = encodeURI(this.form.sites.map(conn=>{return conn.value}));
-      const varUri = encodeURI(this.form.variables.map(conn=>{return conn.value}));
-      const breakdownUri = encodeURI(this.form.breakdown.map(conn=>{return conn.value}));
-      const data = await GeneralApi.nsummary(sitesUri, varUri, breakdownUri).then(res => res.data);
+      const contMeasuresUri = encodeURI(this.form.measures.cont.map(cat=>{return cat.value}));
+      const discMeasuresUri = encodeURI(this.form.measures.disc.map(cat=>{return cat.value}));
+      // const resourcesParams = encodeURI(JSON.parse(JSON.stringify(this.form.query)));
+      // const breakdownUri = encodeURI(this.form.breakdown);
+
+      const data = await GeneralApi.mockStats(sitesUri,  contMeasuresUri, discMeasuresUri).then(res => res.data).catch(err=> console.error(err));
+
 
       return data;
     },
