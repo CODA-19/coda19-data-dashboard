@@ -8,7 +8,7 @@ const router = Router();
 
 // Mock home data folder.
 const mockHomeDataPath = './mock/home.json5';
-const defaultDate = "2021-04-09";
+const defaultDate = "2021-05-21";
 
 router.get('/', async (req: Request, res: Response) => {
     // Returns mocked data for the whole home dashboard.
