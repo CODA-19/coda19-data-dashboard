@@ -11,6 +11,7 @@ import indexRouter from './routes/index';
 import apiRouter from './routes/api';
 import sitesRouter from './routes/sites';
 import homeRouter from './routes/home';
+import statsRouter from './routes/stats';
 
 const app = express();
 CorsMiddleware.register(app);
@@ -29,3 +30,4 @@ app.use('/', indexRouter) // Check for server availability
 app.use('/sites', keycloak.protect(), sitesRouter) // Sites availability
 app.use('/home', keycloak.protect(), homeRouter) // Homepage Viewmodel Data
 app.use('/api', keycloak.protect(), apiRouter)
+app.use('/stats', keycloak.protect(), statsRouter)

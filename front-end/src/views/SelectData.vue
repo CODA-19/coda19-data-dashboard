@@ -40,10 +40,10 @@
               <div class="selectionPanel">
                 <div class="subPanel">
                   <span>{{$t("contTxt")}}</span>
-                  <multiselect v-model="form.measures.cont[$t('langCode')]"
+                  <multiselect v-model="form.measures.cont"
                                :placeholder="$t('selectContTxt')"
-                               :options="contOptions[$t('langCode')]"
-                               label="label"
+                               :options="measures.cont"
+                               :label="'label_'+$t('langCode')"
                                track-by="value"
                                :multiple="true"
                                :clear-on-select="false"
@@ -51,7 +51,7 @@
                                :showLabels="false"
                   >
                     <template slot="clear" slot-scope="cont">
-                      <div class="multiselect__clear" v-if="form.measures.cont[componentKey].length" @mousedown.prevent.stop="clearAllCont(cont.search)"></div>
+                      <div class="multiselect__clear" v-if="measuresSelected('cont',componentKey)" @mousedown.prevent.stop="clearAllCont(cont.search)"></div>
                     </template><span slot="noResult">No measure found.</span>
 
                   </multiselect>
@@ -59,10 +59,10 @@
 
                 <div class="subPanel">
                   <span>{{$t("discTxt")}}</span>
-                  <multiselect v-model="form.measures.disc[$t('langCode')]"
+                  <multiselect v-model="form.measures.disc"
                                :placeholder="$t('selectDiscTxt')"
-                               :options="discOptions[$t('langCode')]"
-                               label="label"
+                               :options="measures.disc"
+                               :label="'label_'+$t('langCode')"
                                track-by="value"
                                :multiple="true"
                                :clear-on-select="false"
@@ -70,7 +70,7 @@
                                :showLabels="false"
                   >
                     <template slot="clear" slot-scope="disc">
-                      <div class="multiselect__clear" v-if="form.measures.disc[componentKey].length" @mousedown.prevent.stop="clearAllDisc(disc.search)"></div>
+                      <div class="multiselect__clear" v-if="measuresSelected('disc',componentKey)" @mousedown.prevent.stop="clearAllDisc(disc.search)"></div>
                     </template><span slot="noResult">No measure found.</span>
 
                   </multiselect>
@@ -131,12 +131,8 @@
                         Open a new tab using the <b>Add (+)</b> button above.
                       </div>
                     </template>
-
-
                   </b-tabs>
                 </b-card>
-
-
               </div>
             </v-card>
 
@@ -164,7 +160,7 @@
                     </div>
                   </div>
                 </div>
-                <div v-if="form.measures.cont[componentKey].length" class="row">
+                <div v-if="form.measures.cont.length" class="row">
                     <div class="col-lg-4 col-md-4">
                         <span>{{ $t("breakdownStart") }}</span>
                         <input class="form-control" type="date" id="start_breakdown"></input>
@@ -228,11 +224,11 @@ const idResource = (res) => `${res.type}|${res.attribute}|${res.datatype}`;
 
 export default {
   name: "AppHeader",
-  props: [ 'connections', 'resources', 'minimize'],
+  props: [ 'connections', 'resources', 'minimize', 'measures'],
   mounted(){
     bus.$on('queryUpdate',(query)=>{this.getQuery(query)})
   },
-   
+
   computed: {
     options() {
       return [
@@ -298,14 +294,8 @@ export default {
             }
         },
         measures:{
-          cont:{
-              en:[{label:'count', value:'count'},{label:'mean', value:'mean'},{label:'stdev', value:'stdev'},{label:'ci95', value:'ci95'}],
-              fr:[{label:'décompte', value:'count'},{label:'moyenne', value:'mean'},{label:'stdev', value:'stdev'},{label:'ci95', value:'ci95'}]
-          },
-          disc:{
-              en:[{label:'age',value: 'age'},{label:'gender', value: 'gender'}],
-              fr:[{label:'age',value: 'age'},{label:'genre', value: 'gender'}]
-            }
+          cont:[],
+          disc:[]
         },
         sites: [],
         field: []
@@ -338,12 +328,6 @@ export default {
       //   }]
       // },
       fieldOptions:{
-          en:[{label:'age',value: 'age'},{label:'gender', value: 'gender'}],
-          fr:[{label:'age',value: 'age'},{label:'genre', value: 'gender'}]},
-      contOptions:{
-          en:[{label:'count', value:'count'},{label:'mean', value:'mean'},{label:'stdev', value:'stdev'},{label:'ci95', value:'ci95'}],
-          fr: [{label:'Compte', value:'count'},{label:'Moyenne', value:'mean'},{label:'stdev', value:'stdev'},{label:'ci95', value:'ci95'}]},
-      discOptions:{
           en:[{label:'age',value: 'age'},{label:'gender', value: 'gender'}],
           fr:[{label:'age',value: 'age'},{label:'genre', value: 'gender'}]},
       tabCounter:1,
@@ -391,7 +375,7 @@ export default {
       this.cached.variables = this.form.variables;
       this.cached.sites = this.form.sites;
       this.cached.breakdown  = this.form.breakdown;
-      
+
       const sitesUri = encodeURI(this.form.sites.map(conn=>{return conn.value}));
       const varUri = encodeURI(this.form.variables.map(conn=>{return conn.value}));
       const breakdownUri = encodeURI(this.form.breakdown.map(conn=>{return conn.value}));
@@ -420,11 +404,19 @@ export default {
     clearAllFields (){
       this.form.field = []
     },
+    measuresSelected (category, key){
+      if(category==='cont'){
+        return this.form.measures.cont.length > 0
+      }
+      if(category==='disc'){
+        return this.form.measures.disc.length > 0}
+      else return false;
+    },
     clearAllCont (){
-      this.form.measures.cont = []
+      this.form.measures.cont=[]
     },
     clearAllDisc (){
-      this.form.measures.disc = []
+      this.form.measures.disc =[]
     },
     getQuery(query){
       this.form.query = query;

@@ -41,6 +41,10 @@ function DashData(i, mode = null){
   //return AxiosInstance.get(`/home/p${i}?mode=lagmock`, {headers: headers});
 }
 
+function Measures(){
+  const headers = TokenBearerHeaderFactory.get();
+  return AxiosInstance.get(`stats/measures`, {headers: headers});
+}
 
 
 export default {
@@ -48,5 +52,6 @@ export default {
     nsummary,
     testData,
     isConnected,
-    DashData
+    DashData,
+    Measures
 }
