@@ -1,60 +1,58 @@
-import { Router, Request, Response } from 'express';
+import {Request, Response, Router} from 'express';
 import JSON5 from 'json5';
-
 import {DashPanels} from "../services/DashPanels";
-import {getRandomInt, getCachedFile} from "../helpers/poly";
+import {getCachedFile} from "../helpers/poly";
+import {isValidDate, isValidPanelId} from "../helpers/validators";
 
-// For Panel 1 through 12, with prefix P.
-const validPanelIDRegex = /^p[1-9][012]?$/;
 const router = Router();
-const maxJitterMs = 2000;
+
+// Mock home data folder.
 const mockHomeDataPath = './mock/home.json5';
+const defaultDate = "2021-04-09";
 
 router.get('/', async (req: Request, res: Response) => {
     // Returns mocked data for the whole home dashboard.
     res.json(JSON5.parse(getCachedFile(req.app, mockHomeDataPath)));
 });
 
+// Main entrypoint for all home dashboard panels.
 router.get('/:panel', async (req: Request, res: Response) => {
-    // In the end, the mocked data would really need to be better place than here, most probably
-    // dependency injection of the service getting the panel answer. And then just asking the service normally.
-    // Both for the demo, I'll keep it like that.
-    const homeData = JSON5.parse(getCachedFile(req.app, mockHomeDataPath));
-
-    // Get Panel ID
+    // Get panel ID
     const panelID = req.params['panel'] || '';
-    if (!panelID.match(validPanelIDRegex)) {
-        res.status(400).send('Invalid Panel ID');
-    }
-
-    // There are 2 modes "mock" and "lagmock" (first returns mocked data, second adds random jitter)
-    const mode = req.query.mode;
-    if (mode !== undefined) {
-        moddedQuery(<ModQueryType>mode, res, homeData[panelID]);
+    if (!isValidPanelId(panelID)) {
+        res.status(400).send(`Invalid Panel ID: ${panelID}`);
         return;
     }
 
-    // FIXME(malavv): Should come from the client's request.
-    const fromThisDate = new Date("2021/04/09");
+    // Get date until
+    const untilDate = getSingleQueryParam(req, 'until') || defaultDate;
+    if (!isValidDate(untilDate)) {
+        res.status(400).send(`Invalid date format ${untilDate}`);
+        return;
+    }
+
     // NOTE(malavv): Prob. also want the site configuration to be passed in.
     const allSites = ["110", "114", "115"];
 
     // This is instanced to later inject some dependencies.
-    const proxy = new DashPanels(homeData, req.app, req, fromThisDate, allSites);
+    // NOTE(malavv): the date replace is because UTC encoded dates are being converted in the tunnel, stick to local one.
+    const proxy = new DashPanels(mockHomeDataPath, req.app, req, new Date(untilDate.replace(/-/g, "/")), allSites);
     proxy.getPanelViewModel(panelID)
-        .then((data:Object) => res.json(data))
-        .catch((err:Error) => res.status(500).json(err.message));
+        .then((data: Object) => res.json(data))
+        .catch((err: Error) => res.status(500).json(err.message));
 });
 
-type ModQueryType = "mock" | "lagmock";
 
-function moddedQuery(mode: ModQueryType, res:Response, content: any) {
-    switch (mode) {
-        case 'mock': return res.json(content);
-        case 'lagmock': return setTimeout(() => res.json(content), getRandomInt(1, maxJitterMs))
-        default:
-            console.error("Incorrect modded query type", mode);
-    }
+function getSingleQueryParam(req: Request, key: string) : string | undefined {
+    // @ts-ignore
+    let data = req.query[key];
+    if (data === undefined)
+        return undefined;
+    if (typeof data === "string")
+        return data;
+    if (Array.isArray(data) && data.length >= 0)
+        return <string>data[0];
+    return undefined;
 }
 
 export default router;
