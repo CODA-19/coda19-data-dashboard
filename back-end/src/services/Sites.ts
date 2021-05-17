@@ -78,7 +78,7 @@ function getSites2Total(res: SummarizeRequestResult): Map<string, number> {
     return new Map(res.map((s: SummarizeRequestSiteAllResult) => [code2name(s[0].siteCode), s[0].total]));
 }
 
-export type PeriodBreakdownPerSite = { dates: Date[], sites: {[site: string]: number[]} };
+export type PeriodBreakdownPerSite = { dates: Date[], sites: { [site: string]: number[] } };
 
 function getPeriodBreakdownPerSite(res: SummarizeRequestResult): PeriodBreakdownPerSite {
     // Each site has an array of results with only the first filled for reasons unknown to me
@@ -92,7 +92,7 @@ function getPeriodBreakdownPerSite(res: SummarizeRequestResult): PeriodBreakdown
     const dates = sitesDf[0].breakdown.result.map((rec: SummarizeRequestBreakdownSliceResult) => new Date(rec.periodStart));
 
     // Load site data
-    const sites: {[site:string]: number[]} = {};
+    const sites: { [site: string]: number[] } = {};
     for (let site of sitesDf) {
         sites[code2name(site.siteCode)] = site.breakdown.result.map((rec: SummarizeRequestBreakdownSliceResult) => rec.periodCount);
     }
@@ -185,7 +185,10 @@ export class Sites {
         // COVID+ patients deaths on given date
         const deathsFromPosOnDate = SRBuilder.newSel("Patient")
             .filterIs("deceasedBoolean", "true")
-            .filterDateOn("deceasedDateTime", date);
+            .filterDateOn("deceasedDateTime", date)
+            .join(SRBuilder.newSel("Observation")
+                .filterIs("code.coding.code", Terms.LOINC.SarsCov2Probe.code)
+                .filterIs("interpretation.coding.display", Terms.LOINC.Positive.code))
 
         // Building summary request
         const sr = SRBuilder.newReq()
@@ -297,10 +300,16 @@ export class Sites {
 // Incomplete and for latter, I don't have time to make pretty interface before demo.
 export interface DashCalculator {
     getCohortSize(): Promise<number>;
+
     getCovidPosFrom(date: Date): Promise<number>;
+
     getCaseFatalityFrom(date: Date): Promise<number>;
+
     getPrevalence(): Promise<number>;
+
     getCaseFatality(): Promise<PerSiteNumber>;
+
     getIcuOccupancy(): Promise<PerSiteNumber>;
+
     getOccupation(): Promise<number>;
 }
