@@ -374,15 +374,15 @@ export default {
     getNSummaryData: async function() {
       this.cached.sites = this.form.sites;
       this.cached.breakdown  = this.form.breakdown;
-      this.cache.measures = this.from.measures;
+      // this.cache.measures = this.from.measures;
 
       const sitesUri = encodeURI(this.form.sites.map(conn=>{return conn.value}));
       const contMeasuresUri = encodeURI(this.form.measures.cont.map(cat=>{return cat.value}));
       const discMeasuresUri = encodeURI(this.form.measures.disc.map(cat=>{return cat.value}));
-      // const resourcesParams = encodeURI(JSON.parse(JSON.stringify(this.form.query)));
+      const resourcesParams = encodeURI(JSON.stringify({fields: this.form.field.map(f=>f.value), query:this.form.query}));
       // const breakdownUri = encodeURI(this.form.breakdown);
 
-      const data = await GeneralApi.mockStats(sitesUri,  contMeasuresUri, discMeasuresUri).then(res => res.data).catch(err=> console.error(err));
+      const data = await GeneralApi.mockStats(sitesUri,  contMeasuresUri, discMeasuresUri, resourcesParams).then(res => res.data).catch(err=> console.error(err));
 
 
       return data;

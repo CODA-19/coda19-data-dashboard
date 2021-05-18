@@ -140,9 +140,10 @@ router.get('/mockStats', (req,res,next)=>{
   let request = req.query,
     sites = request.sites,
     conts = request.cont,
-    discs = request.disc;
+    discs = request.disc,
+  resources = request.resources;
 
-  console.log(`${sites} ${conts} ${discs}`);
+  console.log(`${sites} ${conts} ${discs} ${resources}`);
 })
 
 router.post('/testData', (req, res, next) => {

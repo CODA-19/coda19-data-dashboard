@@ -18,9 +18,9 @@ function nsummary(sitesUri, varUri, breakdownUri) {
     return AxiosInstance.get(`api/nsummary?sites=${sitesUri}&var=${varUri}&breakdown=${breakdownUri}`, {headers: headers});
 }
 
-function mockStats(sitesUri, cont, disc) {
+function mockStats(sitesUri, cont, disc, resources) {
   const headers = TokenBearerHeaderFactory.get();
-  return AxiosInstance.get(`api/mockStats?sites=${sitesUri}&cont=${cont}&disc=${disc}`, {headers: headers});
+  return AxiosInstance.get(`api/mockStats?sites=${sitesUri}&cont=${cont}&disc=${disc}&resources=${resources}`, {headers: headers});
 }
 
 /**
