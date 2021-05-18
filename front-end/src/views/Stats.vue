@@ -1,14 +1,4 @@
 <template>
-<!--  <component-->
-<!--    v-bind:is="component"-->
-<!--    v-bind:summary="summary"-->
-<!--    v-bind:sites="sites"-->
-<!--    v-bind:lengthOfStay="length_of_stay"-->
-<!--    v-bind:ageGroups="age_groups"-->
-
-<!--    v-bind:connections="connections"-->
-<!--    v-bind:resources="resources"-->
-<!--  />-->
   <div class="mainContainer">
     <v-container>
     <div class="row">
@@ -22,7 +12,11 @@
       </div>
 
       <div class="col-lg-6 col-md-6 col-sm-12">
-        <Results></Results>
+        <Results
+            v-if="showResults"
+            :tables = "tables"
+            :figures="figures">
+        </Results>
       </div>
     </div>
 
@@ -68,6 +62,13 @@ export default {
       this.showDash = true;
     });
 
+    bus.$on("showResults", (data) => {
+      this.tables = data.tables;
+      this.figures = data.figures;
+
+      this.showResults = true;
+    });
+
     // bus.$on("newSearch", () => {
     //   this.component = "SelectData";
     //
@@ -96,6 +97,9 @@ export default {
       connections: [],
       resources: [],
       showDash: false,
+      showResults: false,
+      tables: [],
+      figures:[],
       measures:{},
     };
   },

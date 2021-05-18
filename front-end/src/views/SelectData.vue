@@ -384,7 +384,6 @@ export default {
 
       const data = await GeneralApi.mockStats(sitesUri,  contMeasuresUri, discMeasuresUri, resourcesParams).then(res => res.data).catch(err=> console.error(err));
 
-
       return data;
     },
 
@@ -393,7 +392,7 @@ export default {
       const dat = await this.getNSummaryData();
       console.info("res_data", dat);
 
-      bus.$emit("showDashboard", dat);
+      bus.$emit("showResults", dat);
     },
     onReset() {},
     toggleAll(checked) {

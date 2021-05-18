@@ -1,0 +1,46 @@
+{
+  "111": {
+    "count": {
+      "male": 766,
+      "female": 1000,
+      "total": 1766
+    },
+    "ci95": {
+      "male": "23-95",
+      "female": "19-95",
+      "total": "20-95"
+    },
+    "stdev": {
+      "male": 21,
+      "female": 24,
+      "total": 23
+    },
+    "mean": {
+      "male": 71,
+      "female": 73,
+      "total": "72"
+    }
+  },
+  "112": {
+    "count": {
+      "male": 766,
+      "female": 1000,
+      "total": 1766
+    },
+    "ci95": {
+      "male": "23-95",
+      "female": "19-95",
+      "total": "20-95"
+    },
+    "stdev": {
+      "male": 21,
+      "female": 24,
+      "total": 23
+    },
+    "mean": {
+      "male": 71,
+      "female": 73,
+      "total": "72"
+    }
+  }
+}
