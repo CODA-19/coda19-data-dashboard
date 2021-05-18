@@ -146,16 +146,16 @@
                   <div class="col-lg-4 col-md-4">
                     <div>{{ $t("selectResourceTypeTxt") }}</div>
                     <div>
-                      <select class="form-control"   v-model="form.breakdown.resourceType" >
-                        <option :value="patient">{{ $t("selectResourcePatient") }}</option>
+                      <select class="form-control"  id="resourceType_breakdown" v-model="form.breakdown.resourceType" >
+                        <option >{{ $t("selectResourcePatient") }}</option>
                       </select>
                     </div>
                   </div>
                   <div class="col-lg-4 col-md-4">
                     <div>{{ $t("selectResourceAttributeTxt") }}</div>
                     <div>
-                      <select class="form-control"  v-model="form.breakdown.resourceAttribute">
-                        <option :value="age">{{ $t("selectResourceAttributeAge")}}</option>
+                      <select class="form-control" id="resourceAttribute_breakdown"  v-model="form.breakdown.resourceAttribute">
+                        <option >{{ $t("selectResourceAttributeAge")}}</option>
                       </select>
                     </div>
                   </div>
@@ -288,9 +288,9 @@ export default {
             resourceType:"",
             resourceAttribute:"",
             period:{
-                start:'2021-01-01',
-                end:'2021-01-01',
-                step:0,
+                start:'2021-04-01',
+                end:'2021-05-01',
+                step:5,
             }
         },
         measures:{
