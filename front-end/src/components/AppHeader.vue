@@ -31,9 +31,6 @@
       <b-nav-item id="currentDate">
         {{ new Date("2021/05/21").toISOString().split("T")[0] }}
       </b-nav-item>
-      <b-nav-item>
-        <router-link to="/request" class="nav-link">{{ $t('requestAccessTxt') }}</router-link>
-      </b-nav-item>
       <b-nav-item class="nav-link warn" v-if="!isHubConnected">{{ $t('hubNotConnectedTxt') }}</b-nav-item>
       <b-nav-item>
         <b-button variant="info" @click="keycloak.logout()">{{ $t('logoutTxt') }}</b-button>
