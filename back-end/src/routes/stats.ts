@@ -1,6 +1,16 @@
 import { Router, Request, Response } from 'express';
+import SummaryMeasures from "../../coda19-ts/src/request/SummaryMeasures";
 
 const router = Router();
+
+router.get('/measures_v2', async function(req: Request, res: Response) {
+    try {
+        res.status(200).send(SummaryMeasures);
+    } catch (err) {
+        console.error(err.stack);
+        res.status(500).send("Unable to fetch site info from Hub");
+    }
+})
 
 router.get('/measures', async function(req: Request, res: Response) {
     const measures = {
