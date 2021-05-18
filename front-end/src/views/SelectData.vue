@@ -156,6 +156,8 @@
                     <div>
                       <select class="form-control" id="resourceAttribute_breakdown"  v-model="form.breakdown.resourceAttribute">
                         <option >{{ $t("selectResourceAttributeAge")}}</option>
+                        <option >{{ $t("selectResourceAttributeSex")}}</option>
+                       <option >{{ $t("selectResourceAttributeDeathDate")}}</option>
                       </select>
                     </div>
                   </div>
@@ -373,16 +375,16 @@ export default {
 
     getNSummaryData: async function() {
       this.cached.sites = this.form.sites;
-      this.cached.breakdown  = this.form.breakdown;
+     // this.cached.breakdown  = this.form.breakdown;
       // this.cache.measures = this.from.measures;
 
       const sitesUri = encodeURI(this.form.sites.map(conn=>{return conn.value}));
       const contMeasuresUri = encodeURI(this.form.measures.cont.map(cat=>{return cat.value}));
       const discMeasuresUri = encodeURI(this.form.measures.disc.map(cat=>{return cat.value}));
+      const breakdownUri = encodeURI(JSON.stringify(this.form.breakdown));
       const resourcesParams = encodeURI(JSON.stringify({fields: this.form.field.map(f=>f.value), query:this.form.query}));
-      // const breakdownUri = encodeURI(this.form.breakdown);
 
-      const data = await GeneralApi.mockStats(sitesUri,  contMeasuresUri, discMeasuresUri, resourcesParams).then(res => res.data).catch(err=> console.error(err));
+      const data = await GeneralApi.mockStats(sitesUri,  contMeasuresUri, discMeasuresUri, resourcesParams,breakdownUri).then(res => res.data).catch(err=> console.error(err));
 
       return data;
     },
