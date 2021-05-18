@@ -58,6 +58,8 @@
   "selectResourceAttributeTxt": "Attribut de la resource",
   "selectResourcePatient": "Patient",
   "selectResourceAttributeAge": "Age",
+  "selectResourceAttributeSex": "Sex",
+  "selectResourceAttributeDeathDate": "deathDate",
 
   "breakdownStart": "début",
   "breakdownEnd": "fin",
