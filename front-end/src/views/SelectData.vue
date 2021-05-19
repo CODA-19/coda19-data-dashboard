@@ -288,8 +288,8 @@ export default {
     },
         variables:[],
         breakdown:{
-            resourceType:"",
-            resourceAttribute:"",
+            resourceType:this.$t('selectResourcePatient'),
+            resourceAttribute:this.$t('selectResourceAttributeDeathDate'),
             period:{
                 start:'2021-04-01',
                 end:'2021-05-01',
