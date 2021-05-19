@@ -284,7 +284,7 @@ export class Sites {
             .then(getPeriodBreakdownPerSite);
     }
 
-    private doSummaryQuery(request: SummarizeRequestBody, sitesCodes?: string[]): Promise<SummarizeRequestResult> {
+    doSummaryQuery(request: SummarizeRequestBody, sitesCodes?: string[]): Promise<SummarizeRequestResult> {
         if (sitesCodes === undefined || !Array.isArray(sitesCodes))
             return Promise.reject(new Error("Invalid sites"));
 
@@ -294,6 +294,10 @@ export class Sites {
         // Get summary results.
         return axios.get(`/stats/summarize?sites=${sitesCodes.join(',')}`, reqCfg)
             .then(getSRData);
+    }
+
+    static convertCode2Name(code: string) : string {
+        return code2name(code);
     }
 }
 
