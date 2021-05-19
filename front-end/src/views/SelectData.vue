@@ -220,6 +220,7 @@ import _ from "underscore";
 import Multiselect from "vue-multiselect";
 import GeneralApi from "../api/GeneralApi";
 import QueryBuilder from "@/components/QueryBuilder"
+import SummaryFormFactory from "../control/SummaryFormFactory";
 
 const nameResource = (res) => `${res.type} > ${res.attribute} (${res.datatype})`;
 const idResource = (res) => `${res.type}|${res.attribute}|${res.datatype}`;
@@ -269,7 +270,7 @@ export default {
         query:  {
       condition: 'AND',
           rules: [{
-        id: 'deceased',
+        id: 'deceasedBoolean',
         operator: 'equal',
         value: 1
       }, {
@@ -390,6 +391,19 @@ export default {
     },
 
     onSubmit: async function() {
+      // I've placed more code than needed here, but I was trying to make any debugging easier while we are impl.
+      // the linking between form and data panels.
+      const sites = this.form.sites.map(s => s.value);
+      const request = SummaryFormFactory.fromForm(this.form);
+      console.log('Making Summary requests with given sites', request, sites);
+
+      // This will only accept two mocked task (the two demo tasks) for the moment.
+      const data = await GeneralApi.temporaryGetMockedTaskData(request, sites);
+
+      console.info("[SelectData.vue] Data received with correct format ", data);
+
+
+
       //console.log('old', await this.getSummaryData());
       const dat = await this.getNSummaryData();
       console.info("res_data", dat);

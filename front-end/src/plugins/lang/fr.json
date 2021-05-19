@@ -59,7 +59,7 @@
   "selectResourcePatient": "Patient",
   "selectResourceAttributeAge": "Age",
   "selectResourceAttributeSex": "Sex",
-  "selectResourceAttributeDeathDate": "deathDate",
+  "selectResourceAttributeDeathDate": "deceasedDateTime",
 
   "breakdownStart": "début",
   "breakdownEnd": "fin",

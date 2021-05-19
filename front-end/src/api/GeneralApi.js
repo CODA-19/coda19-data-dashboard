@@ -2,6 +2,7 @@
 // Maybe refactor into multiple routes with more specific names?
 import AxiosInstance from './AxiosInstance';
 import TokenBearerHeaderFactory from './TokenBearerHeaderFactory';
+import { isEqual } from "underscore";
 
 function data() {
     const headers = TokenBearerHeaderFactory.get();
@@ -51,6 +52,34 @@ function Measures(){
   return AxiosInstance.get(`stats/measures`, {headers: headers});
 }
 
+function temporaryGetMockedTaskData(request, sites, force) {
+    let url = 'unknown';
+
+    // use force to make sure you get data for one of the two task.
+    if (force !== undefined) {
+        if (force === 1) {
+            url = 'query_task_1'
+        } else if (force === 2) {
+            url = 'query_task_2'
+        }
+
+    // else behave properly if you get the matching config.
+    } else {
+        if (isEqual(request, request_task_1)) {
+            url = 'query_task_1'
+        } else if (isEqual(request, request_task_2)) {
+            url = 'query_task_2'
+        }
+    }
+
+    if (url === 'unknown') {
+        console.warn('Incorrect summary request for temporary masked data.')
+        return Promise.reject('invalid.request');
+    }
+
+    const headers = TokenBearerHeaderFactory.get();
+    return AxiosInstance.get(`stats/${url}`, {headers: headers});
+}
 
 export default {
     data,
@@ -59,5 +88,49 @@ export default {
     isConnected,
     DashData,
     Measures,
-    mockStats
+    mockStats,
+    temporaryGetMockedTaskData
 }
+
+const request_task_1 = {
+    "selectors": [
+        {
+            "resource": "Patient",
+            "filters": [
+                { "path": "deceasedBoolean", "operator": "is", "value": "false" }
+            ],
+            "fields": [ // Must be in right order to match with underscore
+                { "path": "age" },
+                { "path": "gender" }
+            ]
+        }
+    ],
+    "options": {
+        "measures": {
+            "continuous": [ "count", "mean", "stdev", "ci95" ],
+            "categorical": [ "count", "mode" ]
+        }
+    }
+};
+const request_task_2 = {
+    "selectors": [
+        {
+            "resource": "Patient",
+            "filters": [
+                { "path": "deceasedBoolean", "operator": "is", "value": "true" },
+                { "path": "deceasedDateTime", "operator": "isNot", "value": "null" }
+            ],
+            "fields": [],
+            "breakdown": {
+                "resource": { "type": "Patient", "field": "deceasedDateTime" },
+                "slices": { "step": 1209600, "min": "2021-01-01", "max": "2021-04-06" }
+            }
+        }
+    ],
+    "options": {
+        "measures": {
+            "continuous": [],
+            "categorical": [ "count" ]
+        }
+    }
+};

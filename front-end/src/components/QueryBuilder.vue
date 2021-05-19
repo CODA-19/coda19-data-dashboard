@@ -122,7 +122,7 @@ export default {
           },
           operators: ['more', 'equal', 'not_equal', 'in', 'not_in', 'is_null', 'is_not_null']
         },{
-          id: 'deceased',
+          id: 'deceasedBoolean',
           label: this.$t("QB_deceased"),
           type: 'integer',
           input: 'select',
@@ -132,7 +132,7 @@ export default {
           },
           operators: ['equal', 'not_equal', 'is_null', 'is_not_null']
         },{
-          id: 'deceased_date',
+          id: 'deceasedDateTime',
           label: this.$t("QB_deceased_date"),
           type: 'string',
           operators: ['less', 'less_or_equal', 'greater', 'greater_or_equal', 'is_not_null'],
