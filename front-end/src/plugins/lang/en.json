@@ -129,6 +129,7 @@
   "QB_category": "category",
   "QB_sex": "sex",
   "QB_deceased": "deceased",
+  "QB_deceased_date": "date of death",
   "QB_in_stock": "in stock",
   "QB_yes": "yes",
   "QB_no": "no",

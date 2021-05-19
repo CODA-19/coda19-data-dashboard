@@ -119,8 +119,12 @@ export default {
         return { type: type, attribute: attr, datatype: dtype }
       });
     },
-    loadMeasures: function(data){
-      this.measures = data;
+    loadMeasures: function(data) {
+      // reworking the new data for old expected package.
+      this.measures = {
+        cont: data.continuous.map(el => ({label_en: el.labels.en, label_fr: el.labels.en, value: el.code})),
+        disc: data.discrete.map(el => ({label_en: el.labels.en, label_fr: el.labels.en, value: el.code}))
+      };
     },
     fetch: function(url){
      return fetch(url)
