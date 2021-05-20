@@ -141,12 +141,18 @@
                 <span>{{ $t("selectBreakdownTxt") }}</span>
               </div>
               <div class="selectBreakdown selectionPanel">
+                <v-btn class="filter-button" :class="{toggled: breakdown}" @click="breakdown = !breakdown">
+                  <span v-if="breakdown"> Disable Breakdown</span>
+                  <span v-if="!breakdown"> Enable Breakdown</span>
+
+                </v-btn>
+
                 <p>{{ $t("selectBreakdownByTxt") }}</p>
                 <div class="row">
                   <div class="col-lg-4 col-md-4">
                     <div>{{ $t("selectResourceTypeTxt") }}</div>
                     <div>
-                      <select class="form-control"  id="resourceType_breakdown" v-model="form.breakdown.resourceType" >
+                      <select class="form-control"  id="resourceType_breakdown" v-model="form.breakdown.resourceType" :disabled="!breakdown">
                         <option >{{ $t("selectResourcePatient") }}</option>
                       </select>
                     </div>
@@ -154,7 +160,7 @@
                   <div class="col-lg-4 col-md-4">
                     <div>{{ $t("selectResourceAttributeTxt") }}</div>
                     <div>
-                      <select class="form-control" id="resourceAttribute_breakdown"  v-model="form.breakdown.resourceAttribute">
+                      <select class="form-control" id="resourceAttribute_breakdown"  v-model="form.breakdown.resourceAttribute" :disabled="!breakdown">
                         <option >{{ $t("selectResourceAttributeAge")}}</option>
                         <option >{{ $t("selectResourceAttributeSex")}}</option>
                        <option >{{ $t("selectResourceAttributeDeathDate")}}</option>
@@ -165,15 +171,15 @@
                 <div class="row">
                     <div class="col-lg-4 col-md-4">
                         <span>{{ $t("breakdownStart") }}</span>
-                        <input class="form-control" type="date" id="start_breakdown" v-model="form.breakdown.period.start" />
+                        <input class="form-control" type="date" id="start_breakdown" v-model="form.breakdown.period.start" :disabled="!breakdown" />
                     </div>
                     <div class="col-lg-4 col-md-4">
                         <span>{{ $t("breakdownEnd") }}</span>
-                        <input class="form-control" type="date" id="end_breakdown" v-model="form.breakdown.period.end"/>
+                        <input class="form-control" type="date" id="end_breakdown" v-model="form.breakdown.period.end" :disabled="!breakdown"/>
                     </div>
                     <div class="col-lg-4 col-md-4">
                         <span>{{ $t("breakdownStep") }}</span>
-                        <input class="form-control" type="number"  :placeholder="$t('breakdownDays')" id="step_breakdown" v-model="form.breakdown.period.step"/>
+                        <input class="form-control" type="number"  :placeholder="$t('breakdownDays')" id="step_breakdown" v-model="form.breakdown.period.step" :disabled="!breakdown"/>
                     </div>
                 </div>
             </div>
@@ -334,7 +340,8 @@ export default {
           en:[{label:'age',value: 'age'},{label:'gender', value: 'gender'}],
           fr:[{label:'age',value: 'age'},{label:'genre', value: 'gender'}]},
       tabCounter:1,
-      tabs:['patient']
+      tabs:['patient'],
+      breakdown:false
     };
   },
   components: {
@@ -394,7 +401,7 @@ export default {
       // I've placed more code than needed here, but I was trying to make any debugging easier while we are impl.
       // the linking between form and data panels.
       const sites = this.form.sites.map(s => s.value);
-      const request = SummaryFormFactory.fromForm(this.form);
+      const request = SummaryFormFactory.fromForm(this.form, this.breakdown);
       console.log('Making Summary requests with given sites', request, sites);
 
       // This will only accept two mocked task (the two demo tasks) for the moment.

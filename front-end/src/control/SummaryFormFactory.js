@@ -25,7 +25,7 @@ function qbBreakdown(cfg) {
 }
 
 export default class SummaryFormFactory {
-    static fromForm(dat) {
+    static fromForm(dat, brkdwn) {
 
         const selector = {
             "resource": "Patient",
@@ -33,7 +33,7 @@ export default class SummaryFormFactory {
             "fields": sortBy(dat.field.map(el => ({ path: el.value })), 'path')
         };
 
-        if (dat.breakdown.resourceType !== "") {
+        if (brkdwn && dat.breakdown.resourceType !== "") {
             selector['breakdown'] = qbBreakdown(dat.breakdown)
         }
 
