@@ -402,13 +402,15 @@ export default {
 
       console.info("[SelectData.vue] Data received with correct format ", data);
 
+      const results = this.prepareData(data.data.data);
 
+      console.log(`[SelectData.vue] Prepared Data${results}`);
 
       //console.log('old', await this.getSummaryData());
       const dat = await this.getNSummaryData();
       console.info("res_data", dat);
 
-      bus.$emit("showResults", dat);
+      bus.$emit("showResults", results);
     },
     onReset() {},
     toggleAll(checked) {
@@ -449,7 +451,47 @@ export default {
           this.tabs.splice(i, 1)
         }
       }
-    }
+    },
+    prepareData(data){
+      var results = {
+        tables:[]
+      }
+      results.tables = this.prepareTable(data);
+
+      return results;
+    },
+    prepareTable(data){
+      var tables = [];
+
+      data.forEach(d=>{
+        var table = {
+          items:[],
+          fieldslang:{
+            en:{},
+            fr:{}
+          }
+        };
+        table.nameKey = d.about.field;
+        d.data.forEach((dat)=>{
+          var item = {};
+          d.cols.forEach((col,i)=>{
+            item[col.code] = dat[i]
+          })
+          table.items.push(item);
+        })
+
+        tables.fieldslang={en:{},fr:{}}
+        d.cols.forEach((col)=>{
+          table.fieldslang.en[col.code] = col.labels.en;
+          table.fieldslang.fr[col.code] = col.labels.fr;
+        })
+
+        tables.push(table);
+      })
+
+      return tables;
+      }
+
   },
   watch: {
     connections() {
