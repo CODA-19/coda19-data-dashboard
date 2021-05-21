@@ -251,8 +251,8 @@ export default {
             var icon =params[0].marker,
                 category = params[0].name,
                 value = `<b>${params[0].value}</b>`,
-                margin = `${params[1].value[1]}-${params[1].value[2]}`,
-                tooltip = `<div style="display: flex;flex-direction: row;min-width:80px"><div style="display:flex;flex-direction:column"><div>${icon}${category}</div> </div><div style="display:flex;flex-direction:column;text-align: right"><div>${value}</div><div>${margin}</div></div>`
+                margin = params[1]?`${params[1].value[1]}-${params[1].value[2]}`:"",
+                tooltip = `<div style="display: flex;flex-direction: row;min-width:80px"><div style="display:flex;flex-direction:column"><div>${icon}${category}</div> </div><div style="display:flex;flex-direction:column;text-align: right"><div style="margin-left:5px">${value}</div><div>${margin}</div></div>`
 
             return tooltip;
           }

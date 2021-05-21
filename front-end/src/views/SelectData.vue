@@ -461,13 +461,15 @@ export default {
     },
     prepareData(data){
       var results = {
-        tables:[]
+        tables: [],
+        figures: []
       }
-      results.tables = this.prepareTable(data);
+      results.tables = this.prepareTables(data);
+      results.figures = this.prepareFigures(data);
 
       return results;
     },
-    prepareTable(data){
+    prepareTables(data){
       var tables = [];
 
       data.forEach(d=>{
@@ -506,15 +508,56 @@ export default {
               table.fieldslang.fr[col.code+cat.code] = `${col.labels.en} ${d.about.field.toLowerCase().includes('time')?new Date(cat.code).toLocaleString().split(',')[0]:cat.code}`;
             })
           }
-
         })
 
         tables.push(table);
       })
 
       return tables;
-      }
+      },
 
+    prepareFigures(data){
+      var figures = [];
+      data.forEach((d)=>{
+        var figure = {};
+        figure.nameKey = d.about.field;
+        figure.breakdown = d.about.field.toLowerCase().includes('time');
+
+        if(d.about.field==='gender'){
+
+          var primaryCategory = d.data.map(dat=> dat[d.cols.findIndex(col=>col.code==='site')]),
+              subCategory = d.cols[d.cols.findIndex(col=>col.code==='count')].categories.map(c=>c.code);
+
+          figure.category= [primaryCategory, subCategory];
+              figure.type= 'bar',
+              figure.data= d.data.map(dat=> dat[d.cols.findIndex(col=>col.code==='count')])
+        }
+
+        if(d.about.field==='age'){
+          figure.category= [d.data.map(dat=> dat[d.cols.findIndex(col=>col.code==='site')])],
+              figure.type= 'bar',
+              figure.data=d.data.map(dat=> dat[d.cols.findIndex(col=>col.code==='mean')]),
+              figure.margin = [];
+              // d.data.forEach((dat,i)=>{
+              //   var marg = [];
+              //   marg[0] = figure.category[0][i];
+              //   var ci = dat[d.cols.findIndex(col=>col.code==='ci95')].slice(0,2);
+              //   figure.margin.push(marg.concat(ci));
+              // })
+        }
+
+        if(d.about.field.toLowerCase().includes('time')){
+          figure.type = 'line';
+          figure.categories = d.data.map(dat=> dat[d.cols.findIndex(col=>col.code==='site')]);
+          figure.dates = d.cols[d.cols.findIndex(col=>col.code==='count')].categories.map(c=>new Date(c.code).toLocaleDateString());
+          figure.data = d.data.map(dat=> dat[d.cols.findIndex(col=>col.code==='count')]);
+        }
+
+        figures.push(figure);
+      })
+
+      return figures;
+    }
   },
   watch: {
     connections() {
