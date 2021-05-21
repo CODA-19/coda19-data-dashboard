@@ -411,7 +411,7 @@ export default {
 
       const results = this.prepareData(data.data.data);
 
-      console.log(`[SelectData.vue] Prepared Data${results}`);
+      console.info("[SelectData.vue] Prepared Data", results);
 
       //console.log('old', await this.getSummaryData());
       const dat = await this.getNSummaryData();
@@ -501,8 +501,9 @@ export default {
           }
           else{
             col.categories.forEach((cat)=>{
-              table.fieldslang.en[col.code+cat.code] = `${col.labels.en} ${cat.code}`;
-              table.fieldslang.fr[col.code+cat.code] = `${col.labels.en} ${cat.code}`;
+              //temporary solution for times
+              table.fieldslang.en[col.code+cat.code] = `${col.labels.en} ${d.about.field.toLowerCase().includes('time')?new Date(cat.code).toLocaleString().split(',')[0]:cat.code}`;
+              table.fieldslang.fr[col.code+cat.code] = `${col.labels.en} ${d.about.field.toLowerCase().includes('time')?new Date(cat.code).toLocaleString().split(',')[0]:cat.code}`;
             })
           }
 
