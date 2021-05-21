@@ -22,6 +22,7 @@
                 :fields="table.fieldslang[$t('langCode')].values"
                 :head-variant="null"
                 :table-variant="'light'"
+                :responsive="true"
             ></b-table>
           </div>
           <v-divider></v-divider>
