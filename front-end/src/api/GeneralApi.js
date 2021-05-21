@@ -81,6 +81,20 @@ function temporaryGetMockedTaskData(request, sites, force) {
     return AxiosInstance.get(`stats/${url}`, {headers: headers});
 }
 
+function customRequest(request, sites) {
+    try {
+        console.assert(Array.isArray(sites) && sites.every(site => typeof site === "string"), "Incorrect site parameter");
+        const payload = window.btoa(JSON.stringify(request));
+        const url = `stats/query?sites=${sites.map(s => s.trim()).join(',')}&payload=${payload}`;
+
+        const headers = TokenBearerHeaderFactory.get();
+        return AxiosInstance.get(url, {headers: headers});
+    } catch (e) {
+        console.warn(e);
+        console.warn(e.stack);
+    }
+}
+
 export default {
     data,
     nsummary,
@@ -89,7 +103,8 @@ export default {
     DashData,
     Measures,
     mockStats,
-    temporaryGetMockedTaskData
+    temporaryGetMockedTaskData,
+    customRequest
 }
 
 const request_task_1 = {
