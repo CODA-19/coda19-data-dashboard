@@ -51,6 +51,9 @@
   "selectFieldTxt" : "Select field(s)",
   "resources_add": "Add (+)",
 
+  "disable_breakdown": "Disable Breakdown",
+  "enable_breakdown": "Enable Breakdown",
+
   "selectBreakdownTxt": "Breakdown",
   "selectBreakdownByTxt": "Breakdown by",
   "selectResourceTypeTxt": "Resource type",
