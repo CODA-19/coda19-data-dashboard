@@ -1,0 +1,110 @@
+// Query => with url https://api.hub.coda19.com/stats/summarize?sites=115,114,110
+// {
+//  "selectors": [
+//    {
+//      "resource": "Patient",
+//      "filters": [
+//        { "path": "deceasedBoolean", "operator": "is", "value": "true" },
+//        { "path": "deceasedDateTime", "operator": "isNot", "value": "null" }
+//      ],
+//      "fields": [],
+//      "breakdown": {
+//        "resource": { "type": "Patient", "field": "deceasedDateTime" },
+//        "slices": { "step": 1209600, "min": "2021-01-01", "max": "2021-04-06" }
+//      }
+//    }
+//  ],
+//  "options": {
+//    "measures": {
+//      "continuous": [],
+//      "categorical": [ "count" ]
+//    }
+//  }
+//}
+// Off course all of the data bellow is fake data.
+[
+  [
+    {
+      "siteCode": "114",
+      "total": 564,
+      "query": "...",
+      "breakdown": {
+        "query": "...",
+        "result": [
+          {"periodStart": "2020-12-24T00:00:00Z", "periodCount": 29 },
+          {"periodStart": "2021-01-07T00:00:00Z", "periodCount": 21 },
+          {"periodStart": "2021-01-21T00:00:00Z", "periodCount": 15 },
+          {"periodStart": "2021-02-04T00:00:00Z", "periodCount": 21 },
+          {"periodStart": "2021-02-18T00:00:00Z", "periodCount": 23 },
+          {"periodStart": "2021-03-04T00:00:00Z", "periodCount": 18 },
+          {"periodStart": "2021-03-18T00:00:00Z", "periodCount": 16 },
+          {"periodStart": "2021-04-01T00:00:00Z", "periodCount": 17 }
+        ]
+      },
+      "results": []
+    }
+  ],
+  [
+    {
+      "siteCode": "110",
+      "total": 1234,
+      "query": "...",
+      "breakdown": {
+        "query": "...",
+        "result": [
+          {"periodStart": "2020-12-24T00:00:00Z", "periodCount": 75 },
+          {"periodStart": "2021-01-07T00:00:00Z", "periodCount": 79 },
+          {"periodStart": "2021-01-21T00:00:00Z", "periodCount": 86 },
+          {"periodStart": "2021-02-04T00:00:00Z", "periodCount": 87 },
+          {"periodStart": "2021-02-18T00:00:00Z", "periodCount": 75 },
+          {"periodStart": "2021-03-04T00:00:00Z", "periodCount": 71 },
+          {"periodStart": "2021-03-18T00:00:00Z", "periodCount": 68 },
+          {"periodStart": "2021-04-01T00:00:00Z", "periodCount": 55 }
+        ]
+      },
+      "results": []
+    }
+  ],
+  [
+    {
+      "siteCode": "115",
+      "total": 5324,
+      "query": "...",
+      "breakdown": {
+        "query": "...",
+        "result": [
+          {"periodStart": "2020-12-24T00:00:00Z", "periodCount": 135 },
+          {"periodStart": "2021-01-07T00:00:00Z", "periodCount": 165 },
+          {"periodStart": "2021-01-21T00:00:00Z", "periodCount": 134 },
+          {"periodStart": "2021-02-04T00:00:00Z", "periodCount": 132 },
+          {"periodStart": "2021-02-18T00:00:00Z", "periodCount": 129 },
+          {"periodStart": "2021-03-04T00:00:00Z", "periodCount": 121 },
+          {"periodStart": "2021-03-18T00:00:00Z", "periodCount": 111 },
+          {"periodStart": "2021-04-01T00:00:00Z", "periodCount": 109 }
+        ]
+      },
+      "results": []
+    }
+  ],
+  [
+    {
+      "siteCode": "all",
+      "total": 8543,
+      "query": "...",
+      "results": [],
+      "breakdown": {
+        "query": "...",
+        "result": [
+          {"periodStart": "2020-12-24T00:00:00Z", "periodCount": 301 },
+          {"periodStart": "2021-01-07T00:00:00Z", "periodCount": 302 },
+          {"periodStart": "2021-01-21T00:00:00Z", "periodCount": 242 },
+          {"periodStart": "2021-02-04T00:00:00Z", "periodCount": 223 },
+          {"periodStart": "2021-02-18T00:00:00Z", "periodCount": 257 },
+          {"periodStart": "2021-03-04T00:00:00Z", "periodCount": 231 },
+          {"periodStart": "2021-03-18T00:00:00Z", "periodCount": 121 },
+          {"periodStart": "2021-04-01T00:00:00Z", "periodCount": 111 }
+        ]
+      }
+    }
+  ]
+]

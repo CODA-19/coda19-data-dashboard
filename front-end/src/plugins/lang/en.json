@@ -51,12 +51,17 @@
   "selectFieldTxt" : "Select field(s)",
   "resources_add": "Add (+)",
 
+  "disable_breakdown": "Disable Breakdown",
+  "enable_breakdown": "Enable Breakdown",
+
   "selectBreakdownTxt": "Breakdown",
   "selectBreakdownByTxt": "Breakdown by",
   "selectResourceTypeTxt": "Resource type",
   "selectResourceAttributeTxt": "Resource attribute",
   "selectResourcePatient": "Patient",
   "selectResourceAttributeAge": "Age",
+  "selectResourceAttributeSex": "Sex",
+  "selectResourceAttributeDeathDate": "deceasedDateTime",
 
   "breakdownStart": "start",
   "breakdownEnd": "end",
@@ -118,7 +123,7 @@
   "hubNotConnectedTxt": "HUB Disconnected",
   "homeMetricsTxt": "HM",
   "learningTitle": "Learning",
-  "startLearning": "Start a machine learning process",
+  "federated_simulation": "Federated Simulation",
 
   "requestAccessDescriptionTxt": " To get access to CODA-19, contact this person",
   "mailRequestAccessTxt": "mailto:address_a_determiner@coda19.ca?subject=Request access",
@@ -127,6 +132,7 @@
   "QB_category": "category",
   "QB_sex": "sex",
   "QB_deceased": "deceased",
+  "QB_deceased_date": "date of death",
   "QB_in_stock": "in stock",
   "QB_yes": "yes",
   "QB_no": "no",

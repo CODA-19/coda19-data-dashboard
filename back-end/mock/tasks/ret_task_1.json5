@@ -1,0 +1,53 @@
+{
+  "request": {
+    "selectors": [
+      {
+        "resource": "Patient",
+        "filters": [
+          { "path": "deceasedBoolean", "operator": "is", "value": "false" }
+        ],
+        "fields": [
+          { "path": "gender" },
+          { "path": "age" }
+        ]
+      }
+    ],
+    "options": {
+      "measures": {
+        "continuous": [ "count", "mean", "stdev", "ci95" ],
+        "categorical": [ "count", "mode" ]
+      }
+    }
+  },
+  "data": [
+    {
+      "about": { "field": "gender" },
+      "cols": [
+        { "code": "site", "labels": { "fr": "site", "en": "site" } },
+        { "code": "total", "labels": { "fr": "total", "en": "total" } },
+        { "code": "mode", "labels": { "fr": "mode", "en": "mode" } },
+        { "code": "count", "labels": { "fr": "décompte", "en": "count" }, "categories": [ {"code": "female"}, {"code": "male"}, {"code": "unknown"}] }
+      ],
+      "data": [
+        ["CIUSSS-NIM", 6666, "female", [4444, 2222, 0]],
+        ["CHUQ-UL", 378587, "female", [190234, 187123, 1230]],
+        ["all", 384594, "female", [196874, 185742, 1978]]
+      ]
+    },
+    {
+      "about": { "field": "age" },
+      "cols": [
+        { "code": "site", "labels": { "fr": "site", "en": "site" } },
+        { "code": "total", "labels": { "fr": "total", "en": "total" } },
+        { "code": "mean", "labels": { "fr": "moyenne", "en": "mean" } },
+        { "code": "stdev", "labels": { "fr": "stdev", "en": "stdev" } },
+        { "code": "ci95", "labels": { "fr": "ic95", "en": "ci95" }, "categories": [ {"code": "lower"}, {"code": "upper"}] }
+      ],
+      "data": [
+        ["CIUSSS-NIM", 5999, 51.23, 19.23, [19, 93]],
+        ["CHUQ-UL", 412493, 37.23, 21.23, [7, 95]],
+        ["all", 418492, 43.23, -1, [-1, 0]]
+      ]
+    }
+  ]
+}

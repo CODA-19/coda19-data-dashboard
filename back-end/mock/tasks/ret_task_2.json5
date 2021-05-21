@@ -1,0 +1,53 @@
+{
+  "request": {
+    "selectors": [
+      {
+        "resource": "Patient",
+        "filters": [
+          { "path": "deceasedBoolean", "operator": "is", "value": "true" },
+          { "path": "deceasedDateTime", "operator": "isNot", "value": "null" }
+        ],
+        "fields": [],
+        "breakdown": {
+          "resource": { "type": "Patient", "field": "deceasedDateTime" },
+          "slices": { "step": 1209600, "min": "2021-01-01", "max": "2021-04-06" }
+        }
+      }
+    ],
+    "options": {
+      "measures": {
+        "continuous": [],
+        "categorical": [ "count" ]
+      }
+    }
+  },
+  "data": [
+    {
+      "about": { "field": "deceasedDateTime" },
+      "cols": [
+        { "code": "site", "labels": { "fr": "site", "en": "site" } },
+        { "code": "total", "labels": { "fr": "total", "en": "total" } },
+        {
+          "code": "count",
+          "labels": { "fr": "décompte", "en": "count" },
+          "categories": [
+            {"code": "2020-12-24T00:00:00Z" },
+            {"code": "2021-01-07T00:00:00Z" },
+            {"code": "2021-01-21T00:00:00Z" },
+            {"code": "2021-02-04T00:00:00Z" },
+            {"code": "2021-02-18T00:00:00Z" },
+            {"code": "2021-03-04T00:00:00Z" },
+            {"code": "2021-03-18T00:00:00Z" },
+            {"code": "2021-04-01T00:00:00Z" }
+          ]
+        }
+      ],
+      "data": [
+        ["CIUSSS-NIM", 564, [29,21,15,21,23,18,16,17]],
+        ["CHUM", 1234, [75,79,86,87,75,71,68,55]],
+        ["CHUQ-UL", 5324, [135,165,134,132,129,121,111,109]],
+        ["all", 8543, [301,302,242,223,257,231,121,111]]
+      ]
+    }
+  ]
+}

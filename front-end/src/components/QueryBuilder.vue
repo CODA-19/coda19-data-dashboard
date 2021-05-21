@@ -122,14 +122,24 @@ export default {
           },
           operators: ['more', 'equal', 'not_equal', 'in', 'not_in', 'is_null', 'is_not_null']
         },{
-          id: 'deceased',
+          id: 'deceasedBoolean',
           label: this.$t("QB_deceased"),
           type: 'integer',
           input: 'select',
           values: {
-            1: 'false',
+            0: 'false',
+            1: 'true',
           },
-          operators: ['equal', 'not_equal', 'in', 'not_in', 'is_null', 'is_not_null']
+          operators: ['equal', 'not_equal', 'is_null', 'is_not_null']
+        },{
+          id: 'deceasedDateTime',
+          label: this.$t("QB_deceased_date"),
+          type: 'string',
+          operators: ['less', 'less_or_equal', 'greater', 'greater_or_equal', 'is_not_null'],
+          validation: {
+            format: /^\d{4}-\d+-\d+$/
+          },
+          placeholder: '2021-01-01'
         },{
           id: 'sex',
           label: this.$t("QB_sex"),

@@ -29,10 +29,7 @@
 
     <b-navbar-nav right style="flex-direction: row; place-content: flex-end;flex: 1 1 auto;margin-top: 10px;">
       <b-nav-item id="currentDate">
-        {{ new Date(2021, 3, 9).toISOString().split("T")[0] }}
-      </b-nav-item>
-      <b-nav-item>
-        <router-link to="/request" class="nav-link">{{ $t('requestAccessTxt') }}</router-link>
+        {{ new Date("2021/05/21").toISOString().split("T")[0] }}
       </b-nav-item>
       <b-nav-item class="nav-link warn" v-if="!isHubConnected">{{ $t('hubNotConnectedTxt') }}</b-nav-item>
       <b-nav-item>

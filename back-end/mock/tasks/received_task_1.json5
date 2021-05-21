@@ -1,0 +1,57 @@
+// Query => with url https://api.hub.coda19.com/stats/summarize?sites=115,114,110&waitAllSites=false&waitTime=10000
+// {
+//    "selectors": [
+//        {
+//            "resource": "Patient",
+//            "filters": [
+//                { "path": "deceasedBoolean", "operator": "is", "value": "false" }
+//            ],
+//            "fields": [
+//                {"path": "gender"},
+//                {"path": "age"}
+//            ]
+//        }
+//    ],
+//    "options": {
+//        "measures": {
+//            "continuous": [ "count", "mean", "stdev", "ci95" ],
+//            "categorical": [ "count", "mode" ]
+//        }
+//    }
+//}
+// Off course all of the data bellow is fake data.
+[
+  [
+    {
+      "siteCode": "114",
+      "total": 6666,
+      "query": "...",
+      "results": [
+        { "field": "gender", "queries": [ "..." ], "count": [ { "label": "female", "value": 4444 }, { "label": "male", "value": 2222 } ], "mode": "female" },
+        { "field": "age", "queries": [ "..." ], "count": 323123, "mean": { "mean": 51.23, "populationSize": 5999 }, "stdev": 19.23, "ci95": [ 19, 93 ] }
+      ]
+    }
+  ],
+  [
+    {
+      "siteCode": "115",
+      "total": 378587,
+      "query": "...",
+      "results": [
+        { "field": "gender", "queries": [ "..." ], "count": [ { "label": "female", "value": 190234 }, { "label": "male", "value": 187123 }, { "label": "unknown", "value": 1230 } ], "mode": "female" },
+        { "field": "age", "queries": [ "..." ], "count": 13214253, "mean": { "mean": 37.23, "populationSize": 412493 }, "stdev": 21.23, "ci95": [ 7, 95 ] }
+      ]
+    }
+  ],
+  [
+    {
+      "siteCode": "all",
+      "total": 384594,
+      "query": "...",
+      "results": [
+        { "field": "gender", "count": [ { "label": "female", "value": 196874 }, { "label": "male", "value": 185742 }, { "label": "unknown", "value": 1978 } ], "mode": "female" },
+        { "field": "age", "mean": 43.23, "stdev": -1, "ci95": [ -1, 0 ], "count": 17244567 }
+      ]
+    }
+  ]
+]

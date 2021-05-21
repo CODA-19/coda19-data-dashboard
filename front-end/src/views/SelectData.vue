@@ -38,12 +38,12 @@
                 <span>{{ $t("selectMeasuresTxt") }}</span>
               </div>
               <div class="selectionPanel">
-                <div class="subPanel">
+                <div class="subPanel" v-if="measures.cont">
                   <span>{{$t("contTxt")}}</span>
-                  <multiselect v-model="form.measures.cont[$t('langCode')]"
+                  <multiselect v-model="form.measures.cont"
                                :placeholder="$t('selectContTxt')"
-                               :options="contOptions[$t('langCode')]"
-                               label="label"
+                               :options="measures.cont"
+                               :label="'label_'+$t('langCode')"
                                track-by="value"
                                :multiple="true"
                                :clear-on-select="false"
@@ -51,18 +51,18 @@
                                :showLabels="false"
                   >
                     <template slot="clear" slot-scope="cont">
-                      <div class="multiselect__clear" v-if="form.measures.cont[componentKey].length" @mousedown.prevent.stop="clearAllCont(cont.search)"></div>
+                      <div class="multiselect__clear" v-if="measuresSelected('cont',componentKey)" @mousedown.prevent.stop="clearAllCont(cont.search)"></div>
                     </template><span slot="noResult">No measure found.</span>
 
                   </multiselect>
                 </div>
 
-                <div class="subPanel">
+                <div class="subPanel" v-if="measures.disc">
                   <span>{{$t("discTxt")}}</span>
-                  <multiselect v-model="form.measures.disc[$t('langCode')]"
+                  <multiselect v-model="form.measures.disc"
                                :placeholder="$t('selectDiscTxt')"
-                               :options="discOptions[$t('langCode')]"
-                               label="label"
+                               :options="measures.disc"
+                               :label="'label_'+$t('langCode')"
                                track-by="value"
                                :multiple="true"
                                :clear-on-select="false"
@@ -70,7 +70,7 @@
                                :showLabels="false"
                   >
                     <template slot="clear" slot-scope="disc">
-                      <div class="multiselect__clear" v-if="form.measures.disc[componentKey].length" @mousedown.prevent.stop="clearAllDisc(disc.search)"></div>
+                      <div class="multiselect__clear" v-if="measuresSelected('disc',componentKey)" @mousedown.prevent.stop="clearAllDisc(disc.search)"></div>
                     </template><span slot="noResult">No measure found.</span>
 
                   </multiselect>
@@ -131,12 +131,8 @@
                         Open a new tab using the <b>Add (+)</b> button above.
                       </div>
                     </template>
-
-
                   </b-tabs>
                 </b-card>
-
-
               </div>
             </v-card>
 
@@ -145,37 +141,45 @@
                 <span>{{ $t("selectBreakdownTxt") }}</span>
               </div>
               <div class="selectBreakdown selectionPanel">
+                <v-btn class="filter-button" :class="{toggled: breakdown}" @click="breakdown = !breakdown">
+                  <span v-if="breakdown">{{ $t("disable_breakdown") }}</span>
+                  <span v-if="!breakdown">{{ $t("enable_breakdown") }}</span>
+
+                </v-btn>
+
                 <p>{{ $t("selectBreakdownByTxt") }}</p>
                 <div class="row">
                   <div class="col-lg-4 col-md-4">
                     <div>{{ $t("selectResourceTypeTxt") }}</div>
                     <div>
-                      <select class="form-control">
-                        <option :value="patient">{{ $t("selectResourcePatient") }}</option>
+                      <select class="form-control"  id="resourceType_breakdown" v-model="form.breakdown.resourceType" :disabled="!breakdown">
+                        <option >{{ $t("selectResourcePatient") }}</option>
                       </select>
                     </div>
                   </div>
                   <div class="col-lg-4 col-md-4">
                     <div>{{ $t("selectResourceAttributeTxt") }}</div>
                     <div>
-                      <select class="form-control">
-                        <option :value="age">{{ $t("selectResourceAttributeAge")}}</option>
+                      <select class="form-control" id="resourceAttribute_breakdown"  v-model="form.breakdown.resourceAttribute" :disabled="!breakdown">
+                        <option >{{ $t("selectResourceAttributeAge")}}</option>
+                        <option >{{ $t("selectResourceAttributeSex")}}</option>
+                       <option >{{ $t("selectResourceAttributeDeathDate")}}</option>
                       </select>
                     </div>
                   </div>
                 </div>
-                <div v-if="form.measures.cont[componentKey].length" class="row">
+                <div class="row">
                     <div class="col-lg-4 col-md-4">
                         <span>{{ $t("breakdownStart") }}</span>
-                        <input class="form-control" type="date" id="start_breakdown"></input>
+                        <input class="form-control" type="date" id="start_breakdown" v-model="form.breakdown.period.start" :disabled="!breakdown" />
                     </div>
                     <div class="col-lg-4 col-md-4">
                         <span>{{ $t("breakdownEnd") }}</span>
-                        <input class="form-control" type="date" id="end_breakdown"></input>
+                        <input class="form-control" type="date" id="end_breakdown" v-model="form.breakdown.period.end" :disabled="!breakdown"/>
                     </div>
                     <div class="col-lg-4 col-md-4">
                         <span>{{ $t("breakdownStep") }}</span>
-                        <input class="form-control" type="number"  :placeholder="$t('breakdownDays')" id="step_breakdown"></input>
+                        <input class="form-control" type="number"  :placeholder="$t('breakdownDays')" id="step_breakdown" v-model="form.breakdown.period.step" :disabled="!breakdown"/>
                     </div>
                 </div>
             </div>
@@ -184,7 +188,7 @@
 
 
         <div class="col-lg-6 col-md-4 submit-btn">
-                <b-button type="submit" pill block variant="success" :disabled="dataUpdate">{{$t("selectTxt")}}</b-button>
+                <b-button type="submit" pill block variant="success" :disabled="!dataUpdate">{{$t("selectTxt")}}</b-button>
         </div>
       </b-form>
 
@@ -222,17 +226,18 @@ import _ from "underscore";
 import Multiselect from "vue-multiselect";
 import GeneralApi from "../api/GeneralApi";
 import QueryBuilder from "@/components/QueryBuilder"
+import SummaryFormFactory from "../control/SummaryFormFactory";
 
 const nameResource = (res) => `${res.type} > ${res.attribute} (${res.datatype})`;
 const idResource = (res) => `${res.type}|${res.attribute}|${res.datatype}`;
 
 export default {
   name: "AppHeader",
-  props: [ 'connections', 'resources', 'minimize'],
+  props: [ 'connections', 'resources', 'minimize', 'measures'],
   mounted(){
     bus.$on('queryUpdate',(query)=>{this.getQuery(query)})
   },
-   
+
   computed: {
     options() {
       return [
@@ -271,7 +276,7 @@ export default {
         query:  {
       condition: 'AND',
           rules: [{
-        id: 'deceased',
+        id: 'deceasedBoolean',
         operator: 'equal',
         value: 1
       }, {
@@ -292,20 +297,14 @@ export default {
             resourceType:"",
             resourceAttribute:"",
             period:{
-                start:'2021/01/01',
-                end:'2021/01/01',
-                step:0,
+                start:'2021-04-01',
+                end:'2021-05-01',
+                step:5,
             }
         },
         measures:{
-          cont:{
-              en:[{label:'count', value:'count'},{label:'mean', value:'mean'},{label:'stdev', value:'stdev'},{label:'ci95', value:'ci95'}],
-              fr:[{label:'décompte', value:'count'},{label:'moyenne', value:'mean'},{label:'stdev', value:'stdev'},{label:'ci95', value:'ci95'}]
-          },
-          disc:{
-              en:[{label:'age',value: 'age'},{label:'gender', value: 'gender'}],
-              fr:[{label:'age',value: 'age'},{label:'genre', value: 'gender'}]
-            }
+          cont:[],
+          disc:[]
         },
         sites: [],
         field: []
@@ -340,14 +339,9 @@ export default {
       fieldOptions:{
           en:[{label:'age',value: 'age'},{label:'gender', value: 'gender'}],
           fr:[{label:'age',value: 'age'},{label:'genre', value: 'gender'}]},
-      contOptions:{
-          en:[{label:'count', value:'count'},{label:'mean', value:'mean'},{label:'stdev', value:'stdev'},{label:'ci95', value:'ci95'}],
-          fr: [{label:'Compte', value:'count'},{label:'Moyenne', value:'mean'},{label:'stdev', value:'stdev'},{label:'ci95', value:'ci95'}]},
-      discOptions:{
-          en:[{label:'age',value: 'age'},{label:'gender', value: 'gender'}],
-          fr:[{label:'age',value: 'age'},{label:'genre', value: 'gender'}]},
       tabCounter:1,
-      tabs:['patient']
+      tabs:['patient'],
+      breakdown:false
     };
   },
   components: {
@@ -388,24 +382,43 @@ export default {
     },
 
     getNSummaryData: async function() {
-      this.cached.variables = this.form.variables;
       this.cached.sites = this.form.sites;
-      this.cached.breakdown  = this.form.breakdown;
-      
+     // this.cached.breakdown  = this.form.breakdown;
+      // this.cache.measures = this.from.measures;
+
       const sitesUri = encodeURI(this.form.sites.map(conn=>{return conn.value}));
-      const varUri = encodeURI(this.form.variables.map(conn=>{return conn.value}));
-      const breakdownUri = encodeURI(this.form.breakdown.map(conn=>{return conn.value}));
-      const data = await GeneralApi.nsummary(sitesUri, varUri, breakdownUri).then(res => res.data);
+      const contMeasuresUri = encodeURI(this.form.measures.cont.map(cat=>{return cat.value}));
+      const discMeasuresUri = encodeURI(this.form.measures.disc.map(cat=>{return cat.value}));
+      const breakdownUri = encodeURI(JSON.stringify(this.form.breakdown));
+      const resourcesParams = encodeURI(JSON.stringify({fields: this.form.field.map(f=>f.value), query:this.form.query}));
+
+      const data = await GeneralApi.mockStats(sitesUri,  contMeasuresUri, discMeasuresUri, resourcesParams,breakdownUri).then(res => res.data).catch(err=> console.error(err));
 
       return data;
     },
 
     onSubmit: async function() {
+      // I've placed more code than needed here, but I was trying to make any debugging easier while we are impl.
+      // the linking between form and data panels.
+      const sites = this.form.sites.map(s => s.value);
+      const request = SummaryFormFactory.fromForm(this.form, this.breakdown);
+      console.log('Making Summary requests with given sites', request, sites);
+
+      // This will only accept two mocked task (the two demo tasks) for the moment.
+      const data = await GeneralApi.temporaryGetMockedTaskData(request, sites); // For local development
+      //const data = await GeneralApi.customRequest(request, sites); // When pushing to prod.
+
+      console.info("[SelectData.vue] Data received with correct format ", data);
+
+      const results = this.prepareData(data.data.data);
+
+      console.info("[SelectData.vue] Prepared Data", results);
+
       //console.log('old', await this.getSummaryData());
       const dat = await this.getNSummaryData();
       console.info("res_data", dat);
 
-      bus.$emit("showDashboard", dat);
+      bus.$emit("showResults", results);
     },
     onReset() {},
     toggleAll(checked) {
@@ -420,11 +433,19 @@ export default {
     clearAllFields (){
       this.form.field = []
     },
+    measuresSelected (category, key){
+      if(category==='cont'){
+        return this.form.measures.cont.length > 0
+      }
+      if(category==='disc'){
+        return this.form.measures.disc.length > 0}
+      else return false;
+    },
     clearAllCont (){
-      this.form.measures.cont = []
+      this.form.measures.cont=[]
     },
     clearAllDisc (){
-      this.form.measures.disc = []
+      this.form.measures.disc =[]
     },
     getQuery(query){
       this.form.query = query;
@@ -438,6 +459,105 @@ export default {
           this.tabs.splice(i, 1)
         }
       }
+    },
+    prepareData(data){
+      var results = {
+        tables: [],
+        figures: []
+      }
+      results.tables = this.prepareTables(data);
+      results.figures = this.prepareFigures(data);
+
+      return results;
+    },
+    prepareTables(data){
+      var tables = [];
+
+      data.forEach(d=>{
+        var table = {
+          items:[],
+          fieldslang:{
+            en:{},
+            fr:{}
+          }
+        };
+        table.nameKey = d.about.field;
+        d.data.forEach((dat)=>{
+          var item = {};
+          d.cols.forEach((col,i)=>{
+            if(!col.categories)
+              item[col.code] = dat[i]
+            else{
+              col.categories.forEach((cat,j)=>{
+                item[col.code+cat.code]= dat[i][j]
+              })
+            }
+          })
+          table.items.push(item);
+        })
+
+        tables.fieldslang={en:{},fr:{}}
+        d.cols.forEach((col)=>{
+          if(!col.categories){
+            table.fieldslang.en[col.code] = col.labels.en;
+            table.fieldslang.fr[col.code] = col.labels.fr;
+          }
+          else{
+            col.categories.forEach((cat)=>{
+              //temporary solution for times
+              table.fieldslang.en[col.code+cat.code] = `${col.labels.en} ${d.about.field.toLowerCase().includes('time')?new Date(cat.code).toISOString().split("T")[0]:cat.code}`;
+              table.fieldslang.fr[col.code+cat.code] = `${col.labels.en} ${d.about.field.toLowerCase().includes('time')?new Date(cat.code).toISOString().split("T")[0]:cat.code}`;
+            })
+          }
+        })
+
+        tables.push(table);
+      })
+
+      return tables;
+      },
+
+    prepareFigures(data){
+      var figures = [];
+      data.forEach((d)=>{
+        var figure = {};
+        figure.nameKey = d.about.field;
+        figure.breakdown = d.about.field.toLowerCase().includes('time');
+
+        if(d.about.field==='gender'){
+
+          var primaryCategory = d.data.map(dat=> dat[d.cols.findIndex(col=>col.code==='site')]),
+              subCategory = d.cols[d.cols.findIndex(col=>col.code==='count')].categories.map(c=>c.code);
+
+          figure.category= [primaryCategory, subCategory];
+              figure.type= 'bar',
+              figure.data= d.data.map(dat=> dat[d.cols.findIndex(col=>col.code==='count')])
+        }
+
+        if(d.about.field==='age'){
+          figure.category= [d.data.map(dat=> dat[d.cols.findIndex(col=>col.code==='site')])],
+              figure.type= 'bar',
+              figure.data=d.data.map(dat=> dat[d.cols.findIndex(col=>col.code==='mean')]),
+              figure.margin = [];
+              // d.data.forEach((dat,i)=>{
+              //   var marg = [];
+              //   marg[0] = figure.category[0][i];
+              //   var ci = dat[d.cols.findIndex(col=>col.code==='ci95')].slice(0,2);
+              //   figure.margin.push(marg.concat(ci));
+              // })
+        }
+
+        if(d.about.field.toLowerCase().includes('time')){
+          figure.type = 'line';
+          figure.categories = d.data.map(dat=> dat[d.cols.findIndex(col=>col.code==='site')]);
+          figure.dates = d.cols[d.cols.findIndex(col=>col.code==='count')].categories.map(c=>new Date(c.code).toISOString().split("T")[0]);
+          figure.data = d.data.map(dat=> dat[d.cols.findIndex(col=>col.code==='count')]);
+        }
+
+        figures.push(figure);
+      })
+
+      return figures;
     }
   },
   watch: {

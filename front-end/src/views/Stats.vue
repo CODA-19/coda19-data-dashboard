@@ -1,27 +1,22 @@
 <template>
-<!--  <component-->
-<!--    v-bind:is="component"-->
-<!--    v-bind:summary="summary"-->
-<!--    v-bind:sites="sites"-->
-<!--    v-bind:lengthOfStay="length_of_stay"-->
-<!--    v-bind:ageGroups="age_groups"-->
-
-<!--    v-bind:connections="connections"-->
-<!--    v-bind:resources="resources"-->
-<!--  />-->
   <div class="mainContainer">
     <v-container>
     <div class="row">
       <div class="col-lg-6 col-md-6 col-sm-12">
         <SelectData
             v-bind:connections="connections"
+            v-bind:measures = "measures"
             v-bind:resources="resources"
             v-bind:minimize = "showDash"
         />
       </div>
 
       <div class="col-lg-6 col-md-6 col-sm-12">
-        <Results></Results>
+        <Results
+            v-if="showResults"
+            :tables = "tables"
+            :figures="figures">
+        </Results>
       </div>
     </div>
 
@@ -38,6 +33,7 @@ import Connections from "@/views/Connections";
 import { bus } from "@/main";
 import SiteApi from '@/api/SiteApi'
 import Results from "./Results";
+import GeneralApi from "../api/GeneralApi";
 
 
 const intersection = (...sets) => sets.reduce((acc, el) => acc.filter({}.hasOwnProperty.bind(el)), Object.keys(sets[0]));
@@ -66,6 +62,13 @@ export default {
       this.showDash = true;
     });
 
+    bus.$on("showResults", (data) => {
+      this.tables = data.tables;
+      this.figures = data.figures;
+
+      this.showResults = true;
+    });
+
     // bus.$on("newSearch", () => {
     //   this.component = "SelectData";
     //
@@ -77,7 +80,11 @@ export default {
 
     await SiteApi.get().then(res => res.data)
           .then(json => json.connections)
-          .then(conn => this.load(conn));
+          .then(conn => this.load(conn))
+          .catch(error => console.error(error));
+
+    await GeneralApi.Measures()
+          .then(res => this.loadMeasures(res.data));
   },
   data() {
     return {
@@ -89,11 +96,15 @@ export default {
       // -- Down is good --
       connections: [],
       resources: [],
-      showDash: false
+      showDash: false,
+      showResults: false,
+      tables: [],
+      figures:[],
+      measures:{},
     };
   },
   methods: {
-    load: function(connections) { 
+    load: function(connections) {
       // Loading active connections
       this.connections = connections.map(conn => Object.assign({}, conn)); // Clone for safety
 
@@ -101,12 +112,19 @@ export default {
       const siteResources = connections.map(conn => getSiteKeys(conn.resources));
       const commonRes = intersection(...siteResources);
 
-      // Take resource definition from 
+      // Take resource definition from
       this.resources = commonRes.map(key => {
         let type, attr, dtype;
         [ type, attr, dtype ] = key.split('|');
         return { type: type, attribute: attr, datatype: dtype }
       });
+    },
+    loadMeasures: function(data) {
+      // reworking the new data for old expected package.
+      this.measures = {
+        cont: data.continuous.map(el => ({label_en: el.labels.en, label_fr: el.labels.en, value: el.code})),
+        disc: data.discrete.map(el => ({label_en: el.labels.en, label_fr: el.labels.en, value: el.code}))
+      };
     },
     fetch: function(url){
      return fetch(url)
