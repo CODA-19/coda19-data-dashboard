@@ -482,15 +482,30 @@ export default {
         d.data.forEach((dat)=>{
           var item = {};
           d.cols.forEach((col,i)=>{
-            item[col.code] = dat[i]
+            if(!col.categories)
+              item[col.code] = dat[i]
+            else{
+              col.categories.forEach((cat,j)=>{
+                item[col.code+cat.code]= dat[i][j]
+              })
+            }
           })
           table.items.push(item);
         })
 
         tables.fieldslang={en:{},fr:{}}
         d.cols.forEach((col)=>{
-          table.fieldslang.en[col.code] = col.labels.en;
-          table.fieldslang.fr[col.code] = col.labels.fr;
+          if(!col.categories){
+            table.fieldslang.en[col.code] = col.labels.en;
+            table.fieldslang.fr[col.code] = col.labels.fr;
+          }
+          else{
+            col.categories.forEach((cat)=>{
+              table.fieldslang.en[col.code+cat.code] = `${col.labels.en} ${cat.code}`;
+              table.fieldslang.fr[col.code+cat.code] = `${col.labels.en} ${cat.code}`;
+            })
+          }
+
         })
 
         tables.push(table);
