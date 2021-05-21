@@ -405,8 +405,8 @@ export default {
       console.log('Making Summary requests with given sites', request, sites);
 
       // This will only accept two mocked task (the two demo tasks) for the moment.
-      const data = await GeneralApi.temporaryGetMockedTaskData(request, sites); // For local development
-      //const data = await GeneralApi.customRequest(request, sites); // When pushing to prod.
+      //const data = await GeneralApi.temporaryGetMockedTaskData(request, sites); // For local development
+      const data = await GeneralApi.customRequest(request, sites); // When pushing to prod.
 
       console.info("[SelectData.vue] Data received with correct format ", data);
 
