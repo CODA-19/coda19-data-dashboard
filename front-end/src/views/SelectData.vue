@@ -142,8 +142,8 @@
               </div>
               <div class="selectBreakdown selectionPanel">
                 <v-btn class="filter-button" :class="{toggled: breakdown}" @click="breakdown = !breakdown">
-                  <span v-if="breakdown"> Disable Breakdown</span>
-                  <span v-if="!breakdown"> Enable Breakdown</span>
+                  <span v-if="breakdown">{{ $t("disable_breakdown") }}</span>
+                  <span v-if="!breakdown">{{ $t("enable_breakdown") }}</span>
 
                 </v-btn>
 

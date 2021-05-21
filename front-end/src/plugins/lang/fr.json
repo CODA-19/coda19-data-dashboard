@@ -52,6 +52,9 @@
   "selectFieldTxt" : "Sélectionnez les domaines",
   "resources_add": "Ajouter (+)",
 
+  "disable_breakdown": "Désactivé la stratification",
+  "enable_breakdown": "Activer la stratification",
+
   "selectBreakdownTxt": "Stratification",
   "selectBreakdownByTxt": "Stratifier par",
   "selectResourceTypeTxt": "Type de resources",
