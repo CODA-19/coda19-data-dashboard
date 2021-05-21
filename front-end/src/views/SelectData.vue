@@ -504,8 +504,8 @@ export default {
           else{
             col.categories.forEach((cat)=>{
               //temporary solution for times
-              table.fieldslang.en[col.code+cat.code] = `${col.labels.en} ${d.about.field.toLowerCase().includes('time')?new Date(cat.code).toLocaleString().split(',')[0]:cat.code}`;
-              table.fieldslang.fr[col.code+cat.code] = `${col.labels.en} ${d.about.field.toLowerCase().includes('time')?new Date(cat.code).toLocaleString().split(',')[0]:cat.code}`;
+              table.fieldslang.en[col.code+cat.code] = `${col.labels.en} ${d.about.field.toLowerCase().includes('time')?new Date(cat.code).toISOString().split("T")[0]:cat.code}`;
+              table.fieldslang.fr[col.code+cat.code] = `${col.labels.en} ${d.about.field.toLowerCase().includes('time')?new Date(cat.code).toISOString().split("T")[0]:cat.code}`;
             })
           }
         })
@@ -549,7 +549,7 @@ export default {
         if(d.about.field.toLowerCase().includes('time')){
           figure.type = 'line';
           figure.categories = d.data.map(dat=> dat[d.cols.findIndex(col=>col.code==='site')]);
-          figure.dates = d.cols[d.cols.findIndex(col=>col.code==='count')].categories.map(c=>new Date(c.code).toLocaleDateString());
+          figure.dates = d.cols[d.cols.findIndex(col=>col.code==='count')].categories.map(c=>new Date(c.code).toISOString().split("T")[0]);
           figure.data = d.data.map(dat=> dat[d.cols.findIndex(col=>col.code==='count')]);
         }
 
