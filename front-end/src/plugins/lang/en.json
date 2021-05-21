@@ -123,7 +123,7 @@
   "hubNotConnectedTxt": "HUB Disconnected",
   "homeMetricsTxt": "HM",
   "learningTitle": "Learning",
-  "startLearning": "Start a machine learning process",
+  "federated_simulation": "Federated Simulation",
 
   "requestAccessDescriptionTxt": " To get access to CODA-19, contact this person",
   "mailRequestAccessTxt": "mailto:address_a_determiner@coda19.ca?subject=Request access",
