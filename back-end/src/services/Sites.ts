@@ -205,7 +205,6 @@ export class Sites {
     getActiveIcuOnDate(date: Date, sitesCode?: string[]): Promise<Map<string, number>> {
         // Active ICU Hospitalizations on Date
         const icuCountPerSitesBetweenDates = SRBuilder.newSel("Encounter")
-            .filterIs("location.location.display", "intensive_care_unit")
             .filterDateOn("location.period.start", date)
             .join(SRBuilder.newSel("Location")
                 .filterIs("type.coding.code", "ICU"))
@@ -213,7 +212,7 @@ export class Sites {
         // Building summary request
         const sr = SRBuilder.newReq()
             .addSelector(icuCountPerSitesBetweenDates)
-            .addMeasures({categorical: ["count"]})
+            .addMeasures({categorical: ["count", "mode"]})
             .build();
 
         // Get summary results.
