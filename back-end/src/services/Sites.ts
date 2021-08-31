@@ -185,8 +185,7 @@ export class Sites {
     getNewCaseFatalityOnDate(date: Date, sitesCodes?: string[]): Promise<number> {
         // COVID+ patients deaths on given date
         const deathsFromPosOnDate = SRBuilder.newSel("Patient")
-            .filterIs("deceasedBoolean", "true")
-            .filterDateOn("deceasedDateTime", date)
+            .filterDateOn("deceased.dateTime", date)
             .join(SRBuilder.newSel("Observation")
                 .filterIs("code.coding.code", Terms.LOINC.SarsCov2Probe.code)
                 .filterIs("interpretation.coding.display", Terms.LOINC.Positive.code))
