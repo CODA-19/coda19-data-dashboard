@@ -41,7 +41,7 @@ export default {
   created() {
     window.addEventListener("resize", ()=>{
       const barChart = this.$refs.barChart;
-      barChart.resize();
+      if (barChart && barChart.hasOwnProperty('resize'))  barChart.resize();
     });
   },
   computed:{

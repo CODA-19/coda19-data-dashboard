@@ -29,7 +29,7 @@ export default {
   created() {
     window.addEventListener("resize", ()=>{
       const gauge = this.$refs.gauge;
-      gauge.resize();
+      if (gauge && gauge.hasOwnProperty('resize'))  gauge.resize();
     });
   },
   computed: {
