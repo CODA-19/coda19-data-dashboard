@@ -168,7 +168,7 @@ export class Sites {
         const posTestOnDate = SRBuilder.newSel("Observation")
             .filterIs("code.coding.code", Terms.LOINC.SarsCov2Probe.code)
             .filterIs("interpretation.coding.display", Terms.LOINC.Positive.code)
-            .filterDateOn("effectiveDateTime", date);
+            .filterDateOn("issued", date);
 
         // Building summary request
         const sr = SRBuilder.newReq()
