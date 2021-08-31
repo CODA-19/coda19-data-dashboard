@@ -39,7 +39,11 @@ export class SRSBld {
     selector: SummarizeRequestSelector;
 
     constructor(resourceId: string) {
-        this.selector = { resource: resourceId, fields: [], filters: [] }
+        this.selector = {
+            resource: resourceId,
+            fields: [],
+            filters: []
+        }
     }
 
     join(selector: SRSBld): SRSBld {
@@ -59,6 +63,11 @@ export class SRSBld {
     }
     filterIs(path: string, value: string): SRSBld {
         this.selector.filters.push({ path: path, operator: "is", value: value })
+        return this;
+    }
+
+    addFieldGender(): SRSBld {
+        this.selector.fields.push({ path: 'gender' })
         return this;
     }
 

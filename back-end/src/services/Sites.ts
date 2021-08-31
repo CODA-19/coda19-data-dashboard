@@ -145,10 +145,11 @@ export class Sites {
      */
     getCohortSizeOnDate(date: Date, sitesCodes?: string[]): Promise<number> {
         // SARS-COV-2 observation present with any value, before given date
-        const patientWithTestBeforeDate = SRBuilder.newSel("Patient").join(
-            SRBuilder.newSel("Observation")
+        const patientWithTestBeforeDate = SRBuilder.newSel("Patient")
+            .addFieldGender()
+            .join(SRBuilder.newSel("Observation")
                 .filterIs("code.coding.code", Terms.LOINC.SarsCov2Probe.code)
-                .filterDateBefore("effectiveDateTime", addDays(date, 1)));
+                .filterDateBefore("issued", addDays(date, 1)));
 
         // Building summary request
         const sr = SRBuilder.newReq()
