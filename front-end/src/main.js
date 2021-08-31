@@ -64,8 +64,8 @@ keycloak.init({ onLoad: 'login-required' }).then((auth) => {
         Vue.$log.info('Token refreshed' + refreshed);
         TokenContext.setToken(keycloak.token);
       } else {
-        Vue.$log.warn('Token not refreshed, valid for '
-          + Math.round(keycloak.tokenParsed.exp + keycloak.timeSkew - new Date().getTime() / 1000) + ' seconds');
+        // We can re-enable this later if we need.
+        //Vue.$log.warn('Token not refreshed, valid for ' + Math.round(keycloak.tokenParsed.exp + keycloak.timeSkew - new Date().getTime() / 1000) + ' seconds');
       }
     }).catch(() => {
       Vue.$log.error('Failed to refresh token');
