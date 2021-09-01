@@ -145,10 +145,11 @@ export class Sites {
      */
     getCohortSizeOnDate(date: Date, sitesCodes?: string[]): Promise<number> {
         // SARS-COV-2 observation present with any value, before given date
-        const patientWithTestBeforeDate = SRBuilder.newSel("Patient").join(
-            SRBuilder.newSel("Observation")
+        const patientWithTestBeforeDate = SRBuilder.newSel("Patient")
+            .addFieldGender()
+            .join(SRBuilder.newSel("Observation")
                 .filterIs("code.coding.code", Terms.LOINC.SarsCov2Probe.code)
-                .filterDateBefore("effectiveDateTime", addDays(date, 1)));
+                .filterDateBefore("issued", addDays(date, 1)));
 
         // Building summary request
         const sr = SRBuilder.newReq()
@@ -167,7 +168,7 @@ export class Sites {
         const posTestOnDate = SRBuilder.newSel("Observation")
             .filterIs("code.coding.code", Terms.LOINC.SarsCov2Probe.code)
             .filterIs("interpretation.coding.display", Terms.LOINC.Positive.code)
-            .filterDateOn("effectiveDateTime", date);
+            .filterDateOn("issued", date);
 
         // Building summary request
         const sr = SRBuilder.newReq()
@@ -184,8 +185,7 @@ export class Sites {
     getNewCaseFatalityOnDate(date: Date, sitesCodes?: string[]): Promise<number> {
         // COVID+ patients deaths on given date
         const deathsFromPosOnDate = SRBuilder.newSel("Patient")
-            .filterIs("deceasedBoolean", "true")
-            .filterDateOn("deceasedDateTime", date)
+            .filterDateOn("deceased.dateTime", date)
             .join(SRBuilder.newSel("Observation")
                 .filterIs("code.coding.code", Terms.LOINC.SarsCov2Probe.code)
                 .filterIs("interpretation.coding.display", Terms.LOINC.Positive.code))
@@ -205,7 +205,6 @@ export class Sites {
     getActiveIcuOnDate(date: Date, sitesCode?: string[]): Promise<Map<string, number>> {
         // Active ICU Hospitalizations on Date
         const icuCountPerSitesBetweenDates = SRBuilder.newSel("Encounter")
-            .filterIs("location.location.display", "intensive_care_unit")
             .filterDateOn("location.period.start", date)
             .join(SRBuilder.newSel("Location")
                 .filterIs("type.coding.code", "ICU"))
@@ -213,7 +212,7 @@ export class Sites {
         // Building summary request
         const sr = SRBuilder.newReq()
             .addSelector(icuCountPerSitesBetweenDates)
-            .addMeasures({categorical: ["count"]})
+            .addMeasures({categorical: ["count", "mode"]})
             .build();
 
         // Get summary results.

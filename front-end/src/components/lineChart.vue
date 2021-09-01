@@ -62,7 +62,10 @@ export default {
     prediction: String
   },
   created() {
-    window.addEventListener("resize", ()=> { this.$refs.lineChart.resize(); } );
+    window.addEventListener("resize", ()=> {
+      const chart = this.$refs.lineChart.resize();
+      if (chart && chart.hasOwnProperty('resize'))  chart.resize();
+    } );
   },
   computed:{
     option() {
