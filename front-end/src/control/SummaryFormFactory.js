@@ -10,7 +10,7 @@ function qbRuleToFilter(rule) {
         return { "path": "deceasedBoolean", "operator": "is", "value": value === 0 ? "false" : "true" }
     }
     if (id === "deceasedDateTime" && operator === "is_not_null") {
-        return { "path": "deceasedDateTime", "operator": "isNot", "value": "null" }
+        return { "path": "deceased.dateTime", "operator": "isNot", "value": "null" }
     }
 
     console.warn("Unknown rule, need to be managed.");
@@ -18,8 +18,9 @@ function qbRuleToFilter(rule) {
 }
 
 function qbBreakdown(cfg) {
+    const fd = cfg.resourceAttribute === 'deceasedDateTime' ? "deceased.dateTime" : cfg.resourceAttribute;
     return {
-        "resource": { "type": cfg.resourceType, "field": cfg.resourceAttribute },
+        "resource": { "type": cfg.resourceType, "field": fd },
         "slices": { "step": Number.parseInt(cfg.period.step) * secondsPerDay, "min": cfg.period.start, "max": cfg.period.end }
     }
 }

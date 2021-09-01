@@ -158,33 +158,6 @@ export default {
             step: 0.01
           },
           operators: ['greater', 'not_equal', 'in', 'not_in', 'is_null', 'is_not_null']
-        }, {
-          id: 'in_stock',
-          label:   this.$t("QB_in_stock") ,
-          type: 'integer',
-          input: 'radio',
-          values: {
-            1: this.$t("QB_yes"),
-            0: this.$t("QB_no")
-          },
-          operators: ['equal']
-        }, {
-          id: 'price',
-          label:  this.$t("QB_price"),
-          type: 'double',
-          validation: {
-            min: 0,
-            step: 0.01
-          }
-        }, {
-          id: 'id',
-          label:  this.$t("QB_identifier"),
-          type: 'string',
-          placeholder: '____-____-____',
-          operators: ['equal', 'not_equal'],
-          validation: {
-            format: /^.{4}-.{4}-.{4}$/
-          }
         }],
 
         rules: this.query,
