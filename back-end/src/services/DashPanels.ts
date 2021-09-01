@@ -69,6 +69,12 @@ export class DashPanels {
                 return this.computePanel8();
             case 'p9':
                 return this.computePanel9();
+            case 'p10':
+                return this.computePanel10();
+            case 'p11':
+                return this.computePanel11();
+            case 'p12':
+                return this.computePanel12();
             // No match
             default:
                 return Promise.reject(new Error(`Invalid Panel ID ${panelId}`));
@@ -193,6 +199,21 @@ export class DashPanels {
     private async computePanel9(): Promise<any> {
         // FIXME(malavv): Panel logic is not implemented
         return Promise.resolve(this.mock['p9']);
+    }
+
+    private async computePanel10(): Promise<any> {
+        // FIXME(malavv): Panel logic is not implemented
+        return Promise.resolve(this.mock['p10']);
+    }
+
+    private async computePanel11(): Promise<any> {
+        // FIXME(malavv): Panel logic is not implemented
+        return Promise.resolve(this.mock['p11']);
+    }
+
+    private async computePanel12(): Promise<any> {
+        // FIXME(malavv): Panel logic is not implemented
+        return Promise.resolve(this.mock['p12']);
     }
 
     /**
