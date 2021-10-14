@@ -12,6 +12,12 @@ import {
 } from "../../coda19-ts/src/request/SummarizeRequest";
 import {PerSiteNumber} from "./DashPanels";
 import Terms from "../../coda19-ts/src/term/term";
+import {
+    PrepareRequestBody,
+    PrepareRequestResult,
+    PrepareRequestSiteAllResult, 
+    PrepareRequestSiteResult
+} from "../../coda19-ts/src/request/PrepareRequest";
 
 // FIXME(malavv): The names should come from each sites, not being faked here.
 function convertMock2Name(pkg: any) {
@@ -297,6 +303,45 @@ export class Sites {
 
     static convertCode2Name(code: string) : string {
         return code2name(code);
+    }
+
+    prepare(request: any, sitesCodes?: string[]){
+        if (sitesCodes === undefined || !Array.isArray(sitesCodes))
+        return Promise.reject(new Error("Invalid sites"));
+        
+        const data = {...{data: request}, ...passAuth(this.req)};
+        
+        try {
+            return axios.get(`/learning/prepare?sites=${sitesCodes.join(',')}`, data).then((res:any) => res.data);
+          } catch (err) {
+            console.error(err.stack);
+          }
+    }
+
+    train(request: any, sitesCodes?: string[]){
+        if (sitesCodes === undefined || !Array.isArray(sitesCodes))
+        return Promise.reject(new Error("Invalid sites"));
+
+        const data = {...{data: request}, ...passAuth(this.req)};
+        
+        try {
+            return axios.get(`/learning/train?sites=${sitesCodes.join(',')}`, data).then((res:any) => res.data);
+          } catch (err) {
+            console.error(err.stack);
+          }
+    }
+
+    progress(request: any, sitesCodes?: string[]){
+        if (sitesCodes === undefined || !Array.isArray(sitesCodes))
+        return Promise.reject(new Error("Invalid sites"));
+
+        const data = {...{data: request}, ...passAuth(this.req)};
+        
+        try {
+            return axios.get(`/learning/progress?sites=${sitesCodes.join(',')}`, data).then((res:any) => res.data);
+          } catch (err) {
+            console.error(err.stack);
+          }
     }
 }
 
