@@ -138,5 +138,10 @@
   "QB_no": "no",
   "QB_age": "age",
   "QB_price": "price",
-  "QB_identifier": "identifier"
+  "QB_identifier": "identifier",
+
+  "prepareRequestTxt": "Prepare Request",
+  "TrainRequestTxt": "Train Request",
+  "sendPrepareTxt": "Send Prepare Request",
+  "sendTrainTxt": "Send Train Request"
 }

@@ -137,6 +137,10 @@
   "QB_yes": "oui",
   "QB_no": "non",
   "QB_price": "prix",
-  "QB_identifier": "identifiant"
+  "QB_identifier": "identifiant",
 
+  "prepareRequestTxt": "Requête de préparation",
+  "TrainRequestTxt": "Requête d'entrainement",
+  "sendPrepareTxt": "Envoyer requête de préparation",
+  "sendTrainTxt": "Envoyer requête d'entrainement"
 }
