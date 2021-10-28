@@ -142,5 +142,6 @@
   "prepareRequestTxt": "Requête de préparation",
   "TrainRequestTxt": "Requête d'entrainement",
   "sendPrepareTxt": "Envoyer requête de préparation",
-  "sendTrainTxt": "Envoyer requête d'entrainement"
+  "sendTrainTxt": "Envoyer requête d'entrainement",
+  "evaluateResultTxt": "Résultats d'évaluation"
 }

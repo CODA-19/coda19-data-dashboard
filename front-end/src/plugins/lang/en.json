@@ -143,5 +143,6 @@
   "prepareRequestTxt": "Prepare Request",
   "TrainRequestTxt": "Train Request",
   "sendPrepareTxt": "Send Prepare Request",
-  "sendTrainTxt": "Send Train Request"
+  "sendTrainTxt": "Send Train Request",
+  "evaluateResultTxt": "Evaluation Results"
 }

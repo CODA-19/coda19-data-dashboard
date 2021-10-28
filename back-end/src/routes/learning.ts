@@ -57,4 +57,20 @@ router.post('/progress', async function(req: Request, res: Response){
     res.status(200).send(data);
 })
 
+router.post('/evaluate', async function(req: Request, res: Response){
+    const sitesTxt = queryParamString(req, "sites");
+    const sites = (sitesTxt === undefined) ? sitesTxt : sitesTxt.split(',');
+
+    const body = req.body
+    const sitesProxy = new Sites(req);
+    let data = null;
+    try {
+        data = await sitesProxy.evaluate(body, sites);
+    } catch (err) {
+        console.error(err.stack);
+        res.status(500).send("Unable to run evaluate query on hub.");
+    }
+    res.status(200).send(data);
+})
+
 export default router;

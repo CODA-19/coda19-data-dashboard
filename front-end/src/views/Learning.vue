@@ -58,6 +58,16 @@
             </div>
           </v-card>
         </b-row>
+        <b-row v-if="evaluateCompleted">
+          <v-card class="resultContainer">
+            <div class="panelTitle">
+              <span>{{ $t("evaluateResultTxt") }}</span>
+            </div>
+            <div>
+              <b-table striped hover :items="evaluateResult"></b-table>
+            </div>
+          </v-card>
+        </b-row>
       </b-col>
       <b-col lg="4" md="4" offset="1" v-if="!inProgress">
         <b-card class="sitesCard">
@@ -142,7 +152,7 @@ export default {
       LearningApi.getTrain(this.trainBody, sitesUri).then((res) => {
         clearInterval(this.progressInterval);
         this.getProgress();
-        console.log(res);
+        this.getEvaluate()
       });
     },
     getProgress() {
@@ -155,6 +165,14 @@ export default {
           if (this.progressResult.length != 0) this.showGraphLoading = false;
         });
     },
+    getEvaluate() {
+      const sitesUri = this.selectedSites.join(",");
+      LearningApi.getEvaluate(this.evaluateBody, sitesUri)
+        .then((res) =>{
+          this.evaluateCompleted = true;
+          this.evaluateResult = res.data
+        })
+    }
   },
   async created() {
     await SiteApi.get()
@@ -176,6 +194,7 @@ export default {
       showTrainInput: false,
       isTrainButtonDisabled: false,
       inProgress: false,
+      evaluateCompleted: false,
       metrics: [
         { name: "Accuracy", value: "acc" },
         { name: "Loss", value: "loss" },
@@ -184,6 +203,7 @@ export default {
       ],
       progressInterval: null,
       progressResult: [],
+      evaluateResult: [],
       jobID: "",
       prepareBody: `{
         "selectors": [
@@ -246,6 +266,7 @@ export default {
             "parameters": {
               "learning_rate": 0.00025,
               "validation_split": 0.33,
+              "evaluation_split": 0.2,
               "epochs": 1,
               "batch_size": 20,
               "shuffle": 1000
@@ -265,6 +286,9 @@ export default {
   },
   computed: {
     progressBody: function() {
+      return `{"job": "${this.jobID}"}`;
+    },
+    evaluateBody: function() {
       return `{"job": "${this.jobID}"}`;
     }
   },

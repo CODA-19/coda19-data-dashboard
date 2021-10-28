@@ -343,6 +343,19 @@ export class Sites {
             console.error(err.stack);
           }
     }
+
+    evaluate(request: any, sitesCodes?: string[]){
+        if (sitesCodes === undefined || !Array.isArray(sitesCodes))
+        return Promise.reject(new Error("Invalid sites"));
+
+        const data = {...{data: request}, ...passAuth(this.req)};
+        
+        try {
+            return axios.get(`/learning/evaluate?sites=${sitesCodes.join(',')}`, data).then((res:any) => res.data);
+          } catch (err) {
+            console.error(err.stack);
+          }
+    }
 }
 
 // Incomplete and for latter, I don't have time to make pretty interface before demo.

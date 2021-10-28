@@ -31,8 +31,19 @@ async function getProgress(body, sitesUri) {
     }    
 }
 
+async function getEvaluate(body, sitesUri) {
+    const headers = TokenBearerHeaderFactory.get();
+    try {
+        return await AxiosInstance.post(`learning/evaluate?sites=${sitesUri}`, body, {headers: headers,});
+    } catch (err) {
+        console.error(err.stack);
+        res.status(500).send("Unable to run evaluate query on backend");
+    }    
+}
+
 export default {
     getPrepare,
     getTrain,
-    getProgress
+    getProgress,
+    getEvaluate
 }
