@@ -289,3 +289,67 @@ html, body{
 .warn {
   font-weight: bold;
 }
+
+.metricsPanel {
+  width: 100%;
+  margin-top: 20px;
+}
+.metricsCard {
+  width: 100%;
+  
+  .card-body{
+    padding: 0px;
+  }
+  .cardHeader{
+    font-size:18px;
+    font-weight: bold;
+    border-bottom: 0px;
+  }
+}
+
+.sitesCard {
+  width: 100%;
+  
+  .card-body{
+    padding: 0px;
+
+    .sitesCardBody{
+      padding: 1rem;
+
+      .sites-checkbox{
+        padding-top: 1rem;
+      }
+    }
+  }
+  .cardHeader{
+    font-size:18px;
+    font-weight: bold;
+    border-bottom: 0px;
+  }
+}
+
+.learningContainer, .resultContainer {
+  margin-top: 20px;
+  border: 1px solid #e8e8e8;
+  width: 100%;
+  .panelTitle {
+    margin: 10px;
+    font-weight: bolder;
+  }
+
+  .preparePanel, .resultPanel {
+    border-top: 1px solid #e5e5e5;
+    border-radius: 5px; 
+    // .active{
+    //   .closeBtn{
+    //     display: block;
+    //     color: #D9534F;
+    //     font-weight: bold;
+    //     margin-left: 10px;
+    //   }
+    // }
+    .prepare #learningPrepareBodyForm, #learningTrainBodyForm{
+      margin-bottom: 0;
+    }
+  }
+}

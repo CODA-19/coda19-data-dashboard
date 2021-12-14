@@ -12,8 +12,11 @@ import apiRouter from './routes/api';
 import sitesRouter from './routes/sites';
 import homeRouter from './routes/home';
 import statsRouter from './routes/stats';
+import learningRouter from './routes/learning';
+import bodyParser from "body-parser";
 
 const app = express();
+app.use(bodyParser.json())
 CorsMiddleware.register(app);
 
 // start the server
@@ -31,3 +34,4 @@ app.use('/sites', keycloak.protect(), sitesRouter) // Sites availability
 app.use('/home', keycloak.protect(), homeRouter) // Homepage Viewmodel Data
 app.use('/api', keycloak.protect(), apiRouter)
 app.use('/stats', keycloak.protect(), statsRouter)
+app.use('/learning', keycloak.protect(), learningRouter)
