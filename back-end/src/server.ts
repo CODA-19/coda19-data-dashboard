@@ -14,16 +14,19 @@ import homeRouter from './routes/home';
 import statsRouter from './routes/stats';
 import learningRouter from './routes/learning';
 import bodyParser from "body-parser";
+import version from "./utils/version";
 
 const app = express();
 app.use(bodyParser.json())
 CorsMiddleware.register(app);
 
 // start the server
-app.set('port', process.env.PORT || 3000);
-const server = app.listen(app.get('port'), () => console.log("Dashboard Backend Started"));
-
-console.log(`Listening on ${JSON.stringify(server.address())}`);
+const port = process.env.PORT || 3000;
+app.set('port', port);
+const server = app.listen(app.get('port'), () => {
+    console.log(`⚡️[coda19-dashboard-backend]: Server is running at http://localhost:${port}`);
+    console.log(`⚡️[coda19-dashboard-backend]: Running ${version.getBuildVersion()} version of build`);
+});
 
 const keycloak = KeycloakFactory.get(app);
 app.use(keycloak.middleware());
