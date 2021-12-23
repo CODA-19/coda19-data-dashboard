@@ -15,6 +15,7 @@ import TokenContext from './api/TokenContext';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faUserSecret } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import version from "./utils/version";
 
 Vue.prototype.$http = Axios;
 
@@ -34,6 +35,8 @@ library.add(faUserSecret);
 Vue.component('font-awesome-icon', FontAwesomeIcon);
 
 Vue.config.productionTip = false
+
+console.log(`⚡️[coda19-dashboard-frontend]: Running ${version.getBuildVersion()} version of build`);
 
 // Note(malavv) : The dual instantiation of Vue is normal, here it is used just for an encapsulated EventBus.
 export const bus = new Vue();

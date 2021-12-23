@@ -1,4 +1,7 @@
-FROM node:lts-alpine
+FROM node:14-alpine3.13
+
+RUN apk update \
+    && apk add openssl
 
 ARG BUILD_ENV=prod
 
@@ -7,6 +10,10 @@ RUN npm install -g http-server
 WORKDIR /usr/src/app
 COPY ./ ./
 COPY ./${BUILD_ENV}.env ./.env
+
+# Make build footprint version for easier debugging.
+RUN rm ./version.txt
+RUN openssl rand -hex 12 > version.txt
 
 RUN yarn cache clean
 RUN yarn install
