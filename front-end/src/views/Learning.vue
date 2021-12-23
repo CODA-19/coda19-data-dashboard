@@ -25,7 +25,8 @@
                 </b-form-group>
                 <b-button block variant="success" @click="getPrepare">{{
                   $t("sendPrepareTxt")
-                }}</b-button>
+                }}
+                <span v-if="isPreparing">(loading)</span></b-button>
               </div>
             </div>
           </v-card>
@@ -52,8 +53,9 @@
                   variant="success"
                   @click="getTrain"
                   :disabled="isTrainButtonDisabled"
-                  >{{ $t("sendTrainTxt") }}</b-button
-                >
+                  >{{ $t("sendTrainTxt") }}
+                    <span v-if="isTraining">(loading)</span>
+                  </b-button>
               </div>
             </div>
           </v-card>
@@ -129,13 +131,19 @@ export default {
   methods: {
     getPrepare() {
       const sitesUri = this.selectedSites.join(",");
+      this.isPreparing = true;
+
       console.log(sitesUri);
       LearningApi.getPrepare(this.prepareBody, sitesUri)
         .then((res) => res.data)
         .then((json) => json.job)
         .then((job) => {
-          this.jobID = job;
-          this.trainBody = `{"job": "${job}","rounds": 50}`
+            this.jobID = job;
+            this.trainBody = `{"job": "${job}","rounds": 50}`
+            this.isPreparing = false;
+          })
+          .catch((error) => {
+            this.isPreparing = false;
           });
       this.isTrainButtonDisabled = false;
       this.showTrainInput = true;
@@ -144,6 +152,8 @@ export default {
     getTrain() {
       this.progressResult = [];
       this.isTrainButtonDisabled = true;
+      this.isTraining = true;
+
       this.getProgress();
       this.progressInterval = setInterval(() => {
         this.getProgress();
@@ -152,7 +162,11 @@ export default {
       LearningApi.getTrain(this.trainBody, sitesUri).then((res) => {
         clearInterval(this.progressInterval);
         this.getProgress();
-        this.getEvaluate()
+        this.getEvaluate();
+        this.isTraining = false;
+      })
+      .catch((error) => {
+        this.isTraining = false;
       });
     },
     getProgress() {
@@ -167,10 +181,11 @@ export default {
     },
     getEvaluate() {
       const sitesUri = this.selectedSites.join(",");
+
       LearningApi.getEvaluate(this.evaluateBody, sitesUri)
         .then((res) =>{
           this.evaluateCompleted = true;
-          this.evaluateResult = res.data
+          this.evaluateResult = res.data;
         })
     }
   },
@@ -194,6 +209,8 @@ export default {
       showTrainInput: false,
       isTrainButtonDisabled: false,
       inProgress: false,
+      isPreparing: false,
+      isTraining: false,
       evaluateCompleted: false,
       metrics: [
         { name: "Accuracy", value: "acc" },
