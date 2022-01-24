@@ -1,5 +1,5 @@
 # Only first time and for openshift operator.
-oc login -s https://console-pca.svc.valeria.science/ -u ${OPENSHIFT_USER} -p ${OPENSHIFT_PASSWORD}
-oc project ul-val-prj-coda19
+oc login -s api.ul-pca-pr-ul02.ulaval.ca:6443 -u ${OPENSHIFT_USER} -p ${OPENSHIFT_PASSWORD}
+oc project ul-val-prj-coda19-pr01
 
-oc process -f coda19-hub-dashboard.yaml | oc create -f -
+oc process -f coda19-hub-dashboard.yaml --param-file=openshift-project-params.env | oc create -f -
