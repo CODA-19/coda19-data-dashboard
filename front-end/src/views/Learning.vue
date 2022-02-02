@@ -60,6 +60,16 @@
             </div>
           </v-card>
         </b-row>
+        <b-row v-if="showCountResult">
+          <v-card class="resultContainer">
+            <div class="panelTitle">
+              <span>{{ $t("countResultTxt") }}</span>
+            </div>
+            <div>
+              <b-table striped hover :items="countResult" :fields="countFields"></b-table>
+            </div>
+          </v-card>
+        </b-row>
         <b-row v-if="evaluateCompleted">
           <v-card class="resultContainer">
             <div class="panelTitle">
@@ -135,16 +145,13 @@ export default {
 
       console.log(sitesUri);
       LearningApi.getPrepare(this.prepareBody, sitesUri)
-        .then((res) => res.data)
-        .then((json) => json.job)
-        .then((job) => {
-            this.jobID = job;
-            this.trainBody = `{"job": "${job}","rounds": 50}`
-            this.isPreparing = false;
-          })
-          .catch((error) => {
-            this.isPreparing = false;
-          });
+        .then((res) => {
+          this.jobID = res.data[0].job;
+          this.trainBody = `{"job": "${this.jobID}","rounds": 10}`
+          this.isPreparing = false;
+          this.countResult  = res.data;
+          this.showCountResult = true;
+        });
       this.isTrainButtonDisabled = false;
       this.showTrainInput = true;
       
@@ -207,6 +214,7 @@ export default {
       availableSites: [],
       showGraphLoading: true,
       showTrainInput: false,
+      showCountResult: false,
       isTrainButtonDisabled: false,
       inProgress: false,
       isPreparing: false,
@@ -218,9 +226,11 @@ export default {
         { name: "Validation Accuracy", value: "val_acc" },
         { name: "Validation Loss", value: "val_loss" },
       ],
+      countFields: ["siteCode", "count"],
       progressInterval: null,
       progressResult: [],
       evaluateResult: [],
+      countResult: [],
       jobID: "",
       prepareBody: `{
         "selectors": [

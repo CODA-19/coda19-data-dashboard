@@ -144,5 +144,6 @@
   "TrainRequestTxt": "Train Request",
   "sendPrepareTxt": "Send Prepare Request",
   "sendTrainTxt": "Send Train Request",
-  "evaluateResultTxt": "Evaluation Results"
+  "evaluateResultTxt": "Evaluation Results",
+  "countResultTxt":"Data Count"
 }
