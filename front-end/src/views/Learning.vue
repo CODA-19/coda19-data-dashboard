@@ -226,7 +226,7 @@ export default {
         { name: "Validation Accuracy", value: "val_acc" },
         { name: "Validation Loss", value: "val_loss" },
       ],
-      countFields: ["siteCode", "count"],
+      countFields: ["siteCode", "count", "totalCount"],
       progressInterval: null,
       progressResult: [],
       evaluateResult: [],
@@ -267,7 +267,8 @@ export default {
                   "label": "hemoglobin"
                 }
               ]
-            }
+            },
+            "limit":10000
           }
         ],
         "options": {
