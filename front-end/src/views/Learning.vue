@@ -127,6 +127,13 @@
           </b-overlay>
         </b-row>
       </b-col>
+      <b-col lg="4" md="4" offset="1" v-if="!inProgress">
+        <div>
+          <b-alert v-model="isError" variant="danger" dismissible>
+            {{ errorMsg }}
+          </b-alert>
+        </div>
+      </b-col>
     </b-row>
   </v-container>
 </template>
@@ -146,15 +153,20 @@ export default {
       console.log(sitesUri);
       LearningApi.getPrepare(this.prepareBody, sitesUri)
         .then((res) => {
-          this.jobID = res.data[0].job;
-          this.trainBody = `{"job": "${this.jobID}","rounds": 10}`
-          this.isPreparing = false;
-          this.countResult  = res.data;
-          this.showCountResult = true;
+          if(res.status == 200){
+            this.jobID = res.data[0].job;
+            this.trainBody = `{"job": "${this.jobID}","rounds": 10}`
+            this.isPreparing = false;
+            this.countResult  = res.data;
+            this.showCountResult = true;
+            this.isTrainButtonDisabled = false;
+            this.showTrainInput = true;
+          }
+          else if(res.status == 500){
+            this.isError = true
+            this.errorMsg = res.message
+          }
         });
-      this.isTrainButtonDisabled = false;
-      this.showTrainInput = true;
-      
     },
     getTrain() {
       this.progressResult = [];
@@ -167,10 +179,16 @@ export default {
       }, 2000);
       const sitesUri = this.selectedSites.join(",");
       LearningApi.getTrain(this.trainBody, sitesUri).then((res) => {
-        clearInterval(this.progressInterval);
-        this.getProgress();
-        this.getEvaluate();
-        this.isTraining = false;
+        if(res.status == 200){
+          clearInterval(this.progressInterval);
+          this.getProgress();
+          this.getEvaluate();
+          this.isTraining = false;
+        }
+        else if(res.status == 500){
+            this.isError = true
+            this.errorMsg = res.message
+        }
       })
       .catch((error) => {
         this.isTraining = false;
@@ -179,20 +197,31 @@ export default {
     getProgress() {
       const sitesUri = this.selectedSites.join(",");
       LearningApi.getProgress(this.progressBody, sitesUri)
-        .then((res) => res.data)
-        .then((json) => {
-          this.progressResult = json;
-          this.inProgress = true;
-          if (this.progressResult.length != 0) this.showGraphLoading = false;
-        });
+        .then((res) =>{
+          if(res.status == 200){
+            this.progressResult = res.data
+            this.inProgress = true;
+            if (this.progressResult.length != 0) this.showGraphLoading = false;
+          }
+          else if(res.status == 500){
+            this.isError = true
+            this.errorMsg = res.message
+          }
+        })
     },
     getEvaluate() {
       const sitesUri = this.selectedSites.join(",");
 
       LearningApi.getEvaluate(this.evaluateBody, sitesUri)
         .then((res) =>{
-          this.evaluateCompleted = true;
-          this.evaluateResult = res.data;
+          if(res.status == 200){
+            this.evaluateCompleted = true;
+            this.evaluateResult = res.data;
+          }
+          else if(res.status == 500){
+            this.isError = true
+            this.errorMsg = res.message
+          }
         })
     }
   },
@@ -209,6 +238,8 @@ export default {
   },
   data() {
     return {
+      isError: false,
+      errorMsg: '',
       trainBody: '',
       selectedSites: [],
       availableSites: [],

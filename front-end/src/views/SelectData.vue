@@ -188,9 +188,19 @@
 
 
         <div class="col-lg-6 col-md-4 submit-btn">
-                <b-button type="submit" pill block variant="success" :disabled="!dataUpdate">{{$t("selectTxt")}}</b-button>
+          <b-button type="submit" pill block variant="success" :disabled="dataUpdate" v-if="!awaitSubmit">{{$t("runQueryTxt")}}</b-button>
+          <b-button pill block variant="success" disabled v-if="awaitSubmit">
+            <b-spinner small type="grow"></b-spinner>
+            Loading...
+          </b-button>
         </div>
       </b-form>
+    
+    <div class="error-alert">
+      <b-alert v-model="isError" variant="danger" dismissible>
+            {{ errorMsg }}
+          </b-alert>
+    </div>
 
 <!--    <div class="col-lg-5 col-md-5 ">-->
 
@@ -251,14 +261,20 @@ export default {
       var sites = this.connections.map(conn => ({ 'text': conn.name, 'value': conn.uid }));
       var group = this.$t("selectAllTxt");
       var connOptions = [{sites:sites, group:group}]
-      this.form.sites= sites;
+      sites.forEach(conn =>{
+        if((this.preFillSites.some(uid => uid == conn.value) || this.preFillAllSites) && !this.form.sites.some(site => site.value == conn.value)){
+          this.form.sites.push(conn)
+        }
+      })
       return connOptions
     },
     resourceOptions(){
        return this.resources.map(res => ({ 'text': nameResource(res), 'value': idResource(res) }));
     },
     dataUpdate(){
-      return this.form.sites.length === 0 || this.form.variables.length === 0 || _.isEqual(this.form, this.cached);
+      return this.form.sites.length === 0 || Object.keys(this.form.query).length === 0 || this.form.field.length === 0 || 
+      (this.form.measures.cont.length === 0 && this.form.measures.disc.length === 0) || _.isEqual(this.form, this.cached)
+      || (this.breakdown && (this.form.breakdown.resourceType.length === 0 || this.form.breakdown.resourceAttribute.length === 0));
     }
   },
   data() {
@@ -276,20 +292,20 @@ export default {
         query:  {
       condition: 'AND',
           rules: [{
-        id: 'deceasedBoolean',
-        operator: 'equal',
-        value: 1
-      }, {
-        condition: 'AND',
-        rules: [{
-          id: 'age',
-          operator: 'greater',
-          value: 70
-        }, {
-          id: 'sex',
-          operator: 'equal',
-          value: 1
-        }]
+      //   id: 'deceasedBoolean',
+      //   operator: 'equal',
+      //   value: 1
+      // }, {
+      //   condition: 'AND',
+      //   rules: [{
+      //     id: 'age',
+      //     operator: 'greater',
+      //     value: 70
+      //   }, {
+      //     id: 'sex',
+      //     operator: 'equal',
+      //     value: 1
+      //   }]
       }]
     },
         variables:[],
@@ -341,7 +357,12 @@ export default {
           fr:[{label:'age',value: 'age'},{label:'genre', value: 'gender'}]},
       tabCounter:1,
       tabs:['patient'],
-      breakdown:false
+      breakdown:false,
+      preFillSites:[112],
+      preFillAllSites:false,
+      awaitSubmit:false,
+      isError:false,
+      errorMsg:"",
     };
   },
   components: {
@@ -398,27 +419,36 @@ export default {
     },
 
     onSubmit: async function() {
-      // I've placed more code than needed here, but I was trying to make any debugging easier while we are impl.
-      // the linking between form and data panels.
-      const sites = this.form.sites.map(s => s.value);
-      const request = SummaryFormFactory.fromForm(this.form, this.breakdown);
-      console.log('Making Summary requests with given sites', request, sites);
+      try{
+        // I've placed more code than needed here, but I was trying to make any debugging easier while we are impl.
+        // the linking between form and data panels.
+        const sites = this.form.sites.map(s => s.value);
+        const request = SummaryFormFactory.fromForm(this.form, this.breakdown);
+        console.log('Making Summary requests with given sites', request, sites);
+        this.awaitSubmit = true;
 
-      // This will only accept two mocked task (the two demo tasks) for the moment.
-      //const data = await GeneralApi.temporaryGetMockedTaskData(request, sites); // For local development
-      const data = await GeneralApi.customRequest(request, sites); // When pushing to prod.
+        // This will only accept two mocked task (the two demo tasks) for the moment.
+        //const data = await GeneralApi.temporaryGetMockedTaskData(request, sites); // For local development
+        const data = await GeneralApi.customRequest(request, sites); // When pushing to prod.
 
-      console.info("[SelectData.vue] Data received with correct format ", data);
+        console.info("[SelectData.vue] Data received with correct format ", data);
+        this.awaitSubmit = false;
+        const results = this.prepareData(data.data.data);
 
-      const results = this.prepareData(data.data.data);
+        console.info("[SelectData.vue] Prepared Data", results);
 
-      console.info("[SelectData.vue] Prepared Data", results);
+        //console.log('old', await this.getSummaryData());
+        const dat = await this.getNSummaryData();
+        console.info("res_data", dat);
 
-      //console.log('old', await this.getSummaryData());
-      const dat = await this.getNSummaryData();
-      console.info("res_data", dat);
-
-      bus.$emit("showResults", results);
+        bus.$emit("showResults", results);
+      }
+      catch(err){
+        this.isError = true
+        this.errorMsg = err.message
+        this.awaitSubmit = false;
+        console.log(err.message)
+      }
     },
     onReset() {},
     toggleAll(checked) {
@@ -565,7 +595,11 @@ export default {
       var sites = this.connections.map(conn => ({ 'text': conn.name, 'value': conn.uid }));
       var group = this.$t("selectAllTxt");
       this.connOptions.push({sites:sites, group:group})
-      this.form.sites = sites;
+      sites.forEach(conn =>{
+        if((this.preFillSites.some(uid => uid == conn.value) || this.preFillAllSites) && !this.form.sites.some(site => site.value == conn.value)){
+          this.form.sites.push(conn)
+        }
+      })
     },
     conns(newVal, oldVal) {
       if (newVal.length === 0) {

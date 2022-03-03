@@ -314,7 +314,7 @@ export class Sites {
         try {
             return axios.get(`/learning/prepare?sites=${sitesCodes.join(',')}`, data).then((res:any) => res.data);
           } catch (err) {
-            console.error(err.stack);
+            return err
           }
     }
 
@@ -327,7 +327,7 @@ export class Sites {
         try {
             return axios.get(`/learning/train?sites=${sitesCodes.join(',')}`, data).then((res:any) => res.data);
           } catch (err) {
-            console.error(err.stack);
+            return err
           }
     }
 
@@ -340,7 +340,7 @@ export class Sites {
         try {
             return axios.get(`/learning/progress?sites=${sitesCodes.join(',')}`, data).then((res:any) => res.data);
           } catch (err) {
-            console.error(err.stack);
+            return err
           }
     }
 
@@ -353,7 +353,7 @@ export class Sites {
         try {
             return axios.get(`/learning/evaluate?sites=${sitesCodes.join(',')}`, data).then((res:any) => res.data);
           } catch (err) {
-            console.error(err.stack);
+            return err
           }
     }
 }
