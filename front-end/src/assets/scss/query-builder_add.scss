@@ -26,6 +26,10 @@
   float: right !important;
 }
 
+.query-builder .pull-left {
+  float: left !important;
+}
+
 .query-builder .rule-value-container {
   border-left: 1px solid #ccc!important;
 }
@@ -141,4 +145,10 @@
 
 .selectionPanel select{
   border: 1px solid #ccc!important;
+}
+
+.query-builder .center{
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

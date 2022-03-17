@@ -87,16 +87,16 @@
               <div class="selectionPanel">
 
                 <b-card no-body>
-                  <b-tabs card>
-                    <b-tab v-for="i in tabs" :key="'dyn-tab-' + i" active>
+                  <b-tabs v-model="tabIndex" card>
+                    <b-tab v-for="resource in form.qB" :key="'dyn-tab-' + resource.name" active>
                       <template #title>
-                        {{i}}
-                        <a class="closeBtn" @click="removeTab(i)"><i class="fas fa-times"></i></a>
+                        {{resource.name}}
+                        <a class="closeBtn" @click="removeTab(resource)"><i class="fas fa-times"></i></a>
                       </template>
 
                       <div class="subPanel">
                         <span>{{$t("filters")}}</span>
-                        <QueryBuilder :id="i+'-queryBuilder'"  :key="componentKey" :query="form.query"></QueryBuilder>
+                        <QueryBuilder :id="resource.name+'-queryBuilder'"  :key="componentKey" :query="form.qB.query" :resource="resource.name"></QueryBuilder>
                       </div>
                       <div class="subPanel">
                         <span>{{$t("fields")}}</span>
@@ -121,7 +121,13 @@
 
                     <!-- New Tab Button (Using tabs-end slot) -->
                     <template #tabs-end>
-                      <b-nav-item role="presentation" @click.prevent="newTab" href="#"><strong>{{$t("resources_add")}}</strong></b-nav-item>
+                      <b-nav-item role="presentation" href="#" v-b-modal.modal-1><strong>{{$t("resources_add")}}</strong></b-nav-item>
+                      <b-modal id="modal-1" ref="new-tab-modal" title="New Resource" hide-footer>
+                        <div>
+                          <b-form-select v-model="newResource" :options="resourceTabOptions"></b-form-select>
+                        </div>
+                        <b-button class="mt-3" id="newTab" block @click="newTab">Add</b-button>
+                      </b-modal>
                     </template>
 
                     <!-- Render this if no tabs -->
@@ -237,6 +243,9 @@ import Multiselect from "vue-multiselect";
 import GeneralApi from "../api/GeneralApi";
 import QueryBuilder from "@/components/QueryBuilder"
 import SummaryFormFactory from "../control/SummaryFormFactory";
+import {
+  ResourceTypes
+} from "@CODA-19/coda19-fhir-templates";
 
 const nameResource = (res) => `${res.type} > ${res.attribute} (${res.datatype})`;
 const idResource = (res) => `${res.type}|${res.attribute}|${res.datatype}`;
@@ -247,7 +256,10 @@ export default {
   mounted(){
     bus.$on('queryUpdate',(query)=>{this.getQuery(query)})
   },
-
+  beforeUpdate(){
+    this.form.measures.cont = this.measures.cont;
+    this.form.measures.disc = this.measures.disc;
+  },
   computed: {
     options() {
       return [
@@ -272,15 +284,19 @@ export default {
        return this.resources.map(res => ({ 'text': nameResource(res), 'value': idResource(res) }));
     },
     dataUpdate(){
-      return this.form.sites.length === 0 || Object.keys(this.form.query).length === 0 || this.form.field.length === 0 || 
+      return this.form.sites.length === 0 || this.form.field.length === 0 || 
       (this.form.measures.cont.length === 0 && this.form.measures.disc.length === 0) || _.isEqual(this.form, this.cached)
       || (this.breakdown && (this.form.breakdown.resourceType.length === 0 || this.form.breakdown.resourceAttribute.length === 0));
+    },
+    resourceTabOptions(){
+      return ResourceTypes.map(resource => ({'value':resource, 'text':resource}))
     }
   },
   data() {
     return {
+      tabIndex: 0,
       lastLang:"",
-      selected: null,
+      newResource: null,
       conns: [],
       connOptions: [],
       allSelected: true,
@@ -289,25 +305,17 @@ export default {
       componentKey:this.$i18n.locale,
       age:99,
       form: {
-        query:  {
-      condition: 'AND',
-          rules: [{
-      //   id: 'deceasedBoolean',
-      //   operator: 'equal',
-      //   value: 1
-      // }, {
-      //   condition: 'AND',
-      //   rules: [{
-      //     id: 'age',
-      //     operator: 'greater',
-      //     value: 70
-      //   }, {
-      //     id: 'sex',
-      //     operator: 'equal',
-      //     value: 1
-      //   }]
-      }]
-    },
+        qB:[
+          {
+            name: 'Patient',
+            query: {
+              condition: 'AND',
+              rules: [{
+              }]
+            },
+            field: [],
+          }
+        ],
         variables:[],
         breakdown:{
             resourceType:"",
@@ -330,33 +338,10 @@ export default {
         breakdown:[],
         sites: []
       },
-
-      //MockData
       sites: [],
-      // query: {
-      //   condition: 'AND',
-      //   rules: [{
-      //     id: 'price',
-      //     operator: 'less',
-      //     value: 10.25
-      //   }, {
-      //     condition: 'OR',
-      //     rules: [{
-      //       id: 'category',
-      //       operator: 'equal',
-      //       value: 2
-      //     }, {
-      //       id: 'category',
-      //       operator: 'equal',
-      //       value: 1
-      //     }]
-      //   }]
-      // },
       fieldOptions:{
           en:[{label:'age',value: 'age'},{label:'gender', value: 'gender'}],
           fr:[{label:'age',value: 'age'},{label:'genre', value: 'gender'}]},
-      tabCounter:1,
-      tabs:['patient'],
       breakdown:false,
       preFillSites:[112],
       preFillAllSites:false,
@@ -478,15 +463,34 @@ export default {
       this.form.measures.disc =[]
     },
     getQuery(query){
-      this.form.query = query;
+      this.form.qB[this.tabIndex].query = query;
     },
     newTab() {
-      this.tabs.push(this.tabCounter++)
+    if(!this.newResource){
+      alert("Choose a resource");
+      return
+    }
+    if(this.form.qB.some(e=>e.name === this.newResource)){
+      alert("Resource already exist");
+      return
+    }
+    this.form.qB.push({
+        name: this.newResource,
+        query: {
+          condition: 'AND',
+          rules: [{
+          }]
+        },
+        field: []
+      });
+    this.newResource = '';
+    this.$refs['new-tab-modal'].hide();
+
     },
     removeTab(x){
-      for (let i = 0; i < this.tabs.length; i++) {
-        if (this.tabs[i] === x) {
-          this.tabs.splice(i, 1)
+      for (let i = 0; i < this.form.qB.length; i++) {
+        if (this.form.qB[i] === x) {
+          this.form.qB.splice(i, 1);
         }
       }
     },
@@ -588,7 +592,7 @@ export default {
       })
 
       return figures;
-    }
+    },
   },
   watch: {
     connections() {

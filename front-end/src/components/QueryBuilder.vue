@@ -1,5 +1,5 @@
 <template>
-<div class="col-12" ref="queryBuilder" :id="id"></div>
+  <div class="col-12" ref="queryBuilder" :id="id"></div>
 </template>
 
 <script>
@@ -9,13 +9,93 @@ import '@fortawesome/fontawesome-free/js/fontawesome.js'
 import 'jQuery-QueryBuilder'
 import { bus } from "@/main"
 import '@/plugins/lang/query-builder.fr.js'
+import '@/plugins/lang/query-builder.en.js'
+import {
+  ResourceTypes,
+  FiltersByDataType,
+  AttributesByResourceType,
+} from "@CODA-19/coda19-fhir-templates";
 
 export default {
   name: "QueryBuilder",
   props:{
     query:Object,
     id: String,
-    filters: Array
+    resource: String
+  },
+  methods:{
+    getFiltersByResource(resource) {
+      const attributes = AttributesByResourceType[resource];
+      let filters = [];
+      attributes.forEach(attr => {
+        filters.push(this.recursiveGetPath(attr, attr.name))
+      });
+      return filters.flat(Infinity)
+    },
+
+    recursiveGetPath(attr, path){
+      if(!attr.subpaths){
+        return this.setFilterOptionsByType(path, attr)
+      }
+      else{
+        let filters = []
+        attr.subpaths.forEach(sub =>{
+          filters.push(this.recursiveGetPath(sub, path+"."+sub.name))
+        })
+        return filters
+      }
+    },
+    setFilterOptionsByType(path, attribute){
+      if(attribute.type === "boolean"){
+        let filter = {
+          id: path,
+          type: 'boolean',
+          input: 'select',
+          values: {
+            0: 'false',
+            1: 'true',
+          },
+          operators: ['equal', 'not_equal']
+        }
+        return filter
+      }
+      else if(attribute.type === "dateTime"){
+        let filter = {
+          id: path,
+          type: 'string',
+          validation: {
+            format: /^\d{4}-\d+-\d+$/
+          },
+          operators: ['less', 'less_or_equal', 'greater', 'greater_or_equal', 'equal', 'not_equal'],
+          placeholder: '2021-01-01'
+        }
+        return filter
+      }
+      else if(attribute.type === "integer"){
+        let filter = {
+          id: path,
+          type: 'integer',
+          operators: ['less', 'less_or_equal', 'greater', 'greater_or_equal', 'equal', 'not_equal']
+        }
+        return filter
+      }
+      else if(attribute.type === "decimal"){
+        let filter = {
+          id: path,
+          type: 'double',
+          operators: ['less', 'less_or_equal', 'greater', 'greater_or_equal', 'equal', 'not_equal']
+        }
+        return filter
+      }
+      else if(attribute.type === "string"){
+        let filter = {
+          id: path,
+          type: 'string',
+          operators:['equal', 'not_equal', 'matches']
+        }
+        return filter
+      }
+    }
   },
   data(){
     return {
@@ -23,8 +103,11 @@ export default {
     }
   },
   mounted(){
+    
     let _this = this,
      $queryBuilder = $('#'+this.id);
+
+    this.filters = this.getFiltersByResource(this.resource);
 
     $queryBuilder.queryBuilder(this.option);
 
@@ -37,140 +120,70 @@ export default {
       }
 
     })
+
+    $('#builder-widgets').on('afterUpdateRuleValue.queryBuilder', function(e, rule) {
+      if (rule.filter.plugin === 'datepicker') {
+        rule.$el.find('.rule-value-container input').datepicker('update');
+      }
+    });
   },
   computed:{
     option(){
       return {
-        // regional : {
-        //   'fr': {
-        //     "__locale": "Fran�ais (fr)",
-        //     "add_rule": "Ajouter une r�gle",
-        //     "add_group": "Ajouter un groupe",
-        //     "delete_rule": "effacer",
-        //     "delete_group": "effacer",
-        //     "conditions": {
-        //       "AND": "ET",
-        //       "OR": "OU"
-        //     },
-        //     "operators": {
-        //       "equal": "�gual",
-        //       "not_equal": "non �gal",
-        //       "in": "dans",
-        //       "not_in": "pas dans",
-        //       "less": "moins",
-        //       "less_or_equal": "moins ou �gal",
-        //       "greater": "plus grand",
-        //       "greater_or_equal": "plus grand ou �gal",
-        //       "between": "entre",
-        //       "not_between": "pas entre",
-        //       "begins_with": "commence avec",
-        //       "not_begins_with": "ne commance pas avec",
-        //       "contains": "contiens",
-        //       "not_contains": "ne contiens pas",
-        //       "ends_with": "se termine avec ",
-        //       "not_ends_with": "ne termine pas avec",
-        //       "is_empty": "est vide",
-        //       "is_not_empty": "n'est pas vide",
-        //       "is_null": "est null",
-        //       "is_not_null": "n'est pas null"
-        //     },
-        //     "errors": {
-        //       "no_filter": "Aucun filtre s�lectionn�",
-        //       "empty_group": "Le groupe est vide",
-        //       "radio_empty": "Aucune valeur s�lectionn�e",
-        //       "checkbox_empty": "Aucune valeur s�lectionn�e",
-        //       "select_empty": "Aucune valeur s�lectionn�e",
-        //       "string_empty": "valeur vide",
-        //       "string_exceed_min_length": "Doit coontenir au moins {0} caract�res",
-        //       "string_exceed_max_length": "Doit coontenir plus de {0} caract�res",
-        //       "string_invalid_format": "Format invalide ({0})",
-        //       "number_nan": "pas un nombre",
-        //       "number_not_integer": "Pas un entier",
-        //       "number_not_double": "Pas un nombre r�el",
-        //       "number_exceed_min": "Doit �tre plus grand que {0}",
-        //       "number_exceed_max": "Doit �tre plus petit que {0}",
-        //       "number_wrong_step": "Doit �tre un multiple de {0}",
-        //       "number_between_invalid": "Valeure non valide, {0} est plus grand que {1}",
-        //       "datetime_empty": "VAleure vide",
-        //       "datetime_invalid": "Format de date invalide ({0})",
-        //       "datetime_exceed_min": "Doit �tre apr�s {0}",
-        //       "datetime_exceed_max": "Doit �tre avant {0}",
-        //       "datetime_between_invalid": "Valeures invalides, {0} est plus grand que {1}",
-        //       "boolean_not_valid": "Pas une valeure bool�enne",
-        //       "operator_not_multiple": "Operator \"{1}\" Ne peut accecpter des valeures multiples"
-        //     },
-        //     "invert": "Inversser",
-        //     "NOT": "NON"
-        //   }
-        // },
-        filters: [{
-          id: 'name',
-          label: this.$t("QB_name"),
-          type: 'string'
-        }, {
-          id: 'category',
-          label: this.$t("QB_category"),
-          type: 'integer',
-          input: 'select',
-          values: {
-            1: 'Books',
-            2: 'Movies',
-            3: 'Music',
-            4: 'Tools',
-            5: 'Goodies',
-            6: 'Clothes'
-          },
-          operators: ['more', 'equal', 'not_equal', 'in', 'not_in', 'is_null', 'is_not_null']
-        },{
-          id: 'deceasedBoolean',
-          label: this.$t("QB_deceased"),
-          type: 'integer',
-          input: 'select',
-          values: {
-            0: 'false',
-            1: 'true',
-          },
-          operators: ['equal', 'not_equal', 'is_null', 'is_not_null']
-        },{
-          id: 'deceasedDateTime',
-          label: this.$t("QB_deceased_date"),
-          type: 'string',
-          operators: ['less', 'less_or_equal', 'greater', 'greater_or_equal', 'is_not_null'],
-          validation: {
-            format: /^\d{4}-\d+-\d+$/
-          },
-          placeholder: '2021-01-01'
-        },{
-          id: 'sex',
-          label: this.$t("QB_sex"),
-          type: 'integer',
-          input: 'select',
-          values: {
-            1: 'female',
-          },
-          operators: ['equal', 'not_equal', 'in', 'not_in', 'is_null', 'is_not_null']
-        },{
-          id: 'age',
-          label: this.$t("QB_age"),
-          type: 'double',
-          validation: {
-            min: 0,
-            step: 0.01
-          },
-          operators: ['greater', 'not_equal', 'in', 'not_in', 'is_null', 'is_not_null']
-        }],
-
+        filters: this.getFiltersByResource(this.resource),
+        lang_code: this.$i18n.locale,
         rules: this.query,
-
+        allow_groups: false,
         icons: {
           add_group: 'fas fa-plus-square',
           add_rule: 'fas fa-plus-circle',
           remove_group: 'fas fa-minus-square',
-          remove_rule: 'fas fa-minus-circle',
+          remove_rule: 'fas fa-trash-alt',
           error: 'fas fa-exclamation-triangle'
+        },
+        templates: {
+          rule: '\
+<div id="{{= it.rule_id }}" class="rule-container"> \
+  <div class="rule-header"> \
+    <div class="btn-group pull-left rule-actions"> \
+      <button type="button" class="btn btn-xs btn-danger" data-delete="rule"> \
+        <i class="{{= it.icons.remove_rule }}"></i> \
+      </button> \
+    </div> \
+  </div> \
+  {{? it.settings.display_errors }} \
+    <div class="error-container"><i class="{{= it.icons.error }}"></i></div> \
+  {{?}} \
+  <div class="rule-filter-container"></div> \
+  <div class="rule-operator-container"></div> \
+  <div class="rule-value-container"></div> \
+</div>',
+          group: '\
+<div id="{{= it.group_id }}" class="rules-group-container"> \
+  <div class="rules-group-header"> \
+    <div class="btn-group group-conditions"> \
+      {{~ it.conditions: condition }} \
+        <label class="btn btn-xs btn-primary"> \
+          <input type="radio" name="{{= it.group_id }}_cond" value="{{= condition }}"> {{= it.translate("conditions", condition) }} \
+        </label> \
+      {{~}} \
+    </div> \
+    {{? it.settings.display_errors }} \
+      <div class="error-container"><i class="{{= it.icons.error }}"></i></div> \
+    {{?}} \
+  </div> \
+  <div class=rules-group-body> \
+    <div class=rules-list></div> \
+  </div> \
+    <div class="center"> \
+      <button type="button" class="btn btn-xs btn-success" data-add="rule"> \
+        <i class="{{= it.icons.add_rule }}"></i> {{= it.translate("add_rule") }} \
+      </button> \
+    </div> \
+</div>'
         }
       };
-    }
+    },
   },
   watch:{
     option(newVal){
@@ -194,7 +207,6 @@ export default {
 
       $b.on('rulesChanged.queryBuilder', function(){
         const result = $(_this.$refs.queryBuilder).queryBuilder('getRules');
-
         if (!$.isEmptyObject(result)) {
           bus.$emit('queryUpdate', result)
         }
@@ -207,5 +219,4 @@ export default {
 </script>
 
 <style scoped>
-
 </style>

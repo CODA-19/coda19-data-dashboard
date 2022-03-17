@@ -12,20 +12,12 @@ const secondsPerDay = 24 * 60 * 60;
 function qbRuleToFilter(rule) {
   const { id, operator, value } = rule;
 
-  // FIXME(malavv): All of this is super temporary.
-  if (id === "deceasedBoolean" && operator === "equal") {
-    return {
-      path: "deceasedBoolean",
-      operator: "is",
-      value: value === 0 ? "false" : "true",
-    };
-  }
-  if (id === "deceasedDateTime" && operator === "is_not_null") {
-    return { path: "deceased.dateTime", operator: "isNot", value: "null" };
+  return {
+    path: id,
+    operator: operator,
+    value: value
   }
 
-  console.warn("Unknown rule, need to be managed.");
-  return rule;
 }
 
 function qbBreakdown(cfg) {
@@ -45,15 +37,21 @@ function qbBreakdown(cfg) {
 
 export default class SummaryFormFactory {
   static fromForm(dat, brkdwn) {
-    const selector = {
-      resource: "Patient",
-      filters: dat.query.rules.map(qbRuleToFilter),
+    var selector = {
+      resource: dat.qB[0].name,
+      filters: dat.qB[0].query.rules.map(rule => qbRuleToFilter(rule)),
       fields: sortBy(
         dat.field.map((el) => ({ path: el.value })),
         "path"
       ),
     };
-
+    if(dat.qB[1]){ //temp for single join. limited by the querybuilder module in statsAPI
+      const joinSelector = {
+        resource: dat.qB[1].name,
+        filters: dat.qB[1].query.rules.map(rule => qbRuleToFilter(rule))
+      };
+      selector["join"] = joinSelector;
+    }
     if (brkdwn && dat.breakdown.resourceType !== "") {
       selector["breakdown"] = qbBreakdown(dat.breakdown);
     }
