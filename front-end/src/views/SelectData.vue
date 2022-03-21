@@ -273,11 +273,6 @@ export default {
       var sites = this.connections.map(conn => ({ 'text': conn.name, 'value': conn.uid }));
       var group = this.$t("selectAllTxt");
       var connOptions = [{sites:sites, group:group}]
-      sites.forEach(conn =>{
-        if((this.preFillSites.some(uid => uid == conn.value) || this.preFillAllSites) && !this.form.sites.some(site => site.value == conn.value)){
-          this.form.sites.push(conn)
-        }
-      })
       return connOptions
     },
     resourceOptions(){
@@ -599,11 +594,6 @@ export default {
       var sites = this.connections.map(conn => ({ 'text': conn.name, 'value': conn.uid }));
       var group = this.$t("selectAllTxt");
       this.connOptions.push({sites:sites, group:group})
-      sites.forEach(conn =>{
-        if((this.preFillSites.some(uid => uid == conn.value) || this.preFillAllSites) && !this.form.sites.some(site => site.value == conn.value)){
-          this.form.sites.push(conn)
-        }
-      })
     },
     conns(newVal, oldVal) {
       if (newVal.length === 0) {
