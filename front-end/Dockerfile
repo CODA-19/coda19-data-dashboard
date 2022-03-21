@@ -4,6 +4,7 @@ RUN apk update \
     && apk add openssl
 
 ARG BUILD_ENV=prod
+ARG PERSONAL_ACCESS_TOKEN
 
 RUN npm install -g http-server
 
@@ -17,6 +18,7 @@ RUN openssl rand -hex 12 > version.txt
 
 RUN yarn cache clean
 RUN yarn install
+RUN rm -f .npmrc
 RUN yarn build
 
 EXPOSE 8080
