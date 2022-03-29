@@ -514,11 +514,23 @@ export default {
         d.data.forEach((dat)=>{
           var item = {};
           d.cols.forEach((col,i)=>{
-            if(!col.categories)
-              item[col.code] = dat[i]
+            if(!col.categories){
+              if(isNaN(dat[i])){
+                item[col.code] = dat[i]
+              }
+              else{
+                item[col.code] = Math.round((dat[i] + Number.EPSILON) * 100) / 100
+              }
+            }
+              
             else{
               col.categories.forEach((cat,j)=>{
-                item[col.code+cat.code]= dat[i][j]
+                if(isNaN(dat[i][j])){
+                item[col.code+cat.code] = dat[i]
+              }
+              else{
+                item[col.code+cat.code] = Math.round((dat[i][j] + Number.EPSILON) * 100) / 100
+              }
               })
             }
           })
