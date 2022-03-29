@@ -519,7 +519,7 @@ export default {
                 item[col.code] = dat[i]
               }
               else{
-                item[col.code] = Math.round((dat[i] + Number.EPSILON) * 100) / 100
+                item[col.code] = this.roundNum(dat[i])
               }
             }
               
@@ -529,7 +529,7 @@ export default {
                 item[col.code+cat.code] = dat[i]
               }
               else{
-                item[col.code+cat.code] = Math.round((dat[i][j] + Number.EPSILON) * 100) / 100
+                item[col.code+cat.code] = this.roundNum(dat[i][j])
               }
               })
             }
@@ -578,7 +578,7 @@ export default {
         if(d.about.field==='age'){
           figure.category= [d.data.map(dat=> dat[d.cols.findIndex(col=>col.code==='site')])],
               figure.type= 'bar',
-              figure.data=d.data.map(dat=> dat[d.cols.findIndex(col=>col.code==='mean')]),
+              figure.data=d.data.map(dat=> this.roundNum(dat[d.cols.findIndex(col=>col.code==='mean')])),
               figure.margin = [];
               // d.data.forEach((dat,i)=>{
               //   var marg = [];
@@ -599,6 +599,9 @@ export default {
       })
 
       return figures;
+    },
+    roundNum(num){
+      return Math.round((num + Number.EPSILON) * 100) / 100
     },
   },
   watch: {
