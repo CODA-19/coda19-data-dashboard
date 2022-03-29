@@ -16,7 +16,9 @@ import { library } from '@fortawesome/fontawesome-svg-core';
 import { faUserSecret } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import version from "./utils/version";
+import moment from 'moment';
 
+Vue.prototype.moment = moment
 Vue.prototype.$http = Axios;
 
 Vue.use(Router)
