@@ -305,8 +305,7 @@ export default {
             name: 'Patient',
             query: {
               condition: 'AND',
-              rules: [{
-              }]
+              rules: []
             },
             field: [],
           }
