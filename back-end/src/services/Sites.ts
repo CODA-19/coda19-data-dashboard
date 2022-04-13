@@ -60,6 +60,10 @@ function code2name(code: string): string {
             return 'CISSS-CA';
         case '112':
             return 'JGH';
+        case '111':
+            return 'MUHC';
+        case '119':
+            return 'CHUS';
         case 'all':
             return 'all';
 
