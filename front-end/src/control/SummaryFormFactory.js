@@ -50,12 +50,11 @@ export default class SummaryFormFactory {
         resource: dat.qB[1].name,
         filters: dat.qB[1].query.rules.map(rule => qbRuleToFilter(rule))
       };
-      selector["join"] = joinSelector;
+      selector["joins"] = joinSelector;
     }
     if (brkdwn && dat.breakdown.resourceType !== "") {
       selector["breakdown"] = qbBreakdown(dat.breakdown);
     }
-
     return {
       selectors: [selector],
       options: {
