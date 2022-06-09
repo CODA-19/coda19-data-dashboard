@@ -48,6 +48,9 @@
     "vue-template-compiler": "^2.6.11",
     "vuetify-loader": "^1.3.0"
   },
+  "resolutions": {
+    "error-stack-parser": "2.0.6"
+  },
   "browserslist": [
     "> 1%",
     "last 2 versions",
