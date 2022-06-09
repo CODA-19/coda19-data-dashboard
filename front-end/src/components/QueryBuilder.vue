@@ -30,7 +30,7 @@ export default {
       attributes.forEach(attr => {
         filters.push(this.recursiveGetPath(attr, attr.name))
       });
-      return filters.flat(Infinity)
+      return this.filterCorrection(filters.flat(Infinity))
     },
 
     recursiveGetPath(attr, path){
@@ -95,6 +95,25 @@ export default {
         }
         return filter
       }
+    },
+
+    filterCorrection(filters){
+      filters.forEach((filter, index) => {
+        if (filter.id.startsWith("valueQuantity")){
+          const subpath = filter.id.split(".")
+          filters[index].id = "value.Quantity." + subpath[1];
+        }
+        else if (filter.id == "valueQuantity.value"){
+          filters[index].id = "value.Quantity.value";
+        }
+        else if(filter.id == "effectiveDateTime"){
+          filters[index].id = "effective.dateTime";
+        }
+        else if(filter.id == "deceasedDateTime"){
+          filters[index].id = "deceased.dateTime";
+        }
+      })
+      return filters
     }
   },
   data(){
@@ -108,7 +127,6 @@ export default {
      $queryBuilder = $('#'+this.id);
 
     this.filters = this.getFiltersByResource(this.resource);
-
     $queryBuilder.queryBuilder(this.option);
 
     $queryBuilder.on('rulesChanged.queryBuilder', function(){
