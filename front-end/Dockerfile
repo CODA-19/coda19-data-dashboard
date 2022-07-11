@@ -1,25 +1,37 @@
-FROM node:14-alpine3.13
+FROM node:14-alpine3.13 as base-node-modules
+
+WORKDIR /usr/src/app
 
 RUN apk update \
     && apk add openssl
 
 ARG BUILD_ENV=prod
-ARG PERSONAL_ACCESS_TOKEN
+ARG PERSONAL_ACCESS_TOKEN=<PERSONAL_ACCESS_TOKEN>
+
+COPY ./ ./
+
+RUN yarn cache clean
+RUN yarn install
+RUN rm -f .npmrc
+RUN yarn build
+
+FROM node:14-alpine3.13
 
 RUN npm install -g http-server
 
+RUN apk update \
+    && apk add openssl
+
+ARG BUILD_ENV=prod
+
 WORKDIR /usr/src/app
+COPY --from=base-node-modules ./ ./
 COPY ./ ./
 COPY ./${BUILD_ENV}.env ./.env
 
 # Make build footprint version for easier debugging.
 RUN rm ./version.txt
 RUN openssl rand -hex 12 > version.txt
-
-RUN yarn cache clean
-RUN yarn install
-RUN rm -f .npmrc
-RUN yarn build
 
 EXPOSE 8080
 CMD [ "http-server", "--port", "8080",  "dist" ]

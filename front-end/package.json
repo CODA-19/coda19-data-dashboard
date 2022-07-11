@@ -39,7 +39,6 @@
     "@vue/cli-plugin-router": "~4.5.0",
     "@vue/cli-service": "^4.5.13",
     "@vue/composition-api": "^1.0.0-rc.5",
-    "node-sass": "7.0.1",
     "raw-loader": "^4.0.2",
     "sass": "^1.29.0",
     "sass-loader": "^10.1.0",
