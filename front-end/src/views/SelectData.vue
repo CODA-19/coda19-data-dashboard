@@ -42,7 +42,7 @@
                   <span>{{$t("contTxt")}}</span>
                   <multiselect v-model="form.measures.cont"
                                :placeholder="$t('selectContTxt')"
-                               :options="measures.cont"
+                               :options="this.measures.cont"
                                :label="'label_'+$t('langCode')"
                                track-by="value"
                                :multiple="true"
@@ -61,7 +61,7 @@
                   <span>{{$t("discTxt")}}</span>
                   <multiselect v-model="form.measures.disc"
                                :placeholder="$t('selectDiscTxt')"
-                               :options="measures.disc"
+                               :options="this.measures.disc"
                                :label="'label_'+$t('langCode')"
                                track-by="value"
                                :multiple="true"
@@ -100,11 +100,9 @@
                       </div>
                       <div class="subPanel">
                         <span>{{$t("fields")}}</span>
-                        <multiselect v-model="form.field"
+                        <multiselect v-model="resource.field"
                                      :placeholder="$t('selectFieldTxt')"
-                                     :options="fieldOptions[$t('langCode')]"
-                                     label="label"
-                                     track-by="value"
+                                     :options="resourceAttributeOptions(resource.name)"
                                      :multiple="true"
                                      :clear-on-select="false"
                                      :close-on-select="false"
@@ -158,14 +156,23 @@
                   <div class="col-lg-4 col-md-4">
                     <div>{{ $t("selectResourceTypeTxt") }}</div>
                     <div>
+                      <!-- <b-form-select class="form-control"  id="resourceType_breakdown" v-model="form.breakdown.resourceType" :disabled="!breakdown" :options="resourceOptions">
+                      </b-form-select> -->
                       <select class="form-control"  id="resourceType_breakdown" v-model="form.breakdown.resourceType" :disabled="!breakdown">
                         <option >{{ $t("selectResourcePatient") }}</option>
                       </select>
                     </div>
                   </div>
-                  <div class="col-lg-4 col-md-4">
+                  <div class="col-lg-6 col-md-6" v-if="this.form.breakdown.resourceType">
                     <div>{{ $t("selectResourceAttributeTxt") }}</div>
                     <div>
+                      <!-- <b-form-select 
+                        class="form-control" 
+                        id="resourceAttribute_breakdown"  
+                        v-model="form.breakdown.resourceAttribute" 
+                        :disabled="!breakdown" 
+                        :options="resourceAttributeOptions">
+                      </b-form-select> -->
                       <select class="form-control" id="resourceAttribute_breakdown"  v-model="form.breakdown.resourceAttribute" :disabled="!breakdown">
                         <option >{{ $t("selectResourceAttributeAge")}}</option>
                         <option >{{ $t("selectResourceAttributeSex")}}</option>
@@ -244,7 +251,8 @@ import GeneralApi from "../api/GeneralApi";
 import QueryBuilder from "@/components/QueryBuilder"
 import SummaryFormFactory from "../control/SummaryFormFactory";
 import {
-  ResourceTypes
+  ResourceTypes,
+  AttributesByResourceType
 } from "@CODA-19/coda19-fhir-templates";
 
 const nameResource = (res) => `${res.type} > ${res.attribute} (${res.datatype})`;
@@ -255,10 +263,6 @@ export default {
   props: [ 'connections', 'resources', 'minimize', 'measures'],
   mounted(){
     bus.$on('queryUpdate',(query)=>{this.getQuery(query)})
-  },
-  beforeUpdate(){
-    this.form.measures.cont = this.measures.cont;
-    this.form.measures.disc = this.measures.disc;
   },
   computed: {
     options() {
@@ -279,7 +283,7 @@ export default {
        return this.resources.map(res => ({ 'text': nameResource(res), 'value': idResource(res) }));
     },
     dataUpdate(){
-      return this.form.sites.length === 0 || this.form.field.length === 0 || 
+      return this.form.sites.length === 0 ||
       (this.form.measures.cont.length === 0 && this.form.measures.disc.length === 0) || _.isEqual(this.form, this.cached)
       || (this.breakdown && (this.form.breakdown.resourceType.length === 0 || this.form.breakdown.resourceAttribute.length === 0));
     },
@@ -321,8 +325,16 @@ export default {
             }
         },
         measures:{
-          cont:[],
-          disc:[]
+          cont:[
+            { value: 'count', label_en: "count", label_fr: "décompte" },
+            { value: 'mean', label_en: "mean", label_fr: "moyenne" },
+            { value: 'stdev', label_en: "stdev", label_fr: "stdev" },
+            { value: 'ci95', label_en: "ci95", label_fr: "ci95" }
+          ],
+          disc:[
+            { value: 'count', label_en: "count", label_fr: "décompte" },
+            { value: 'mode', label_en: "mode", label_fr: "mode" }
+          ]
         },
         sites: [],
         field: []
@@ -342,6 +354,18 @@ export default {
       awaitSubmit:false,
       isError:false,
       errorMsg:"",
+      measures:{
+          cont:[
+            { code: 'count', labels: { 'en': 'count', 'fr': 'décompte'} },
+            { code: 'mean', labels: { 'en': 'mean', 'fr': 'moyenne'} },
+            { code: 'stdev', labels: { 'en': 'stdev', 'fr': 'stdev'} },
+            { code: 'ci95', labels: { 'en': 'ci95', 'fr': 'ci95'} }
+          ],
+          disc:[
+            { code: 'count', labels: { 'en': 'count', 'fr': 'décompte'} },
+            { code: 'mode', labels: { 'en': 'mode', 'fr': 'mode'} }
+          ]
+        },
     };
   },
   components: {
@@ -533,10 +557,11 @@ export default {
               })
             }
           })
+          
           table.items.push(item);
         })
 
-        tables.fieldslang={en:{},fr:{}}
+        tables.fieldslang={en:{},fr:{}};
         d.cols.forEach((col)=>{
           if(!col.categories){
             table.fieldslang.en[col.code] = col.labels.en;
@@ -553,18 +578,19 @@ export default {
 
         tables.push(table);
       })
-
+      
       return tables;
       },
 
     prepareFigures(data){
       var figures = [];
+
       data.forEach((d)=>{
         var figure = {};
         figure.nameKey = d.about.field;
         figure.breakdown = d.about.field.toLowerCase().includes('time');
 
-        if(d.about.field==='gender'){
+        if(d.about.measure==='categorical'){
 
           var primaryCategory = d.data.map(dat=> dat[d.cols.findIndex(col=>col.code==='site')]),
               subCategory = d.cols[d.cols.findIndex(col=>col.code==='count')].categories.map(c=>c.code);
@@ -574,7 +600,7 @@ export default {
               figure.data= d.data.map(dat=> dat[d.cols.findIndex(col=>col.code==='count')])
         }
 
-        if(d.about.field==='age'){
+        if(d.about.measure==='continuous'){
           figure.category= [d.data.map(dat=> dat[d.cols.findIndex(col=>col.code==='site')])],
               figure.type= 'bar',
               figure.data=d.data.map(dat=> this.roundNum(dat[d.cols.findIndex(col=>col.code==='mean')])),
@@ -599,9 +625,51 @@ export default {
 
       return figures;
     },
+
     roundNum(num){
       return Math.round((num + Number.EPSILON) * 100) / 100
     },
+
+    resourceAttributeOptions(resource){
+      if(!resource) return
+      const attributes = AttributesByResourceType[resource];
+      let fields = [];
+      attributes.forEach(attr => {
+        fields.push(this.recursiveGetAttributePath(attr, attr.name))
+      });
+      return this.fieldCorrection(fields.flat(Infinity));
+    },
+
+    recursiveGetAttributePath(attr, path){
+      if(!attr.subpaths){
+        return path
+      }
+      else{
+        let filters = []
+        attr.subpaths.forEach(sub =>{
+          filters.push(this.recursiveGetAttributePath(sub, path+"."+sub.name))
+        })
+        return filters
+      }
+    },
+    fieldCorrection(fields){
+      fields.forEach((field, index) => {
+        if (field.startsWith("valueQuantity")){
+          const subpath = field.split(".")
+          fields[index] = "value.Quantity." + subpath[1];
+        }
+        else if(field == "effectiveDateTime"){
+          fields[index] = "effective.dateTime";
+        }
+        else if(field == "deceasedDateTime"){
+          fields[index] = "deceased.dateTime";
+        }
+        else if(field == "birthDate"){
+          fields[index] = "age";
+        }
+      })
+      return fields
+    }
   },
   watch: {
     connections() {

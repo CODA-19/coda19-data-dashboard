@@ -103,9 +103,6 @@ export default {
           const subpath = filter.id.split(".")
           filters[index].id = "value.Quantity." + subpath[1];
         }
-        else if (filter.id == "valueQuantity.value"){
-          filters[index].id = "value.Quantity.value";
-        }
         else if(filter.id == "effectiveDateTime"){
           filters[index].id = "effective.dateTime";
         }

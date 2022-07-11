@@ -1,4 +1,4 @@
-import {SummarizeRequestBody} from "../../../coda19-ts/src/request/SummarizeRequest";
+import {SummarizeRequestBody, SummarizeRequestField, SummarizeRequestSelector} from "../../../coda19-ts/src/request/SummarizeRequest";
 import {I18nString} from "../../../coda19-ts/src/base";
 import {Sites} from "../../services/Sites";
 
@@ -35,50 +35,52 @@ function dataFromBreakdown(req:SummarizeRequestBody, obj: any) {
     ];
 }
 function dataFromFields(req:SummarizeRequestBody, obj: any) {
-    const fields = req.selectors[0].fields.map(f => typeof f === "string" ? f : f.path);
+    let fields:any[] = []
+    let res:any[] = [];
 
-    let res = [];
+    fields = fieldsFromSelector(req.selectors[0], fields)
+
     for (let field of fields) {
-        let tmp = null;
-        // FIXME(malavv): this is not permanent and shouldn't be. It allows what is in the demo (the 2 tasks)
-        if (field === "gender") {
-            let categories = ["female", "male", "unknown"];
-            let dat = obj.map((o:any) => o[0]).map((siteDat:any) => {
-                let result = siteDat.results.filter((f: any) => f.field === field)[0];
-                let counts = new Map(result.count.map((d:any) => [d.label, d.value]));
-                return [
-                    Sites.convertCode2Name(siteDat.siteCode),
-                    siteDat.total,
-                    result.mode,
-                    categories.map(c => counts.has(c) ? counts.get(c): 0)
-                ];
-            });
-
-            tmp = {
-                "about": { "field": field },
-                "cols": [
-                    { "code": "site", "labels": customLabels("site") },
-                    { "code": "total", "labels": customLabels("total") },
-                    { "code": "mode", "labels": customLabels("mode") },
-                    { "code": "count", "labels": customLabels("count"), "categories": categories.map(c => ({"code": c})) }
-                ],
-                "data": dat
-            };
-            res.push(tmp);
-        } else if (field === "age") {
+        let tmp:any = null;
 
             let dat = obj.map((o:any) => o[0]).map((siteDat:any) => {
-                const siteName = Sites.convertCode2Name(siteDat.siteCode);
+                
                 let result = siteDat.results.filter((f: any) => f.field === field)[0];
-                if (siteName === "all") {
+
+                if(result.measure == "categorical"){
+
+                    tmp = {
+                        "about": { "field": field, "measure": result.measure },
+                        "cols": [
+                            { "code": "site", "labels": customLabels("site") },
+                            { "code": "total", "labels": customLabels("total") },
+                            { "code": "mode", "labels": customLabels("mode") },
+                            { "code": "count", "labels": customLabels("count"), "categories": result.count.map((c: { label: any; }) => ({"code": c.label})) }
+                        ]
+                    };
+
+                    let counts = result.count.map((d:any) =>  d.value);
+
                     return [
                         Sites.convertCode2Name(siteDat.siteCode),
-                        418492,
-                        result.mean,
-                        result.stdev,
-                        result.ci95
+                        siteDat.total,
+                        result.mode,
+                        counts
                     ];
-                } else {
+                }
+                else if(result.measure == "continuous"){
+
+                    tmp = {
+                        "about": { "field": field, "measure": result.measure },
+                        "cols": [
+                            { "code": "site", "labels": { "fr": "site", "en": "site" } },
+                            { "code": "total", "labels": { "fr": "total", "en": "total" } },
+                            { "code": "mean", "labels": { "fr": "moyenne", "en": "mean" } },
+                            { "code": "stdev", "labels": { "fr": "stdev", "en": "stdev" } },
+                            { "code": "ci95", "labels": { "fr": "ic95", "en": "ci95" }, "categories": [ {"code": "lower"}, {"code": "upper"}] }
+                        ]
+                    };
+
                     return [
                         Sites.convertCode2Name(siteDat.siteCode),
                         result.mean.populationSize,
@@ -86,26 +88,15 @@ function dataFromFields(req:SummarizeRequestBody, obj: any) {
                         result.stdev,
                         result.ci95
                     ];
+                } 
+                else {
+                    console.warn("unimplemented measure");
                 }
-
+            
             });
-
-            tmp = {
-                "about": { "field": "age" },
-                "cols": [
-                    { "code": "site", "labels": { "fr": "site", "en": "site" } },
-                    { "code": "total", "labels": { "fr": "total", "en": "total" } },
-                    { "code": "mean", "labels": { "fr": "moyenne", "en": "mean" } },
-                    { "code": "stdev", "labels": { "fr": "stdev", "en": "stdev" } },
-                    { "code": "ci95", "labels": { "fr": "ic95", "en": "ci95" }, "categories": [ {"code": "lower"}, {"code": "upper"}] }
-                ],
-                "data": dat
-            };
-            res.push(tmp);
-        } else {
-            console.warn("unimplemented");
+            tmp["data"] = dat
+            res.push(tmp);    
         }
-    }
     return res;
 }
 
@@ -131,4 +122,14 @@ export default class SummaryResult {
             data: requestHasBreakdown(request) ? dataFromBreakdown(request, obj): dataFromFields(request, obj)
         };
     }
+}
+
+function fieldsFromSelector(selector: SummarizeRequestSelector, fields: any[]) : SummarizeRequestField[] {
+    if(selector.joins){
+        fieldsFromSelector(selector.joins, fields)
+    }
+    for (let field of selector.fields){
+        fields.push(field.path)
+    }
+    return fields
 }
