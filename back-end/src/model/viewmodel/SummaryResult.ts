@@ -129,7 +129,7 @@ function fieldsFromSelector(selector: SummarizeRequestSelector, fields: any[]) :
         fieldsFromSelector(selector.joins, fields)
     }
     for (let field of selector.fields){
-        fields.push(field.path)
+        fields.push((field as any).path)
     }
     return fields
 }

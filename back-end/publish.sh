@@ -1,5 +1,5 @@
 rm -r -f ./dist
-npm install
+npm ci
 npm run build
 docker build -t coda19-hub-dashboard-back:latest .
 
