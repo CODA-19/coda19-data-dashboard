@@ -30,3 +30,10 @@ npm run build
 ### Customize configuration
 
 See [Configuration Reference](https://cli.vuejs.org/config/).
+
+# Security analysis
+## Trivy (Most severe)
+docker run --rm -v C:\dev\trivy:/root/.cache/ -v //var/run/docker.sock:/var/run/docker.sock  aquasec/trivy image coda19-hub-dashboard:latest --security-checks vuln > report.txt
+
+## npm
+npm audit
