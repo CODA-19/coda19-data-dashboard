@@ -1,4 +1,4 @@
-FROM node:10
+FROM node:16
 
 ### This docker file assumes that the npm build has already been run on the local host machine.
 ### When run with the ./publish.sh script, this docker file has everything to built the image as lightly as possible.
