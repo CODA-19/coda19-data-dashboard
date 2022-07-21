@@ -4,7 +4,7 @@
 
 - cd ./front-end
 - docker login -u ${USER} -p ${USER}
-- ./publish.sh
+- ./publish.sh ${PERSONAL_ACCESS_TOKEN}
 - Ask a VALERIA team member to update the image in openshift.
 
 ## Project setup

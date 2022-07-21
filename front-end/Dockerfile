@@ -1,4 +1,4 @@
-FROM node:14-alpine3.13 as base-node-modules
+FROM node:16-alpine3.13 as base-node-modules
 
 WORKDIR /usr/src/app
 
@@ -15,7 +15,7 @@ RUN yarn install
 RUN rm -f .npmrc
 RUN yarn build
 
-FROM node:14-alpine3.13
+FROM node:16-alpine3.13
 
 RUN npm install -g http-server
 
