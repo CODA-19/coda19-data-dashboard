@@ -64,6 +64,8 @@ function code2name(code: string): string {
             return 'MUHC';
         case '119':
             return 'CHUS';
+        case '117':
+            return 'CHUSJ';
         case 'all':
             return 'all';
 
