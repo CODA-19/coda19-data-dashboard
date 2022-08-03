@@ -33,6 +33,7 @@ export default class SummaryFormFactory {
     const selectorLength = dat.qB.length;
       var selector = {
         resource: dat.qB[0].name,
+        label: dat.qB[0].name + '0',
         filters: dat.qB[0].query.rules.map(rule => qbRuleToFilter(rule)),
         fields: sortBy(
           dat.qB[0].field.map((el) => ({ path: el,  label:dat.qB[0].name+"_"+el})),
@@ -57,9 +58,10 @@ export default class SummaryFormFactory {
   }
 
   static recursiveAppendJoins(selectorLength, currentSelector, form, selector){
-    if(currentSelector < selectorLength){
+    if(!currentSelector < selectorLength-1){
       const joinSelector = {
         resource: form[currentSelector].name,
+        label: form[currentSelector].name + currentSelector,
         filters: form[currentSelector].query.rules.map(rule => qbRuleToFilter(rule)),
         fields: sortBy(
           form[currentSelector].field.map((el) => ({ path: el ,  label:form[currentSelector].name+"_"+el})),
@@ -72,9 +74,10 @@ export default class SummaryFormFactory {
     else {
       const joinSelector = {
         resource: form[currentSelector].name,
+        label: form[currentSelector].name + currentSelector,
         filters: form[currentSelector].query.rules.map(rule => qbRuleToFilter(rule)),
         fields: sortBy(
-          form[currentSelector].field.map((el) => ({ path: el })),
+          form[currentSelector].field.map((el) => ({ path: el ,  label:form[currentSelector].name+"_"+el})),
           "path"
         ),
       };
