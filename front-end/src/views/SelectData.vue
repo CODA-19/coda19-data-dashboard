@@ -88,7 +88,7 @@
 
                 <b-card no-body>
                   <b-tabs v-model="tabIndex" card>
-                    <b-tab v-for="resource in form.qB" :key="'dyn-tab-' + resource.name" active>
+                    <b-tab v-for="resource in form.qB" :key="'dyn-tab-' + resource.label" active>
                       <template #title>
                         {{resource.name}}
                         <a class="closeBtn" @click="removeTab(resource)"><i class="fas fa-times"></i></a>
@@ -96,7 +96,7 @@
 
                       <div class="subPanel">
                         <span>{{$t("filters")}}</span>
-                        <QueryBuilder :id="resource.name+'-queryBuilder'"  :key="componentKey" :query="form.qB.query" :resource="resource.name"></QueryBuilder>
+                        <QueryBuilder :id="resource.label+'-queryBuilder'"  :key="componentKey" :query="form.qB.query" :resource="resource.name"></QueryBuilder>
                       </div>
                       <div class="subPanel">
                         <span>{{$t("fields")}}</span>
@@ -283,6 +283,7 @@ export default {
        return this.resources.map(res => ({ 'text': nameResource(res), 'value': idResource(res) }));
     },
     dataUpdate(){
+      console.log(this.form.qB)
       return this.form.sites.length === 0 ||
       (this.form.measures.cont.length === 0 && this.form.measures.disc.length === 0) || _.isEqual(this.form, this.cached)
       || (this.breakdown && (this.form.breakdown.resourceType.length === 0 || this.form.breakdown.resourceAttribute.length === 0));
@@ -307,6 +308,7 @@ export default {
         qB:[
           {
             name: 'Patient',
+            label: 'Patient_0',
             query: {
               condition: 'AND',
               rules: []
@@ -488,12 +490,9 @@ export default {
       alert("Choose a resource");
       return
     }
-    if(this.form.qB.some(e=>e.name === this.newResource)){
-      alert("Resource already exist");
-      return
-    }
     this.form.qB.push({
         name: this.newResource,
+        label: this.newResource + '_' +this.form.qB.length,
         query: {
           condition: 'AND',
           rules: [{

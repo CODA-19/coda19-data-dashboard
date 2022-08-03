@@ -33,7 +33,7 @@ export default class SummaryFormFactory {
     const selectorLength = dat.qB.length;
       var selector = {
         resource: dat.qB[0].name,
-        label: dat.qB[0].name + '0',
+        label: dat.qB[0].label,
         filters: dat.qB[0].query.rules.map(rule => qbRuleToFilter(rule)),
         fields: sortBy(
           dat.qB[0].field.map((el) => ({ path: el,  label:dat.qB[0].name+"_"+el})),
@@ -41,7 +41,7 @@ export default class SummaryFormFactory {
         ),
       };
     if(dat.qB[1]){
-    selector = this.recursiveAppendJoins(selectorLength, 1, dat.qB, selector)
+    selector["joins"] = this.recursiveAppendJoins(selectorLength, 1, dat.qB, selector)
     }
     if (brkdwn && dat.breakdown.resourceType !== "") {
       selector["breakdown"] = qbBreakdown(dat.breakdown);
@@ -57,32 +57,32 @@ export default class SummaryFormFactory {
     };
   }
 
-  static recursiveAppendJoins(selectorLength, currentSelector, form, selector){
-    if(!currentSelector < selectorLength-1){
+  static recursiveAppendJoins(selectorLength, currentSelector, form){
+    if(currentSelector == selectorLength-1){
       const joinSelector = {
         resource: form[currentSelector].name,
-        label: form[currentSelector].name + currentSelector,
+        label: form[currentSelector].label,
         filters: form[currentSelector].query.rules.map(rule => qbRuleToFilter(rule)),
         fields: sortBy(
           form[currentSelector].field.map((el) => ({ path: el ,  label:form[currentSelector].name+"_"+el})),
           "path"
         ),
       };
-      selector["joins"] = joinSelector;
-      return selector
+      // selector["joins"] = joinSelector;
+      return joinSelector
     }
     else {
       const joinSelector = {
         resource: form[currentSelector].name,
-        label: form[currentSelector].name + currentSelector,
+        label: form[currentSelector].label,
         filters: form[currentSelector].query.rules.map(rule => qbRuleToFilter(rule)),
         fields: sortBy(
           form[currentSelector].field.map((el) => ({ path: el ,  label:form[currentSelector].name+"_"+el})),
           "path"
         ),
+        joins: this.recursiveAppendJoins(selectorLength, ++currentSelector, form)
       };
-      selector["joins"] = joinSelector;
-      return this.recursiveAppendJoins(selectorLength, currentSelector++, form, selector)
+      return joinSelector
     }
   }
 }
