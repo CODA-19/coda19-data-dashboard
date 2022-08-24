@@ -267,6 +267,7 @@ export default {
         "selectors": [
           {
             "resource": "Patient",
+            "label": "PA",
             "filters": [
             ],
             "fields": [
@@ -285,6 +286,7 @@ export default {
             ],
             "joins": {
               "resource": "Observation",
+              "label": "OB",
               "filters": [
                 {
                   "path": "code.coding.code",
