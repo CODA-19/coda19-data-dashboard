@@ -102,8 +102,10 @@
                         <span>{{$t("fields")}}</span>
                         <multiselect v-model="resource.field"
                                      :placeholder="$t('selectFieldTxt')"
-                                     :options="resourceAttributeOptions(resource.name)"
+                                     label="path"
+                                     :options="resourceAttributeFieldOptions(resource.name)"
                                      :multiple="true"
+                                     track-by="path"
                                      :clear-on-select="false"
                                      :close-on-select="false"
                                      :showLabels="false"
@@ -156,43 +158,45 @@
                   <div class="col-lg-4 col-md-4">
                     <div>{{ $t("selectResourceTypeTxt") }}</div>
                     <div>
-                      <!-- <b-form-select class="form-control"  id="resourceType_breakdown" v-model="form.breakdown.resourceType" :disabled="!breakdown" :options="resourceOptions">
-                      </b-form-select> -->
-                      <select class="form-control"  id="resourceType_breakdown" v-model="form.breakdown.resourceType" :disabled="!breakdown">
+                      <b-form-select class="form-control"  id="resourceType_breakdown" v-model="form.breakdown.resourceType" :disabled="!breakdown" :options="resourceTabOptions">
+                      </b-form-select>
+                      <!-- <select class="form-control"  id="resourceType_breakdown" v-model="form.breakdown.resourceType" :disabled="!breakdown">
                         <option >{{ $t("selectResourcePatient") }}</option>
-                      </select>
+                      </select> -->
                     </div>
                   </div>
                   <div class="col-lg-6 col-md-6" v-if="this.form.breakdown.resourceType">
                     <div>{{ $t("selectResourceAttributeTxt") }}</div>
                     <div>
-                      <!-- <b-form-select 
+                      <b-form-select 
                         class="form-control" 
                         id="resourceAttribute_breakdown"  
                         v-model="form.breakdown.resourceAttribute" 
                         :disabled="!breakdown" 
-                        :options="resourceAttributeOptions">
-                      </b-form-select> -->
-                      <select class="form-control" id="resourceAttribute_breakdown"  v-model="form.breakdown.resourceAttribute" :disabled="!breakdown">
+                        text-field="path"
+                        value-field="path"
+                        :options="resourceAttributeBreakdownOptions(form.breakdown.resourceType)">
+                      </b-form-select>
+                      <!-- <select class="form-control" id="resourceAttribute_breakdown"  v-model="form.breakdown.resourceAttribute" :disabled="!breakdown">
                         <option >{{ $t("selectResourceAttributeAge")}}</option>
                         <option >{{ $t("selectResourceAttributeSex")}}</option>
                        <option >{{ $t("selectResourceAttributeDeathDate")}}</option>
-                      </select>
+                      </select> -->
                     </div>
                   </div>
                 </div>
-                <div class="row">
+                <div class="row" v-if="this.form.breakdown.resourceAttribute">
                     <div class="col-lg-4 col-md-4">
                         <span>{{ $t("breakdownStart") }}</span>
-                        <input class="form-control" type="date" id="start_breakdown" v-model="form.breakdown.period.start" :disabled="!breakdown" />
+                        <input class="form-control" :type="breakdownDataType" id="start_breakdown" v-model="form.breakdown.period.start" :disabled="!breakdown" />
                     </div>
                     <div class="col-lg-4 col-md-4">
                         <span>{{ $t("breakdownEnd") }}</span>
-                        <input class="form-control" type="date" id="end_breakdown" v-model="form.breakdown.period.end" :disabled="!breakdown"/>
+                        <input class="form-control" :type="breakdownDataType" id="end_breakdown" v-model="form.breakdown.period.end" :disabled="!breakdown"/>
                     </div>
                     <div class="col-lg-4 col-md-4">
                         <span>{{ $t("breakdownStep") }}</span>
-                        <input class="form-control" type="number"  :placeholder="$t('breakdownDays')" id="step_breakdown" v-model="form.breakdown.period.step" :disabled="!breakdown"/>
+                        <input class="form-control" step="any" type="number" :placeholder="$t('breakdownSteps')" id="step_breakdown" v-model.number="form.breakdown.period.step" :disabled="!breakdown"/>
                     </div>
                 </div>
             </div>
@@ -290,6 +294,21 @@ export default {
     },
     resourceTabOptions(){
       return ResourceTypes.map(resource => ({'value':resource, 'text':resource}))
+    },
+    breakdownDataType(){
+      const field = this.form.breakdown.attributeType
+  
+      if(field){
+        console.log(field)
+        if(field == "dateTime"){
+          return "date"
+        }
+        else if(field == "integer"){
+          return "number"
+        }
+        else return "date"
+      }
+      else return "date"
     }
   },
   data() {
@@ -301,9 +320,8 @@ export default {
       connOptions: [],
       allSelected: true,
       indeterminate: false,
-      patient:"",
+      //patient:"",
       componentKey:this.$i18n.locale,
-      age:99,
       form: {
         qB:[
           {
@@ -320,6 +338,7 @@ export default {
         breakdown:{
             resourceType:"",
             resourceAttribute:"",
+            attributeType:"",
             period:{
                 start:'2021-04-01',
                 end:'2021-05-01',
@@ -548,10 +567,10 @@ export default {
             else{
               col.categories.forEach((cat,j)=>{
                 if(isNaN(dat[i][j])){
-                item[col.code+cat.code] = dat[i]
+                item[cat.code] = dat[i]
               }
               else{
-                item[col.code+cat.code] = this.roundNum(dat[i][j])
+                item[cat.code] = this.roundNum(dat[i][j])
               }
               })
             }
@@ -569,8 +588,8 @@ export default {
           else{
             col.categories.forEach((cat)=>{
               //temporary solution for times
-              table.fieldslang.en[col.code+cat.code] = `${col.labels.en} ${d.about.field.toLowerCase().includes('time')?new Date(cat.code).toISOString().split("T")[0]:cat.code}`;
-              table.fieldslang.fr[col.code+cat.code] = `${col.labels.en} ${d.about.field.toLowerCase().includes('time')?new Date(cat.code).toISOString().split("T")[0]:cat.code}`;
+              table.fieldslang.en[col.code+cat.code] = `${col.labels.en} ${d.about.fieldType=="dateTime"?new Date(cat.code).toISOString().split("T")[0]:cat.code}`;
+              table.fieldslang.fr[col.code+cat.code] = `${col.labels.en} ${d.about.fieldType=="dateTime"?new Date(cat.code).toISOString().split("T")[0]:cat.code}`;
             })
           }
         })
@@ -587,14 +606,14 @@ export default {
       data.forEach((d)=>{
         var figure = {};
         figure.nameKey = d.about.field;
-        figure.breakdown = d.about.field.toLowerCase().includes('time');
+        figure.breakdown = this.breakdown;
 
         if(d.about.measure==='categorical'){
 
           var primaryCategory = d.data.map(dat=> dat[d.cols.findIndex(col=>col.code==='site')]),
               subCategory = d.cols[d.cols.findIndex(col=>col.code==='count')].categories.map(c=>c.code);
 
-          figure.category= [primaryCategory, subCategory];
+          figure.category= [primaryCategory, subCategory]
               figure.type= 'bar',
               figure.data= d.data.map(dat=> dat[d.cols.findIndex(col=>col.code==='count')])
         }
@@ -612,11 +631,20 @@ export default {
               // })
         }
 
-        if(d.about.field.toLowerCase().includes('time')){
+        if(d.about.fieldType=="dateTime"){
           figure.type = 'line';
           figure.categories = d.data.map(dat=> dat[d.cols.findIndex(col=>col.code==='site')]);
           figure.dates = d.cols[d.cols.findIndex(col=>col.code==='count')].categories.map(c=>new Date(c.code).toISOString().split("T")[0]);
           figure.data = d.data.map(dat=> dat[d.cols.findIndex(col=>col.code==='count')]);
+        }
+        else if(d.about.fieldType=="integer"){
+          figure.type = 'stackBar';
+          var figureData = d.data.filter(dat=> dat[d.cols.findIndex(col=>col.code==='site')] != "all") //filter out 'all' site
+          var primaryCategory = d.cols[d.cols.findIndex(col=>col.code==='count')].categories.map(c=>c.code),//get x axis
+              subCategory = figureData.map(dat=> dat[d.cols.findIndex(col=>col.code==='site')]); //get sites
+          figure.category= [primaryCategory, subCategory]
+          figure.data = figureData.map(dat=> dat[d.cols.findIndex(col=>col.code==='count')]); //get data from each site
+          figure.stack = "x"
         }
 
         figures.push(figure);
@@ -641,7 +669,7 @@ export default {
 
     recursiveGetAttributePath(attr, path){
       if(!attr.subpaths){
-        return path
+        return {path: path, type: attr.type}
       }
       else{
         let filters = []
@@ -653,21 +681,39 @@ export default {
     },
     fieldCorrection(fields){
       fields.forEach((field, index) => {
-        if (field.startsWith("valueQuantity")){
-          const subpath = field.split(".")
-          fields[index] = "value.Quantity." + subpath[1];
+        if (field.path.startsWith("valueQuantity")){
+          const subpath = field.path.split(".")
+          fields[index].path = "value.Quantity." + subpath[1];
         }
-        else if(field == "effectiveDateTime"){
-          fields[index] = "effective.dateTime";
+        else if(field.path == "effectiveDateTime"){
+          fields[index].path = "effective.dateTime";
         }
-        else if(field == "deceasedDateTime"){
-          fields[index] = "deceased.dateTime";
-        }
-        else if(field == "birthDate"){
-          fields[index] = "age";
+        else if(field.path == "deceasedDateTime"){
+          fields[index].path = "deceased.dateTime";
         }
       })
       return fields
+    },
+    resourceAttributeFieldOptions(resource){
+      var attributes = this.resourceAttributeOptions(resource)
+      attributes = attributes.filter(attr => {
+        return (attr.type != 'dateTime')
+      })
+      return attributes;
+    },
+    resourceAttributeBreakdownOptions(resource){
+      var attributes = this.resourceAttributeOptions(resource)
+      attributes = attributes.filter(attr => {
+        return (attr.type == 'dateTime' || attr.type == 'integer')
+      })
+      return attributes;
+    },
+    getAttributeType(attribute, resource){
+      var allAttributes = this.resourceAttributeOptions(resource)
+      var result = allAttributes.find(attr =>{
+        return attr.path == attribute
+      })
+      return result.type
     }
   },
   watch: {
@@ -688,6 +734,11 @@ export default {
         this.allSelected = false;
       }
     },
+    'form.breakdown.resourceAttribute'(newVal){
+      var type = this.getAttributeType(newVal, this.form.breakdown.resourceType)
+      this.form.breakdown.attributeType = type
+      this.form.breakdown.resourceAttribute = newVal
+    }
   },
 };
 </script>

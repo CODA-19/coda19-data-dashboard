@@ -1,6 +1,7 @@
 import {SummarizeRequestBody, SummarizeRequestField, SummarizeRequestSelector} from "../../../coda19-ts/src/request/SummarizeRequest";
 import {I18nString} from "../../../coda19-ts/src/base";
 import {Sites} from "../../services/Sites";
+import {sortBy} from "underscore"
 
 interface ClientSummaryResult {
     request: SummarizeRequestBody;
@@ -8,7 +9,14 @@ interface ClientSummaryResult {
 }
 
 function dataFromBreakdown(req:SummarizeRequestBody, obj: any) {
-    const breakResult = obj[0][0].breakdown.result;
+
+    var breakResult: any[] = []
+    if(obj[0][0].breakdown.fieldType == 'dateTime'){
+        breakResult = sortBy(obj[0][0].breakdown.result.map((r:any) => ({periodStart: (r.periodStart).slice(0,10), periodCount: r.periodCount})), "periodStart"); //slice dateTime to remove time and only keep the date
+    }
+    else{
+        breakResult = sortBy(obj[0][0].breakdown.result.map((r:any) => ({periodStart: parseFloat(r.periodStart), periodCount: r.periodCount})), "periodStart");
+    }
 
     let dat = obj.map((o:any) => o[0]).map((siteDat: any) => {
         return [
@@ -20,7 +28,7 @@ function dataFromBreakdown(req:SummarizeRequestBody, obj: any) {
 
     return [
         {
-            "about": { "field": "deceasedDateTime" },
+            "about": { "field": obj[0][0].breakdown.field, "fieldType": obj[0][0].breakdown.fieldType },
             "cols": [
                 { "code": "site", "labels": { "fr": "site", "en": "site" } },
                 { "code": "total", "labels": { "fr": "total", "en": "total" } },

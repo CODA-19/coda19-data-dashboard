@@ -67,6 +67,7 @@
   "breakdownStart": "start",
   "breakdownEnd": "end",
   "breakdownStep": "step",
+  "breakdownSteps": "steps",
   "breakdownDays": "days",
 
   "contTxt": "Continuous",

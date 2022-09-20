@@ -67,7 +67,8 @@
 
   "breakdownStart": "début",
   "breakdownEnd": "fin",
-  "breakdownStep": "durée",
+  "breakdownStep": "étape",
+  "breakdownSteps": "étapes",
   "breakdownDays": "jours",
 
   "contTxt": "Continues",

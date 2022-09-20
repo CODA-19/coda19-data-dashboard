@@ -33,7 +33,8 @@ export default {
     group: Array,
     horizontal: Boolean,
     margin: Array,
-    unit: String
+    unit: String,
+    stack : String,
   },
   components:{
     'v-chart': VChart
@@ -156,8 +157,9 @@ export default {
         this.group.forEach((serie,idx)=>{
           seriesOpt.push({
             type: 'bar',
-            data: this.data.map(a=>{return a[idx]}),
+            data: this.stack ? this.data[idx] : this.data.map(a=>{return a[idx]}),
             name: this.$t(serie) ,
+            stack: this.stack ? this.stack : '',
             itemStyle: {
               color: () => {
                 return this.colors[idx]
@@ -183,7 +185,8 @@ export default {
             color: (param) => {
               return this.colors[param.dataIndex]
             }
-          }
+          }, 
+          stack: this.stack ? this.stack : '',
         }];
 
       }
