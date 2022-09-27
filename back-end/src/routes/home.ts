@@ -32,7 +32,7 @@ router.get('/:panel', async (req: Request, res: Response) => {
     }
 
     // NOTE(malavv): Prob. also want the site configuration to be passed in.
-    const allSites = ["114", "115"];
+    const allSites = ["112", "115"];
 
     // This is instanced to later inject some dependencies.
     // NOTE(malavv): the date replace is because UTC encoded dates are being converted in the tunnel, stick to local one.

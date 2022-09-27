@@ -158,8 +158,9 @@ export class Sites {
     getCohortSizeOnDate(date: Date, sitesCodes?: string[]): Promise<number> {
         // SARS-COV-2 observation present with any value, before given date
         const patientWithTestBeforeDate = SRBuilder.newSel("Patient")
-            .addFieldGender()
+            .addLabel("patient_0")
             .join(SRBuilder.newSel("Observation")
+                .addLabel("observation_1")
                 .filterIs("code.coding.code", Terms.LOINC.SarsCov2Probe.code)
                 .filterDateBefore("issued", addDays(date, 1)));
 
@@ -168,7 +169,6 @@ export class Sites {
             .addSelector(patientWithTestBeforeDate)
             .addMeasures({categorical: ["count"]})
             .build();
-
         // Get summary results.
         return this.doSummaryQuery(sr, sitesCodes)
             .then(getSites2Total)
@@ -178,6 +178,7 @@ export class Sites {
     getNewCasesOnDate(date: Date, sitesCodes?: string[]): Promise<number> {
         // SARS-COV-2 observation present with Pos value, on a given date
         const posTestOnDate = SRBuilder.newSel("Observation")
+            .addLabel("observation_0")
             .filterIs("code.coding.code", Terms.LOINC.SarsCov2Probe.code)
             .filterIs("interpretation.coding.display", Terms.LOINC.Positive.code)
             .filterDateOn("issued", date);
@@ -197,8 +198,10 @@ export class Sites {
     getNewCaseFatalityOnDate(date: Date, sitesCodes?: string[]): Promise<number> {
         // COVID+ patients deaths on given date
         const deathsFromPosOnDate = SRBuilder.newSel("Patient")
+            .addLabel("patient_0")
             .filterDateOn("deceased.dateTime", date)
             .join(SRBuilder.newSel("Observation")
+                .addLabel("observation_1")
                 .filterIs("code.coding.code", Terms.LOINC.SarsCov2Probe.code)
                 .filterIs("interpretation.coding.display", Terms.LOINC.Positive.code))
 
@@ -217,6 +220,7 @@ export class Sites {
     getActiveIcuOnDate(date: Date, sitesCode?: string[]): Promise<Map<string, number>> {
         // Active ICU Hospitalizations on Date
         const icuCountPerSitesBetweenDates = SRBuilder.newSel("Encounter")
+            .addLabel("encounter_0")
             .filterDateOn("location.period.start", date)
             .join(SRBuilder.newSel("Location")
                 .filterIs("type.coding.code", "ICU"))
