@@ -188,11 +188,11 @@
                 <div class="row" v-if="this.form.breakdown.resourceAttribute">
                     <div class="col-lg-4 col-md-4">
                         <span>{{ $t("breakdownStart") }}</span>
-                        <input class="form-control" :type="breakdownDataType" id="start_breakdown" v-model="form.breakdown.period.start" :disabled="!breakdown" />
+                        <input class="form-control" step="any" :type="breakdownDataType" id="start_breakdown" v-model.number="form.breakdown.period.start" :disabled="!breakdown" />
                     </div>
                     <div class="col-lg-4 col-md-4">
                         <span>{{ $t("breakdownEnd") }}</span>
-                        <input class="form-control" :type="breakdownDataType" id="end_breakdown" v-model="form.breakdown.period.end" :disabled="!breakdown"/>
+                        <input class="form-control" step="any" :type="breakdownDataType" id="end_breakdown" v-model.number="form.breakdown.period.end" :disabled="!breakdown"/>
                     </div>
                     <div class="col-lg-4 col-md-4">
                         <span>{{ $t("breakdownStep") }}</span>

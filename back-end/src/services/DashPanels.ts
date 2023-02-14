@@ -57,24 +57,24 @@ export class DashPanels {
                 return this.computePanel3();
             // Line 2
             case 'p4':
-                return this.computePanel4();
+                return //this.computePanel4();
             case 'p5':
-                return this.computePanel5();
+                return //this.computePanel5();
             case 'p6':
-                return this.computePanel6();
+                return //this.computePanel6();
             // line 3
             case 'p7':
-                return this.computePanel7();
+                return //this.computePanel7();
             case 'p8':
-                return this.computePanel8();
+                return //this.computePanel8();
             case 'p9':
-                return this.computePanel9();
+                return //this.computePanel9();
             case 'p10':
-                return this.computePanel10();
+                return //this.computePanel10();
             case 'p11':
-                return this.computePanel11();
+                return //this.computePanel11();
             case 'p12':
-                return this.computePanel12();
+                return //this.computePanel12();
             // No match
             default:
                 return Promise.reject(new Error(`Invalid Panel ID ${panelId}`));

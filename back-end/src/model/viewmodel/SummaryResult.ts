@@ -46,7 +46,9 @@ function dataFromFields(req:SummarizeRequestBody, obj: any) {
     let fields:any[] = []
     let res:any[] = [];
 
-    fields = fieldsFromSelector(req.selectors[0], fields)
+    req.selectors.forEach(s => {
+        fieldsFromSelector(s, fields)
+    })
 
     for (let field of fields) {
         let tmp:any = null;
@@ -119,7 +121,7 @@ function customLabels(code: string): I18nString {
 
 }
 function requestHasBreakdown(r: SummarizeRequestBody): boolean {
-    return r.selectors[0].breakdown !== undefined;
+    return r.options.breakdown !== undefined;
 }
 
 export default class SummaryResult {

@@ -8,7 +8,6 @@
   },
   "dependencies": {
     "@coda-19/coda19-fhir-templates": "npm:@CODA-19/coda19-fhir-templates@1.0.3-main-532a7a87.0",
-    "@CODA-19/coda19-fhir-templates": "@coda-19/coda19-fhir-templates@1.0.3-main-532a7a87.0",
     "@fortawesome/fontawesome-free": "^5.15.2",
     "@fortawesome/fontawesome-svg-core": "^1.2.34",
     "@fortawesome/free-solid-svg-icons": "^5.15.2",

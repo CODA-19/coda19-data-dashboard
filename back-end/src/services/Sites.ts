@@ -145,7 +145,8 @@ export class Sites {
      * Only information available at startup on these sites will be available through this request.
      */
     listConnected(): Promise<SiteInfoRequest> {
-        return axios.get('/info', passAuth(this.req))
+        const infoWaitTime = 1000;
+        return axios.get(`/info?waitTime=${infoWaitTime}`, passAuth(this.req))
             .then((res: any) => res.data)
             .then(convertMock2Name);
     }

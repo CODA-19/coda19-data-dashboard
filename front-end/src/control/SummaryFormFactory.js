@@ -71,57 +71,33 @@ export default class SummaryFormFactory {
     }
 
     const selectorLength = dat.qB.length;
-    var selector = {
-      resource: dat.qB[0].name,
-      label: dat.qB[0].label,
-      filters: dat.qB[0].query.rules.map(rule => qbRuleToFilter(rule)),
-      fields: 
-        dat.qB[0].field.map((el) => 
-        {return { path: el.path,  label:dat.qB[0].label+"_"+el.path, type: el.type}}),
-    };
-    if(brkdwn) {
-      selector["breakdown"] = selectorBreakdown;
+    var allSelectors = []
+    for(var index=0; index < selectorLength; index++){
+      var selector = {
+        resource: dat.qB[index].name,
+        label: dat.qB[index].label,
+        filters: dat.qB[index].query.rules.map(rule => qbRuleToFilter(rule)),
+        fields: 
+          dat.qB[index].field.map((el) => 
+          {return { path: el.path,  label:dat.qB[index].label+"_"+el.path, type: el.type}}),
+      };
+      allSelectors.push(selector);
     }
-    if(dat.qB[1]){
-      selector["joins"] = this.recursiveAppendJoins(selectorLength, 1, dat.qB, selector)
-    }
-    
-    return {
-      selectors: [selector],
+
+    var queryBody = {
+      selectors: allSelectors,
       options: {
         measures: {
           continuous: dat.measures.cont.map((el) => el.value),
           categorical: dat.measures.disc.map((el) => el.value),
-        },
-      },
-    };
-  }
+        }
+      }
+    }
 
-  static recursiveAppendJoins(selectorLength, currentSelector, form){
-    if(currentSelector == selectorLength-1){
-      const joinSelector = {
-        resource: form[currentSelector].name,
-        label: form[currentSelector].label,
-        filters: form[currentSelector].query.rules.map(rule => qbRuleToFilter(rule)),
-        fields:
-          form[currentSelector].field.map((el) => 
-          {return { path: el.path,  label:form[currentSelector].label+"_"+el.path, type: el.type}}),
-      };
-      // selector["joins"] = joinSelector;
-      return joinSelector
+    if(brkdwn) {
+      queryBody.options.breakdown = selectorBreakdown;
     }
-    else {
-      const joinSelector = {
-        resource: form[currentSelector].name,
-        label: form[currentSelector].label,
-        filters: form[currentSelector].query.rules.map(rule => qbRuleToFilter(rule)),
-        fields: sortBy(
-          form[currentSelector].field.map((el) => ({ path: el ,  label:form[currentSelector].name+"_"+el})),
-          "path"
-        ),
-        joins: this.recursiveAppendJoins(selectorLength, ++currentSelector, form)
-      };
-      return joinSelector
-    }
+    
+    return queryBody
   }
 }
