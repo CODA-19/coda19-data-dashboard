@@ -3,9 +3,10 @@ import { sortBy } from "underscore";
 const secondsPerDay = 24 * 60 * 60;
 
 function qbRuleToFilter(rule) {
-  const { id, operator, value } = rule;
+  const { type, id, operator, value } = rule;
 
   return {
+    type: type,
     path: id,
     operator: operator,
     value: value
@@ -14,72 +15,89 @@ function qbRuleToFilter(rule) {
 }
 
 function qbBreakdown(cfg) {
-  const fd =
-    cfg.resourceAttribute === "deceasedDateTime"
-      ? "deceased.dateTime"
-      : cfg.resourceAttribute;
+  var pstep = Number.parseFloat(cfg.period.step);
+  if(cfg.attributeType == "dateTime"){
+    pstep = pstep * secondsPerDay;
+  }
   return {
-    resource: { type: cfg.resourceType, field: fd },
+    resource: { type: cfg.resourceType, field: cfg.resourceAttribute , fieldType: cfg.attributeType},
     slices: {
-      step: Number.parseInt(cfg.period.step) * secondsPerDay,
+      step: pstep,
       min: cfg.period.start,
       max: cfg.period.end,
     },
   };
 }
 
+function includeFieldforBreakdown(form) {
+  const breakdownResource = form.breakdown.resourceType;
+  const breakdownField = form.breakdown.resourceAttribute;
+  const breakdownFieldType = form.breakdown.attributeType;
+
+  const resourceIndex = form.qB.findIndex(f => f.name == breakdownResource)
+  if(resourceIndex < 0){//no resource found corresponding to the breakdown -> add resource and field
+    const resource = {
+      name: breakdownResource,
+      label: `${breakdownResource}_${++form.qB.length}`,
+      query: {
+        rules : []
+      },
+      field: [{
+            path: breakdownField,
+            type: breakdownFieldType
+        }]
+    }
+    form.qB.push(resource)
+  }
+  else{//resource found
+    const fieldIndex = form.qB[resourceIndex].field.findIndex(f => f.path == breakdownField);
+    if(fieldIndex < 0){ //breakdown field not in resource field -> add field
+      const field = {
+        path: breakdownField,
+        type: breakdownFieldType
+      }
+      form.qB[resourceIndex].field.push(field)
+    }
+    //else if fieldIndex > 0, do nothing
+  }
+}
+
 export default class SummaryFormFactory {
   static fromForm(dat, brkdwn) {
-    const selectorLength = dat.qB.length;
-      var selector = {
-        resource: dat.qB[0].name,
-        filters: dat.qB[0].query.rules.map(rule => qbRuleToFilter(rule)),
-        fields: sortBy(
-          dat.qB[0].field.map((el) => ({ path: el,  label:dat.qB[0].name+"_"+el})),
-          "path"
-        ),
-      };
-    if(dat.qB[1]){
-    selector = this.recursiveAppendJoins(selectorLength, 1, dat.qB, selector)
-    }
+    
     if (brkdwn && dat.breakdown.resourceType !== "") {
-      selector["breakdown"] = qbBreakdown(dat.breakdown);
+      var selectorBreakdown = qbBreakdown(dat.breakdown);
+      includeFieldforBreakdown(dat);
     }
-    return {
-      selectors: [selector],
+
+    const selectorLength = dat.qB.length;
+    var allSelectors = []
+    for(var index=0; index < selectorLength; index++){
+      var selector = {
+        resource: dat.qB[index].name,
+        label: dat.qB[index].label,
+        filters: dat.qB[index].query.rules.map(rule => qbRuleToFilter(rule)),
+        fields: 
+          dat.qB[index].field.map((el) => 
+          {return { path: el.path,  label:dat.qB[index].label+"_"+el.path, type: el.type}}),
+      };
+      allSelectors.push(selector);
+    }
+
+    var queryBody = {
+      selectors: allSelectors,
       options: {
         measures: {
           continuous: dat.measures.cont.map((el) => el.value),
           categorical: dat.measures.disc.map((el) => el.value),
-        },
-      },
-    };
-  }
+        }
+      }
+    }
 
-  static recursiveAppendJoins(selectorLength, currentSelector, form, selector){
-    if(currentSelector < selectorLength){
-      const joinSelector = {
-        resource: form[currentSelector].name,
-        filters: form[currentSelector].query.rules.map(rule => qbRuleToFilter(rule)),
-        fields: sortBy(
-          form[currentSelector].field.map((el) => ({ path: el ,  label:form[currentSelector].name+"_"+el})),
-          "path"
-        ),
-      };
-      selector["joins"] = joinSelector;
-      return selector
+    if(brkdwn) {
+      queryBody.options.breakdown = selectorBreakdown;
     }
-    else {
-      const joinSelector = {
-        resource: form[currentSelector].name,
-        filters: form[currentSelector].query.rules.map(rule => qbRuleToFilter(rule)),
-        fields: sortBy(
-          form[currentSelector].field.map((el) => ({ path: el })),
-          "path"
-        ),
-      };
-      selector["joins"] = joinSelector;
-      return this.recursiveAppendJoins(selectorLength, currentSelector++, form, selector)
-    }
+    
+    return queryBody
   }
 }

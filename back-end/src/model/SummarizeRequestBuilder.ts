@@ -36,16 +36,21 @@ export class SRBld {
 }
 
 export class SRSBld {
+    
     selector: SummarizeRequestSelector;
 
     constructor(resourceId: string) {
         this.selector = {
             resource: resourceId,
+            label:"",
             fields: [],
             filters: []
         }
     }
-
+    addLabel(label: string) {
+        this.selector.label = label;
+        return this;
+    }
     join(selector: SRSBld): SRSBld {
         this.selector.joins = selector.selector;
         return this;
@@ -67,7 +72,7 @@ export class SRSBld {
     }
 
     addFieldGender(): SRSBld {
-        this.selector.fields.push({ path: 'gender' })
+        this.selector.fields.push({ path: 'gender', label: 'patient_gender', type: 'string' })
         return this;
     }
 

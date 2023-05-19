@@ -1,14 +1,15 @@
 FROM node:16-alpine3.13 as base-node-modules
 
-WORKDIR /usr/src/app
+WORKDIR /usr/src/build
 
 RUN apk update \
     && apk add openssl
 
 ARG BUILD_ENV=prod
-ARG PERSONAL_ACCESS_TOKEN=<PERSONAL_ACCESS_TOKEN>
+ARG PERSONAL_ACCESS_TOKEN=${PERSONAL_ACCESS_TOKEN}
 
 COPY ./ ./
+COPY ./${BUILD_ENV}.env ./.env
 
 RUN yarn cache clean
 RUN yarn install
@@ -25,8 +26,7 @@ RUN apk update \
 ARG BUILD_ENV=prod
 
 WORKDIR /usr/src/app
-COPY --from=base-node-modules ./ ./
-COPY ./ ./
+COPY --from=base-node-modules /usr/src/build ./
 COPY ./${BUILD_ENV}.env ./.env
 
 # Make build footprint version for easier debugging.
