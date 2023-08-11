@@ -1,20 +1,21 @@
 import SummaryResult from "../../../src/model/viewmodel/SummaryResult";
 import fs from "fs";
 import JSON5 from 'json5';
-import {SummaryOperator} from "../../../coda19-ts/src/request/SummarizeRequest";
+import {SummarizeRequestBody, SummaryOperator} from "../../../coda19-ts/src/request/SummarizeRequest";
 
 const received_1 = JSON5.parse(fs.readFileSync('./mock/tasks/received_task_1.json5').toString());
 const returned_1 = JSON5.parse(fs.readFileSync('./mock/tasks/ret_task_1.json5').toString());
-const req1 = {
+const req1:SummarizeRequestBody = {
     "selectors": [
         {
             "resource": "Patient",
+            "label": "patientResource",
             "filters": [
-                { "path": "deceasedBoolean", "operator": <SummaryOperator>"is", "value": "false" }
+                { "path": "deceasedBoolean", "operator": <SummaryOperator>"is", "value": "false", "type": "boolean" }
             ],
             "fields": [
-                { "path": "gender" },
-                { "path": "age" }
+                { "path": "gender", "label": "gender" },
+                { "path": "age", "label": "age" }
             ]
         }
     ],
@@ -27,13 +28,14 @@ const req1 = {
 };
 const received_2 = JSON5.parse(fs.readFileSync('./mock/tasks/received_task_2.json5').toString());
 const returned_2 = JSON5.parse(fs.readFileSync('./mock/tasks/ret_task_2.json5').toString());
-const req2 = {
+const req2:SummarizeRequestBody = {
     "selectors": [
         {
             "resource": "Patient",
+            "label": "patientResource",
             "filters": [
-                { "path": "deceasedBoolean", "operator": <SummaryOperator>"is", "value": "true" },
-                { "path": "deceasedDateTime", "operator": <SummaryOperator>"isNot", "value": "null" }
+                { "path": "deceasedBoolean", "operator": <SummaryOperator>"is", "value": "true", "type": "boolean" },
+                { "path": "deceasedDateTime", "operator": <SummaryOperator>"isNot", "value": "null", "type": "dateTime" }
             ],
             "fields": [],
             "breakdown": {

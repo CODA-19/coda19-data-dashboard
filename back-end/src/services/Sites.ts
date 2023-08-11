@@ -158,12 +158,11 @@ export class Sites {
      */
     getCohortSizeOnDate(date: Date, sitesCodes?: string[]): Promise<number> {
         // SARS-COV-2 observation present with any value, before given date
-        const patientWithTestBeforeDate = SRBuilder.newSel("Patient")
-            .addLabel("patient_0")
-            .join(SRBuilder.newSel("Observation")
-                .addLabel("observation_1")
-                .filterIs("code.coding.code", Terms.LOINC.SarsCov2Probe.code)
-                .filterDateBefore("issued", addDays(date, 1)));
+        const patientWithTestBeforeDate = (SRBuilder.newSel("Observation")
+            .addLabel("observation_1")
+            .filterIs("code.coding.code", Terms.LOINC.SarsCov2Probe.code, "string")
+            .filterDateAfterOrOn("issued", new Date("2019-11-01"))
+            .filterDateBefore("issued", addDays(date, 1)));
 
         // Building summary request
         const sr = SRBuilder.newReq()
@@ -180,8 +179,8 @@ export class Sites {
         // SARS-COV-2 observation present with Pos value, on a given date
         const posTestOnDate = SRBuilder.newSel("Observation")
             .addLabel("observation_0")
-            .filterIs("code.coding.code", Terms.LOINC.SarsCov2Probe.code)
-            .filterIs("interpretation.coding.display", Terms.LOINC.Positive.code)
+            .filterIs("code.coding.code", Terms.LOINC.SarsCov2Probe.code, "string")
+            .filterIs("interpretation.coding.display", Terms.LOINC.Positive.code, "string")
             .filterDateOn("issued", date);
 
         // Building summary request
@@ -203,8 +202,8 @@ export class Sites {
             .filterDateOn("deceased.dateTime", date)
             .join(SRBuilder.newSel("Observation")
                 .addLabel("observation_1")
-                .filterIs("code.coding.code", Terms.LOINC.SarsCov2Probe.code)
-                .filterIs("interpretation.coding.display", Terms.LOINC.Positive.code))
+                .filterIs("code.coding.code", Terms.LOINC.SarsCov2Probe.code, "string")
+                .filterIs("interpretation.coding.display", Terms.LOINC.Positive.code, "string"))
 
         // Building summary request
         const sr = SRBuilder.newReq()
@@ -224,7 +223,7 @@ export class Sites {
             .addLabel("encounter_0")
             .filterDateOn("location.period.start", date)
             .join(SRBuilder.newSel("Location")
-                .filterIs("type.coding.code", "ICU"))
+                .filterIs("type.coding.code", "ICU", "string"))
 
         // Building summary request
         const sr = SRBuilder.newReq()
@@ -239,8 +238,8 @@ export class Sites {
 
     getNewDailyPosPerSiteBetween(from: Date, to: Date, sitesCodes?: string[]) {
         const newPosPerSitePerDayUpTo = SRBuilder.newSel("Observation")
-            .filterIs("code.coding.code", Terms.LOINC.SarsCov2Probe.code)
-            .filterIs("interpretation.coding.display", Terms.LOINC.Positive.code)
+            .filterIs("code.coding.code", Terms.LOINC.SarsCov2Probe.code, "string")
+            .filterIs("interpretation.coding.display", Terms.LOINC.Positive.code, "string")
             .filterDateAfterOrOn("issued", from)
             .filterDateBefore("issued", to)
             .breakdownPerDay("Observation", "issued", from, to);
@@ -257,7 +256,7 @@ export class Sites {
 
     getNewDailyTestsPerSiteBetween(from: Date, to: Date, sitesCodes?: string[]) {
         const newTestsPerSitePerDayUpTo = SRBuilder.newSel("Observation")
-            .filterIs("code.coding.code", Terms.LOINC.SarsCov2Probe.code)
+            .filterIs("code.coding.code", Terms.LOINC.SarsCov2Probe.code, "string")
             .filterDateAfterOrOn("issued", from)
             .filterDateBefore("issued", to)
             .breakdownPerDay("Observation", "issued", from, to);
@@ -324,7 +323,7 @@ export class Sites {
         
         try {
             return axios.get(`/learning/prepare?sites=${sitesCodes.join(',')}`, data).then((res:any) => res.data);
-          } catch (err) {
+          } catch (err: any) {
             return err
           }
     }
@@ -337,7 +336,7 @@ export class Sites {
         
         try {
             return axios.get(`/learning/train?sites=${sitesCodes.join(',')}`, data).then((res:any) => res.data);
-          } catch (err) {
+          } catch (err: any) {
             return err
           }
     }
@@ -350,7 +349,7 @@ export class Sites {
         
         try {
             return axios.get(`/learning/progress?sites=${sitesCodes.join(',')}`, data).then((res:any) => res.data);
-          } catch (err) {
+          } catch (err: any) {
             return err
           }
     }
@@ -363,7 +362,7 @@ export class Sites {
         
         try {
             return axios.get(`/learning/evaluate?sites=${sitesCodes.join(',')}`, data).then((res:any) => res.data);
-          } catch (err) {
+          } catch (err: any) {
             return err
           }
     }

@@ -66,8 +66,8 @@ export class SRSBld {
         this.filterDateBefore(path, addDays(date, 1));
         return this;
     }
-    filterIs(path: string, value: string): SRSBld {
-        this.selector.filters.push({ path: path, operator: "is", value: value })
+    filterIs(path: string, value: string, type: string): SRSBld {
+        this.selector.filters.push({ path: path, operator: "is", value: value, type: type })
         return this;
     }
 
@@ -77,7 +77,7 @@ export class SRSBld {
     }
 
     private filterDate(path: string, operator: SummaryOperator, date: Date): SRSBld {
-        this.selector.filters.push({ path: path, operator: operator, value: format(date, "yyyy-MM-dd") })
+        this.selector.filters.push({ path: path, operator: operator, value: format(date, "yyyy-MM-dd") , type: "date"})
         return this;
     }
 
