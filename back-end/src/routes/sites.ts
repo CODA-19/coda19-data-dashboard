@@ -14,7 +14,7 @@ router.get('/', async function(req: Request, res: Response) {
 
   try {
     res.status(200).send(await sitesProxy.listConnected());
-  } catch (err) {
+  } catch (err:any) {
     console.error(err.stack);
     res.status(500).send("Unable to fetch site info from Hub");
   }

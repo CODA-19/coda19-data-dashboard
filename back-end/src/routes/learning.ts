@@ -18,7 +18,7 @@ router.post('/prepare', async function(req: Request, res: Response){
     let data = null;
     try {
         data = await sitesProxy.prepare(body, sites);
-    } catch (err) {
+    } catch (err: any) {
         console.error(err.stack);
         res.status(500).send("Unable to run prepare query on hub.");
     }
@@ -34,7 +34,7 @@ router.post('/train', async function(req: Request, res: Response){
     let data = null;
     try {
         data = await sitesProxy.train(body, sites);
-    } catch (err) {
+    } catch (err: any) {
         console.error(err.stack);
         res.status(500).send("Unable to run train query on hub.");
     }
@@ -50,7 +50,7 @@ router.post('/progress', async function(req: Request, res: Response){
     let data = null;
     try {
         data = await sitesProxy.progress(body, sites);
-    } catch (err) {
+    } catch (err: any) {
         console.error(err.stack);
         res.status(500).send("Unable to run progress query on hub.");
     }
@@ -66,7 +66,7 @@ router.post('/evaluate', async function(req: Request, res: Response){
     let data = null;
     try {
         data = await sitesProxy.evaluate(body, sites);
-    } catch (err) {
+    } catch (err: any) {
         console.error(err.stack);
         res.status(500).send("Unable to run evaluate query on hub.");
     }

@@ -3,12 +3,13 @@
     "selectors": [
       {
         "resource": "Patient",
+        "label": "patientResource",
         "filters": [
-          { "path": "deceasedBoolean", "operator": "is", "value": "false" }
+          { "path": "deceasedBoolean", "operator": "is", "value": "false", "type": "boolean" }
         ],
         "fields": [
-          { "path": "gender" },
-          { "path": "age" }
+          { "path": "gender", "label": "gender" },
+          { "path": "age", "label": "age" }
         ]
       }
     ],

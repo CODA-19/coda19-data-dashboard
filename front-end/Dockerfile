@@ -5,15 +5,15 @@ WORKDIR /usr/src/build
 RUN apk update \
     && apk add openssl
 
-ARG BUILD_ENV=prod
-ARG PERSONAL_ACCESS_TOKEN=${PERSONAL_ACCESS_TOKEN}
-
 COPY ./ ./
 COPY ./${BUILD_ENV}.env ./.env
 
 RUN yarn cache clean
+RUN yarn add @coda-19/coda19-fhir-templates@1.0.6-main-7573265b.0
 RUN yarn install
+RUN rm -f .yarnrc
 RUN rm -f .npmrc
+
 RUN yarn build
 
 FROM node:16-alpine3.13

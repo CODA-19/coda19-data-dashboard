@@ -34,7 +34,7 @@ router.get('/query', async function(req: Request, res: Response) {
     try {
         data = await sitesProxy.doSummaryQuery(payload, sites);
         //res.status(200).send(await sitesProxy.doSummaryQuery(payload, sites));
-    } catch (err) {
+    } catch (err: any) {
         console.error(err.stack);
         res.status(500).send("Unable to run summarize query on hub.");
     }
@@ -42,7 +42,7 @@ router.get('/query', async function(req: Request, res: Response) {
     // Process results for the client.
     try {
         res.status(200).send(SummaryResult.fromSummary(payload, data));
-    } catch (err) {
+    } catch (err: any) {
         console.error(err.stack);
         res.status(500).send("Unable to fetch site info from Hub");
     }
@@ -51,7 +51,7 @@ router.get('/query', async function(req: Request, res: Response) {
 router.get('/query_task_1', async function(req: Request, res: Response) {
     try {
         res.status(200).send(JSON5.parse(getCachedFile(req.app, './mock/tasks/ret_task_1.json5')));
-    } catch (err) {
+    } catch (err: any) {
         console.error(err.stack);
         res.status(500).send("Unable to fetch site info from Hub");
     }
@@ -60,7 +60,7 @@ router.get('/query_task_1', async function(req: Request, res: Response) {
 router.get('/query_task_2', async function(req: Request, res: Response) {
     try {
         res.status(200).send(JSON5.parse(getCachedFile(req.app, './mock/tasks/ret_task_2.json5')));
-    } catch (err) {
+    } catch (err: any) {
         console.error(err.stack);
         res.status(500).send("Unable to fetch site info from Hub");
     }
@@ -70,7 +70,7 @@ router.get('/query_task_2', async function(req: Request, res: Response) {
 router.get('/measures', async function(req: Request, res: Response) {
     try {
         res.status(200).send(SummaryMeasures);
-    } catch (err) {
+    } catch (err: any) {
         console.error(err.stack);
         res.status(500).send("Unable to fetch site info from Hub");
     }

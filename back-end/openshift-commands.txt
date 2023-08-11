@@ -1,5 +1,15 @@
 # Only first time and for openshift operator.
 oc login -s api.ul-pca-pr-ul02.ulaval.ca:6443 -u ${OPENSHIFT_USER} -p ${OPENSHIFT_PASSWORD}
 oc project ul-val-prj-coda19-pr01
+oc project ul-val-prj-coda19-dv
 
+#staging
+oc process -f coda19-dashboard-back.dev.yaml --param-file=openshift-project-params.dev.env | oc create -f -
+
+#prod
 oc process -f coda19-dashboard-back.yaml --param-file=openshift-project-params.env | oc create -f -
+
+# Clean up
+oc delete all,configmap,pvc,serviceaccount,rolebinding --selector app=coda19-hub-back
+
+# use oc origin 3.11

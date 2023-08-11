@@ -1,7 +1,6 @@
-import { Application } from 'express';
 import cors from 'cors';
 
-function register(app: Application) {
+function register(app: any) {
     const allowedOrigins: Array<string> = [
         'http://localhost:3000',
         'https://localhost:3000',
@@ -13,7 +12,8 @@ function register(app: Application) {
         'https://coda-dashboard-purple-ul-val-prj-coda19.pca.svc.valeria.science',
         'https://dashboard-poc.hub.coda19.com',
         'https://dashboard.hub.coda19.com',
-        'https://dashboard-backend.hub.coda19.com'];
+        'https://dashboard-dev.hub.coda19.com',
+        'https://dashboard-dev.hub.coda-platform.com',];
 
     const corsOptions = {
         origin: allowedOrigins,

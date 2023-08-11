@@ -3,9 +3,10 @@
     "selectors": [
       {
         "resource": "Patient",
+        "label": "patientResource",
         "filters": [
-          { "path": "deceasedBoolean", "operator": "is", "value": "true" },
-          { "path": "deceasedDateTime", "operator": "isNot", "value": "null" }
+          { "path": "deceasedBoolean", "operator": "is", "value": "true", "type": "boolean" },
+          { "path": "deceasedDateTime", "operator": "isNot", "value": "null", "type": "dateTime" }
         ],
         "fields": [],
         "breakdown": {

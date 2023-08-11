@@ -78,7 +78,7 @@ objects:
             - name: VUE_APP_CODA19_DASHBOARD_KEYCLOAK_REALM
               value: '${VUE_APP_CODA19_DASHBOARD_KEYCLOAK_REALM}'
             name: ${CODA19_HUB_DASHBOARD}
-            image: coda19/coda19-hub-dashboard:latest
+            image: coda19/coda19-hub-dashboard:dev
             ports:
               - name: ${CODA19_HUB_DASHBOARD}
                 containerPort: 8080
@@ -98,7 +98,7 @@ parameters:
   description: >-
     Custom hostname for https service route. Leave blank for default hostname,
     e.g.: <application-name>-<namespace>.<default-domain-suffix>
-  value: dashboard.hub.coda-platform.com
+  value: dashboard-dev.hub.coda-platform.com
 - name: VUE_APP_CODA19_DASHBOARD_PORT
   displayName: PORT
   description: 'Port'
@@ -107,7 +107,7 @@ parameters:
 - name: VUE_APP_CODA19_DASHBOARD_BACKEND_URL
   displayName: BACKEND ENDPOINT
   description: 'Backend Endpoint'
-  value: 'https://dashboard-backend.hub.coda-platform.com'
+  value: 'https://dashboard-backend-dev.hub.coda-platform.com'
   required: true
 - name: VUE_APP_CODA19_DASHBOARD_KEYCLOAK_REALM
   displayName: KEYCLOAK REALM
