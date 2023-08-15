@@ -148,54 +148,13 @@ export default {
         filters: this.getFiltersByResource(this.resource),
         lang_code: this.$i18n.locale,
         rules: this.query,
-        allow_groups: false,
+        allow_groups: true,
         icons: {
           add_group: 'fas fa-plus-square',
           add_rule: 'fas fa-plus-circle',
           remove_group: 'fas fa-minus-square',
           remove_rule: 'fas fa-trash-alt',
           error: 'fas fa-exclamation-triangle'
-        },
-        templates: {
-          rule: '\
-<div id="{{= it.rule_id }}" class="rule-container"> \
-  <div class="rule-header"> \
-    <div class="btn-group pull-left rule-actions"> \
-      <button type="button" class="btn btn-xs btn-danger" data-delete="rule"> \
-        <i class="{{= it.icons.remove_rule }}"></i> \
-      </button> \
-    </div> \
-  </div> \
-  {{? it.settings.display_errors }} \
-    <div class="error-container"><i class="{{= it.icons.error }}"></i></div> \
-  {{?}} \
-  <div class="rule-filter-container"></div> \
-  <div class="rule-operator-container"></div> \
-  <div class="rule-value-container"></div> \
-</div>',
-          group: '\
-<div id="{{= it.group_id }}" class="rules-group-container"> \
-  <div class="rules-group-header"> \
-    <div class="btn-group group-conditions"> \
-      {{~ it.conditions: condition }} \
-        <label class="btn btn-xs btn-primary"> \
-          <input type="radio" name="{{= it.group_id }}_cond" value="{{= condition }}"> {{= it.translate("conditions", condition) }} \
-        </label> \
-      {{~}} \
-    </div> \
-    {{? it.settings.display_errors }} \
-      <div class="error-container"><i class="{{= it.icons.error }}"></i></div> \
-    {{?}} \
-  </div> \
-  <div class=rules-group-body> \
-    <div class=rules-list></div> \
-  </div> \
-    <div class="center"> \
-      <button type="button" class="btn btn-xs btn-success" data-add="rule"> \
-        <i class="{{= it.icons.add_rule }}"></i> {{= it.translate("add_rule") }} \
-      </button> \
-    </div> \
-</div>'
         }
       };
     },

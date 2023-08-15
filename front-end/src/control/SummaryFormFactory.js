@@ -3,15 +3,21 @@ import { sortBy } from "underscore";
 const secondsPerDay = 24 * 60 * 60;
 
 function qbRuleToFilter(rule) {
-  const { type, id, operator, value } = rule;
-
-  return {
-    type: type,
-    path: id,
-    operator: operator,
-    value: value
+  if(rule.condition){
+    return {
+      conditionOperator: rule.condition,
+      conditions : rule.rules.map(rule => qbRuleToFilter(rule))
+    }
   }
-
+  else {
+    const { type, id, operator, value } = rule;
+    return {
+      type: type,
+      path: id,
+      operator: operator,
+      value: value
+    }
+  }
 }
 
 function qbBreakdown(cfg) {
@@ -73,10 +79,14 @@ export default class SummaryFormFactory {
     const selectorLength = dat.qB.length;
     var allSelectors = []
     for(var index=0; index < selectorLength; index++){
+      var conditions = {
+        conditionOperator: dat.qB[index].query.condition,
+        conditions : dat.qB[index].query.rules.map(rule => qbRuleToFilter(rule))
+      }
       var selector = {
         resource: dat.qB[index].name,
         label: dat.qB[index].label,
-        filters: dat.qB[index].query.rules.map(rule => qbRuleToFilter(rule)),
+        condition: conditions,
         fields: 
           dat.qB[index].field.map((el) => 
           {return { path: el.path,  label:dat.qB[index].label+"_"+el.path, type: el.type}}),
